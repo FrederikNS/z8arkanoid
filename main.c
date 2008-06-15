@@ -4,14 +4,15 @@
 int main(void) {
 	int i;
 	z_leds_init();
-/*	z_ledstring_putchar('A',0);
-	z_ledstring_putchar('A',1);
-	z_ledstring_putchar('A',2);*/
-/*	z_ledstring_putchar('A',3);
-	z_ledfb_set_column(0, 1);
-	z_ledfb_set_column(1, 3);
-	z_ledfb_set_column(2, 7);*/
+	z_hyperterm_init();
+
 	z_ledstring_putstring("TIS");
-	//for(i = 0; i < 20; i++) z_ledfb_set_column(i, 0xFF);
+	z_hyperterm_putstring("TISSER!\n");
+	z_hyperterm_blinkfast();
+	z_hyperterm_bold();
+	z_hyperterm_underline();
+	z_hyperterm_italic();
+	z_hyperterm_putstring("TISSER!");
+
 	while(1) z_ledfb_write();
 }
