@@ -175,6 +175,16 @@ C:\Projects\zilog\project\button.obj :  \
 
 C:\Projects\zilog\project\hyperterm.obj :  \
             C:\Projects\zilog\project\HLI\hyperterm.c  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\format.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\stdarg.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\stdio.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\defines.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\dmadefs.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\ez8.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\gpio.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\sio.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
             C:\Projects\zilog\project\HLI\hyperterm.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\project\HLI\hyperterm.c
 
