@@ -5,8 +5,8 @@ ptn_Child3=Frames
 
 [WorkState_v1_1.DockState]
 Bars=14
-ScreenCX=1280
-ScreenCY=1024
+ScreenCX=1920
+ScreenCY=1200
 ptn_Child1=Bar-0
 ptn_Child10=Bar-9
 ptn_Child11=Bar-10
@@ -324,10 +324,10 @@ Docking=True
 DockingStyle=61440
 ExStyle=3889
 MDIChild=False
-MRUDockBottomPos=135
-MRUDockID=59422
+MRUDockBottomPos=177
+MRUDockID=0
 MRUDockLeftPos=1
-MRUDockRightPos=1280
+MRUDockRightPos=1920
 MRUDockTopPos=5
 MRUDockingState=0
 MRUFloatCX=300
@@ -335,8 +335,8 @@ MRUFloatCY=180
 MRUFloatStyle=4
 MRUFloatXPos=-2147483648
 MRUFloatYPos=4217936
-MRUHorzDockCX=1279
-MRUHorzDockCY=130
+MRUHorzDockCX=1919
+MRUHorzDockCY=172
 MRUVertDockCX=300
 MRUVertDockCY=180
 PctWidth=1000000
@@ -355,21 +355,21 @@ Docking=True
 DockingStyle=61440
 ExStyle=3889
 MDIChild=False
-MRUDockBottomPos=741
+MRUDockBottomPos=869
 MRUDockID=0
 MRUDockLeftPos=0
-MRUDockRightPos=419
+MRUDockRightPos=204
 MRUDockTopPos=-2
 MRUDockingState=0
 MRUFloatCX=300
 MRUFloatCY=180
 MRUFloatStyle=4
 MRUFloatXPos=-2147483648
-MRUFloatYPos=4600480
+MRUFloatYPos=4664016
 MRUHorzDockCX=300
 MRUHorzDockCY=180
-MRUVertDockCX=419
-MRUVertDockCY=743
+MRUVertDockCX=204
+MRUVertDockCY=871
 PctWidth=1000000
 PrevFloating=False
 ResourceID=0
@@ -387,21 +387,20 @@ DockingStyle=61440
 ExStyle=908
 MDIChild=False
 MRUDockBottomPos=26
-MRUDockID=59419
+MRUDockID=0
 MRUDockLeftPos=-1
-MRUDockRightPos=1279
+MRUDockRightPos=1919
 MRUDockTopPos=-1
 MRUDockingState=0
-MRUFloatCX=352
-MRUFloatCY=27
+MRUFloatCX=0
+MRUFloatCY=0
 MRUFloatStyle=8196
 MRUFloatXPos=-2147483648
-MRUFloatYPos=5842720
-MRUHorzDockCX=1280
+MRUFloatYPos=5844128
+MRUHorzDockCX=1920
 MRUHorzDockCY=27
-MRUVertDockCX=76
-MRUVertDockCY=741
-MRUWidth=352
+MRUVertDockCX=0
+MRUVertDockCY=0
 PctWidth=1000000
 PrevFloating=False
 ResourceID=0
@@ -490,10 +489,65 @@ ptn_Child1=MainFrame
 ptn_Child2=ChildFrames
 
 [WorkState_v1_1.Frames.ChildFrames]
+ptn_Child1=Document-0
+ptn_Child2=Document-1
+ptn_Child3=Document-2
+ptn_Child4=Document-3
+ptn_Child5=Document-4
+
+[WorkState_v1_1.Frames.ChildFrames.Document-0]
+ptn_Child1=ViewFrame-0
+
+[WorkState_v1_1.Frames.ChildFrames.Document-0.ViewFrame-0]
+DocPathName=cracktro\cracktro.c
+DocTemplateIndex=0
+DocumentString=IDE Document
+IsActiveChildFrame=True
+WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPJOPPPPPPGBAAAAAAGBAAAAAACKFAAAAAFGCAAAAA
+
+[WorkState_v1_1.Frames.ChildFrames.Document-1]
+ptn_Child1=ViewFrame-0
+
+[WorkState_v1_1.Frames.ChildFrames.Document-1.ViewFrame-0]
+DocPathName=.\main.c
+DocTemplateIndex=0
+DocumentString=IDE Document
+IsActiveChildFrame=False
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPJOPPPPPPMCAAAAAAMCAAAAAAMLFAAAAANJCAAAAA
+
+[WorkState_v1_1.Frames.ChildFrames.Document-2]
+ptn_Child1=ViewFrame-0
+
+[WorkState_v1_1.Frames.ChildFrames.Document-2.ViewFrame-0]
+DocPathName=HLI\timer.c
+DocTemplateIndex=0
+DocumentString=IDE Document
+IsActiveChildFrame=False
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPJOPPPPPPKJAAAAAAKJAAAAAAAEGAAAAAJNCAAAAA
+
+[WorkState_v1_1.Frames.ChildFrames.Document-3]
+ptn_Child1=ViewFrame-0
+
+[WorkState_v1_1.Frames.ChildFrames.Document-3.ViewFrame-0]
+DocPathName=HLI\hyperterm.c
+DocTemplateIndex=0
+DocumentString=IDE Document
+IsActiveChildFrame=False
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPJOPPPPPPALAAAAAAALAAAAAAGFGAAAAAPOCAAAAA
+
+[WorkState_v1_1.Frames.ChildFrames.Document-4]
+ptn_Child1=ViewFrame-0
+
+[WorkState_v1_1.Frames.ChildFrames.Document-4.ViewFrame-0]
+DocPathName=HLI\hyperterm.h
+DocTemplateIndex=0
+DocumentString=IDE Document
+IsActiveChildFrame=False
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPJOPPPPPPGMAAAAAAGMAAAAAAMGGAAAAAFADAAAAA
 
 [WorkState_v1_1.Frames.MainFrame]
-Title=bongpong -- ZDS II - Z8 Encore! Family
-WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPAAAAAAAAKIAAAAAAAAFAAAAAHODAAAAA
+Title=bongpong -- ZDS II - Z8 Encore! Family -- cracktro - [cracktro]
+WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAAADIPPPPAADIPPPPPPPPPPPPPPPPPPPPHIDAAAAAMKCAAAAAAHHAAAAAJIEAAAAA
 
 [WorkState_v1_1.ToolBarMgr]
 CoolLook=True
