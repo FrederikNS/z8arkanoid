@@ -13,3 +13,19 @@ void z_buttons_init(){
 char z_buttons_read(){
 	return ~(((0x80 & PFIN)>>7)|((0x40 & PFIN)>>5)|((0x8 & PDIN)>>1));
 }
+char z_button_right(void)
+{
+	return z_buttons_read()&1;
+}
+
+char z_button_middle(void)
+{
+	return (z_buttons_read()&2)>>1;
+}
+
+char z_button_left(void)
+{
+	return (z_buttons_read()&4)>>2;
+}
+
+

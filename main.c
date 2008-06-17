@@ -1,6 +1,7 @@
 #include "API/API.h"
 #include "HLI/HLI.h"¨
 #include "cracktro/cracktro.h"
+#include "game/game.h"
 #include <ez8.h>
 
 int main(void) {
@@ -14,6 +15,9 @@ int main(void) {
 	z_buttons_init();
 	EI();
 //	cracktro();
+	z_hyperterm_formatreset();
+	z_hyperterm_goto(1,1);
+	z_hyperterm_putstring("RAOOAORRR");
 	
 	while(1) {
 //		z_ledstring_putscrollingstring("Kode saelges, kontakt 30706510   ", pos);
@@ -24,7 +28,10 @@ int main(void) {
 		if(z_buttons_read()&2) { z_ledstring_putchar('2',2); } else z_ledfb_clear_block(2);
 		if(z_buttons_read()&4) { z_ledstring_putchar('3',1); } else z_ledfb_clear_block(1);
 
-	if(autoscroll) pos++;
+		if(autoscroll) pos++;
+
+		game_mainloop();
+
 		z_timer_makebusy();
 		while(z_timer_isbusy()) z_ledfb_write();
 	}
