@@ -18,6 +18,7 @@
 <file filter-key="">HLI\hyperterm.c</file>
 <file filter-key="">HLI\led.c</file>
 <file filter-key="">math\lamemath.c</file>
+<file filter-key="">cracktro\cracktro.c</file>
 </files>
 
 <!-- configuration information -->

@@ -1,5 +1,6 @@
 #include "API.H"
 #include "../HLI/HLI.h"
+#include "../math/math.h"
 
 const char character_data[95][5];
 
@@ -18,8 +19,27 @@ void z_ledstring_putstring(char* string)
 		z_ledstring_putchar(string[len], len);
 		len++;
 	}
-	while(len < 4)  z_leds_clear_block(len++);
+	while(len < 4)  z_ledfb_clear_block(len++);
 }
+
+void z_ledstring_putscrollingstring(char* string, int position)
+{
+	int subposition, charposition, len = -1, i;
+	while(string[++len]);
+	position = z_lame_mod(position, len*5);
+	subposition = z_lame_mod(position, 5);
+	charposition = z_lame_div(position, 5);
+
+	for(i = 0; i < 20; i++) {
+		z_ledfb_set_column(i, character_data[string[charposition] - 0x20][subposition++]);
+		if(subposition==5) {
+			subposition = 0;
+			if(!string[++charposition]) charposition = 0;
+		}
+	}
+	while(i < 20) z_ledfb_set_column(i++, 0);
+}
+
 /*
 void z_ledstring_putscrolling_string(char* string, int frame) {
 

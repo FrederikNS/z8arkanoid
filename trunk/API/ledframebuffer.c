@@ -27,3 +27,9 @@ void z_ledfb_clear_dot(int x, int y)
 {
 	ledfb[x] &= ~(1<<y);
 }
+
+void z_ledfb_clear_block(int block)
+{
+	int i;
+	for(i = 0; i < 5; ledfb[block*5+i++] = 0);
+}

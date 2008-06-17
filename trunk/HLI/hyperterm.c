@@ -22,6 +22,8 @@ void z_hyperterm_putstring(char* c)
 void z_hyperterm_init(void)
 {
 	init_uart(_UART0, _DEFFREQ, _DEFBAUD);
+	z_hyperterm_formatreset();
+	z_hyperterm_hidecurser();
 }
 
 void z_hyperterm_goto(unsigned char column, unsigned char row)
@@ -105,4 +107,10 @@ void z_hyperterm_underline(void)
 	CSI();
 	PUT('4');
 	SGR_TERMINATE();
+}
+
+void z_hyperterm_hidecurser(void)
+{
+	CSI();
+	z_hyperterm_putstring("?25l");
 }
