@@ -2,13 +2,13 @@
 
 void collission(void)
 {
-	int i, collide;
+	char i, collide;
 	for(i = 0; i < BALLS_MAX; i++) {
 		if(ball_isactive(i)) {
 			//Blocks
 			collide = blocks_hit(ball_getx(i), ball_gety(i));
 			//paddle
-			if(ball_gety(i) > PADDLE_Y<<8 && ball_gety(i) < (PADDLE_Y+1)<<8) {
+			if(paddle_collission(ball_getx(i), ball_gety(i)) {
 
 			}
 			//out of border
