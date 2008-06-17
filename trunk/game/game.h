@@ -5,4 +5,6 @@
 #include "board.h"
 #include "paddle.h"
 
+void game_mainloop(void);
+
 #endif
