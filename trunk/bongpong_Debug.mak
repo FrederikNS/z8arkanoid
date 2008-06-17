@@ -50,8 +50,6 @@ clean:
             del C:\Projects\zilog\z8proj\ledstring.obj
 	@if exist C:\Projects\zilog\z8proj\ball.obj  \
             del C:\Projects\zilog\z8proj\ball.obj
-	@if exist C:\Projects\zilog\z8proj\board.obj  \
-            del C:\Projects\zilog\z8proj\board.obj
 	@if exist C:\Projects\zilog\z8proj\game.obj  \
             del C:\Projects\zilog\z8proj\game.obj
 	@if exist C:\Projects\zilog\z8proj\paddle.obj  \
@@ -72,6 +70,8 @@ clean:
             del C:\Projects\zilog\z8proj\lamemath.obj
 	@if exist C:\Projects\zilog\z8proj\cracktro.obj  \
             del C:\Projects\zilog\z8proj\cracktro.obj
+	@if exist C:\Projects\zilog\z8proj\blocks.obj  \
+            del C:\Projects\zilog\z8proj\blocks.obj
 
 rebuildall: clean Debug
 
@@ -85,7 +85,6 @@ OBJS =  \
             C:\Projects\zilog\z8proj\ledframebuffer.obj  \
             C:\Projects\zilog\z8proj\ledstring.obj  \
             C:\Projects\zilog\z8proj\ball.obj  \
-            C:\Projects\zilog\z8proj\board.obj  \
             C:\Projects\zilog\z8proj\game.obj  \
             C:\Projects\zilog\z8proj\paddle.obj  \
             C:\Projects\zilog\z8proj\sincoslut.obj  \
@@ -95,7 +94,8 @@ OBJS =  \
             C:\Projects\zilog\z8proj\hyperterm.obj  \
             C:\Projects\zilog\z8proj\led.obj  \
             C:\Projects\zilog\z8proj\lamemath.obj  \
-            C:\Projects\zilog\z8proj\cracktro.obj
+            C:\Projects\zilog\z8proj\cracktro.obj  \
+            C:\Projects\zilog\z8proj\blocks.obj
 
 bongpong: $(OBJS)
 	 $(LINK)  @C:\Projects\zilog\z8proj\bongpong_Debug.linkcmd
@@ -125,7 +125,7 @@ C:\Projects\zilog\z8proj\main.obj :  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\cracktro\cracktro.h  \
             C:\Projects\zilog\z8proj\game\ball.h  \
-            C:\Projects\zilog\z8proj\game\board.h  \
+            C:\Projects\zilog\z8proj\game\blocks.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\main.c
@@ -163,11 +163,6 @@ C:\Projects\zilog\z8proj\ball.obj :  \
             C:\Projects\zilog\z8proj\game\ball.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\ball.c
 
-C:\Projects\zilog\z8proj\board.obj :  \
-            C:\Projects\zilog\z8proj\game\board.c  \
-            C:\Projects\zilog\z8proj\game\board.h
-	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\board.c
-
 C:\Projects\zilog\z8proj\game.obj :  \
             C:\Projects\zilog\z8proj\game\game.c  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\defines.h  \
@@ -185,7 +180,7 @@ C:\Projects\zilog\z8proj\game.obj :  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\game\ball.h  \
-            C:\Projects\zilog\z8proj\game\board.h  \
+            C:\Projects\zilog\z8proj\game\blocks.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\game.c
@@ -293,4 +288,9 @@ C:\Projects\zilog\z8proj\cracktro.obj :  \
             C:\Projects\zilog\z8proj\math\sincoslut.h  \
             C:\Projects\zilog\z8proj\math\vector.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\cracktro\cracktro.c
+
+C:\Projects\zilog\z8proj\blocks.obj :  \
+            C:\Projects\zilog\z8proj\game\blocks.c  \
+            C:\Projects\zilog\z8proj\game\blocks.h
+	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\blocks.c
 

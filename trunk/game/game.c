@@ -21,7 +21,7 @@ char game_mainloop()
 	//* move balls, move paddle
 	if(z_button_right()&1) paddle_movehorizontally(1<<8);
 	if(z_button_left()&4) paddle_movehorizontally(-1<<8);
-	balls_mov();
+	balls_move();
 		
 	//* collide balls with paddle and block, remove destructable blocks
 	//  and reflect off indestructable blocks and the paddle

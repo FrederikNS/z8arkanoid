@@ -2,7 +2,8 @@
 #define __GAME_H
 
 #include "ball.h"
-#include "board.h"
+#include "collision.h"
+#include "blocks.h"
 #include "paddle.h"
 
 void game_mainloop(void);
