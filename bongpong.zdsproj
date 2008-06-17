@@ -8,7 +8,6 @@
 <file filter-key="">API\ledframebuffer.c</file>
 <file filter-key="">API\ledstring.c</file>
 <file filter-key="">game\ball.c</file>
-<file filter-key="">game\board.c</file>
 <file filter-key="">game\game.c</file>
 <file filter-key="">game\paddle.c</file>
 <file filter-key="">math\sincoslut.c</file>
@@ -19,6 +18,7 @@
 <file filter-key="">HLI\led.c</file>
 <file filter-key="">math\lamemath.c</file>
 <file filter-key="">cracktro\cracktro.c</file>
+<file filter-key="">game\blocks.c</file>
 </files>
 
 <!-- configuration information -->

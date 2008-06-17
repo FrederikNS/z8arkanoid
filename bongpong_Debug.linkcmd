@@ -67,7 +67,6 @@ define __user_frequency = 18432000
  .\ledframebuffer.obj, \
  .\ledstring.obj, \
  .\ball.obj, \
- .\board.obj, \
  .\game.obj, \
  .\paddle.obj, \
  .\sincoslut.obj, \
@@ -78,6 +77,7 @@ define __user_frequency = 18432000
  .\led.obj, \
  .\lamemath.obj, \
  .\cracktro.obj, \
+ .\blocks.obj, \
  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\crtrevaaLDD.lib, \
  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\fpdumyL.obj, \
  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\zslLYD.lib
