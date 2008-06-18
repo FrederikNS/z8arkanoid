@@ -120,3 +120,24 @@ void balls_move(void)
 		balls[i].y += balls[i].yv;
 	}
 }
+
+// |cos -sin|   | x |
+// |sin  cos| * | y |
+
+//Directions:
+//1: Vertical
+//2: Horizontal
+
+void ball_collide(int i, char direction, int anglescale)
+{
+	ball* b = balls[i];
+	if(direction == 1) {
+		b->y -= b->y;
+	}
+	else {
+		b->x -= b->x;
+	}
+}
+
+
+

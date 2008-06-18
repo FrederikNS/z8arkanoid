@@ -20,8 +20,9 @@ char block_coords_in_area(int x, int y)
 //local function
 unsigned char* block_on(int x, int y) 
 {
-	x >>= 8; //fixed point coords
-	y >>= 8;
+	//uncomment next 2 lines for fixed point coords
+	//x >>= 8;
+	//y >>= 8;
 	x -= 1; //1 character gap between blocks and walls
 	y -= 1; 
 	if(block_coords_in_area(x, y))
