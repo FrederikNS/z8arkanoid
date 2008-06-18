@@ -3,24 +3,28 @@
 
 #define BALLS_MAX 8
 
-void ball_spawnnew(char x, char y, int xv, int yv);
-void ball_spawnnew_random_upwards(char x, char y);
+void balls_init(void);
+
+void ball_spawnnew(int x, int y, int xv, int yv);
+void ball_spawnnew_random_upwards(int x, int y);
 void ball_split(void);
 
 char ball_isactive(char i);
 char ball_amount();
 
-char ball_getx(int i);
-char ball_gety(int i);
-char ball_setx(char i, int x);
-char ball_sety(char i, int y);
+int ball_getx(int i);
+int ball_gety(int i);
+void ball_setx(char i, int x);
+void ball_sety(char i, int y);
 
-char ball_getxv(int i);
-char ball_getyv(int i);
-char ball_setxv(char i, int xv);
-char ball_setyv(char i, int yv);
-char ball_scalevelocity(char i, int scale);
+int ball_getxv(int i);
+int ball_getyv(int i);
+void ball_setxv(char i, int xv);
+void ball_setyv(char i, int yv);
+void ball_scalevelocity(char i, int scale);
 
-void balls_move(void);
+//void balls_move(void);
+void balls_move_and_collide(void);
+void balls_draw(void);
 
 #endif
