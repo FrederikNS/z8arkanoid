@@ -12,8 +12,8 @@ int main(void) {
 	EI();
 	draw_gameboard();
 	while(1) {
-//		game_mainloop();
-//		z_timer_makebusy();
-//		while(z_timer_isbusy()) z_ledfb_write();
+		game_mainloop();
+		z_timer_makebusy();
+		while(z_timer_isbusy()) z_ledfb_write();
 	}
 }
