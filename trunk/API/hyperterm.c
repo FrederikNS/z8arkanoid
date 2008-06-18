@@ -21,7 +21,7 @@ void z_hyperterm_putstring(char* c)
 
 void z_hyperterm_init(void)
 {
-	init_uart(_UART0, _DEFFREQ, _DEFBAUD);
+	init_uart(_UART0, _DEFFREQ, _DEFBAUD*2);
 	z_hyperterm_formatreset();
 	z_hyperterm_hidecurser();
 }

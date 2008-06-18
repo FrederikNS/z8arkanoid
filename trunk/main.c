@@ -11,6 +11,7 @@ int main(void) {
 	z_buttons_init();
 	EI();
 
+	z_hyperterm_putstring("Test - test - test");
 	while(1) {
 		game_mainloop();
 		z_timer_makebusy();
