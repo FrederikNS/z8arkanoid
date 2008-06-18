@@ -62,8 +62,6 @@ clean:
             del C:\Projects\zilog\z8proj\timer.obj
 	@if exist C:\Projects\zilog\z8proj\button.obj  \
             del C:\Projects\zilog\z8proj\button.obj
-	@if exist C:\Projects\zilog\z8proj\hyperterm.obj  \
-            del C:\Projects\zilog\z8proj\hyperterm.obj
 	@if exist C:\Projects\zilog\z8proj\led.obj  \
             del C:\Projects\zilog\z8proj\led.obj
 	@if exist C:\Projects\zilog\z8proj\lamemath.obj  \
@@ -74,6 +72,8 @@ clean:
             del C:\Projects\zilog\z8proj\blocks.obj
 	@if exist C:\Projects\zilog\z8proj\collision.obj  \
             del C:\Projects\zilog\z8proj\collision.obj
+	@if exist C:\Projects\zilog\z8proj\hyperterm.obj  \
+            del C:\Projects\zilog\z8proj\hyperterm.obj
 
 rebuildall: clean Debug
 
@@ -93,12 +93,12 @@ OBJS =  \
             C:\Projects\zilog\z8proj\vector.obj  \
             C:\Projects\zilog\z8proj\timer.obj  \
             C:\Projects\zilog\z8proj\button.obj  \
-            C:\Projects\zilog\z8proj\hyperterm.obj  \
             C:\Projects\zilog\z8proj\led.obj  \
             C:\Projects\zilog\z8proj\lamemath.obj  \
             C:\Projects\zilog\z8proj\cracktro.obj  \
             C:\Projects\zilog\z8proj\blocks.obj  \
-            C:\Projects\zilog\z8proj\collision.obj
+            C:\Projects\zilog\z8proj\collision.obj  \
+            C:\Projects\zilog\z8proj\hyperterm.obj
 
 bongpong: $(OBJS)
 	 $(LINK)  @C:\Projects\zilog\z8proj\bongpong_Debug.linkcmd
@@ -119,17 +119,18 @@ C:\Projects\zilog\z8proj\main.obj :  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
             C:\Projects\zilog\z8proj\API\API.H  \
+            C:\Projects\zilog\z8proj\API\hyperterm.h  \
             C:\Projects\zilog\z8proj\API\ledframebuffer.h  \
             C:\Projects\zilog\z8proj\API\ledstring.h  \
             C:\Projects\zilog\z8proj\HLI\HLI.h  \
             C:\Projects\zilog\z8proj\HLI\button.h  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.h  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\game\ball.h  \
             C:\Projects\zilog\z8proj\game\blocks.h  \
             C:\Projects\zilog\z8proj\game\collision.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
+            C:\Projects\zilog\z8proj\game\gameboard.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\main.c
 
@@ -148,11 +149,11 @@ C:\Projects\zilog\z8proj\ledstring.obj :  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
             C:\Projects\zilog\z8proj\API\API.H  \
+            C:\Projects\zilog\z8proj\API\hyperterm.h  \
             C:\Projects\zilog\z8proj\API\ledframebuffer.h  \
             C:\Projects\zilog\z8proj\API\ledstring.h  \
             C:\Projects\zilog\z8proj\HLI\HLI.h  \
             C:\Projects\zilog\z8proj\HLI\button.h  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.h  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\math\lamemath.h  \
@@ -175,17 +176,18 @@ C:\Projects\zilog\z8proj\game.obj :  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
             C:\Projects\zilog\z8proj\API\API.H  \
+            C:\Projects\zilog\z8proj\API\hyperterm.h  \
             C:\Projects\zilog\z8proj\API\ledframebuffer.h  \
             C:\Projects\zilog\z8proj\API\ledstring.h  \
             C:\Projects\zilog\z8proj\HLI\HLI.h  \
             C:\Projects\zilog\z8proj\HLI\button.h  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.h  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\game\ball.h  \
             C:\Projects\zilog\z8proj\game\blocks.h  \
             C:\Projects\zilog\z8proj\game\collision.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
+            C:\Projects\zilog\z8proj\game\gameboard.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\game.c
 
@@ -198,11 +200,11 @@ C:\Projects\zilog\z8proj\paddle.obj :  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
             C:\Projects\zilog\z8proj\API\API.H  \
+            C:\Projects\zilog\z8proj\API\hyperterm.h  \
             C:\Projects\zilog\z8proj\API\ledframebuffer.h  \
             C:\Projects\zilog\z8proj\API\ledstring.h  \
             C:\Projects\zilog\z8proj\HLI\HLI.h  \
             C:\Projects\zilog\z8proj\HLI\button.h  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.h  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
@@ -238,21 +240,6 @@ C:\Projects\zilog\z8proj\button.obj :  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\HLI\button.c
 
-C:\Projects\zilog\z8proj\hyperterm.obj :  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.c  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\format.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\stdarg.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\stdio.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\defines.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\dmadefs.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\eZ8.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\gpio.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\sio.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
-            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.h
-	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\HLI\hyperterm.c
-
 C:\Projects\zilog\z8proj\led.obj :  \
             C:\Projects\zilog\z8proj\HLI\led.c  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\defines.h  \
@@ -280,11 +267,11 @@ C:\Projects\zilog\z8proj\cracktro.obj :  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
             C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
             C:\Projects\zilog\z8proj\API\API.H  \
+            C:\Projects\zilog\z8proj\API\hyperterm.h  \
             C:\Projects\zilog\z8proj\API\ledframebuffer.h  \
             C:\Projects\zilog\z8proj\API\ledstring.h  \
             C:\Projects\zilog\z8proj\HLI\HLI.h  \
             C:\Projects\zilog\z8proj\HLI\button.h  \
-            C:\Projects\zilog\z8proj\HLI\hyperterm.h  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\math\lamemath.h  \
@@ -304,6 +291,22 @@ C:\Projects\zilog\z8proj\collision.obj :  \
             C:\Projects\zilog\z8proj\game\blocks.h  \
             C:\Projects\zilog\z8proj\game\collision.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
+            C:\Projects\zilog\z8proj\game\gameboard.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\collision.c
+
+C:\Projects\zilog\z8proj\hyperterm.obj :  \
+            C:\Projects\zilog\z8proj\API\hyperterm.c  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\format.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\stdarg.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\std\stdio.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\defines.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\dmadefs.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\eZ8.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\gpio.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\sio.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uart.h  \
+            C:\PROGRA~1\ZiLOG\ZDSII_Z8Encore!_4.9.3\include\zilog\uartdefs.h  \
+            C:\Projects\zilog\z8proj\API\hyperterm.h
+	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\API\hyperterm.c
 
