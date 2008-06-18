@@ -21,6 +21,7 @@ void z_hyperterm_putstring(char* c)
 
 void z_hyperterm_init(void)
 {
+	//Evil double-speed. Seems to work.
 	init_uart(_UART0, _DEFFREQ, _DEFBAUD*2);
 	z_hyperterm_formatreset();
 	z_hyperterm_hidecurser();
