@@ -4,7 +4,7 @@ Copyright (C) 1999-2004 ZiLOG, Inc. All Rights Reserved
 
 LINK MAP:
 
-DATE:      Wed Jun 18 14:47:15 2008
+DATE:      Wed Jun 18 14:55:30 2008
 PROCESSOR: assembler
 FILES:     C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\startupL.obj
            .\zsldevinit.obj
@@ -12,9 +12,9 @@ FILES:     C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\startupL.obj
            .\ledframebuffer.obj
            .\ledstring.obj        .\ball.obj             .\game.obj             
            .\paddle.obj           .\sincoslut.obj        .\vector.obj           
-           .\timer.obj            .\button.obj           .\hyperterm.obj        
-           .\led.obj              .\lamemath.obj         .\cracktro.obj         
-           .\blocks.obj           .\collision.obj        
+           .\timer.obj            .\button.obj           .\led.obj              
+           .\lamemath.obj         .\cracktro.obj         .\blocks.obj           
+           .\collision.obj        .\hyperterm.obj        
            C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\crtrevaaLDD.lib
            C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\fpdumyL.obj
            C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\zslLYD.lib
@@ -85,7 +85,7 @@ define _zsl_g_clock_xdefine = 18432000
 /* Set frequency to 18432000 Hz */
 define __user_frequency = 18432000
 
-"C:\Projects\zilog\z8proj\bongpong"=  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\startupL.obj,  .\zsldevinit.obj,  .\main.obj,  .\ledframebuffer.obj,  .\ledstring.obj,  .\ball.obj,  .\game.obj,  .\paddle.obj,  .\sincoslut.obj,  .\vector.obj,  .\timer.obj,  .\button.obj,  .\hyperterm.obj,  .\led.obj,  .\lamemath.obj,  .\cracktro.obj,  .\blocks.obj,  .\collision.obj,  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\crtrevaaLDD.lib,  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\fpdumyL.obj,  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\zslLYD.lib
+"C:\Projects\zilog\z8proj\bongpong"=  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\startupL.obj,  .\zsldevinit.obj,  .\main.obj,  .\ledframebuffer.obj,  .\ledstring.obj,  .\ball.obj,  .\game.obj,  .\paddle.obj,  .\sincoslut.obj,  .\vector.obj,  .\timer.obj,  .\button.obj,  .\led.obj,  .\lamemath.obj,  .\cracktro.obj,  .\blocks.obj,  .\collision.obj,  .\hyperterm.obj,  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\crtrevaaLDD.lib,  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\std\fpdumyL.obj,  C:\Programmer\ZiLOG\ZDSII_Z8Encore!_4.9.3\lib\zilog\zslLYD.lib
 
 
 SEGMENT OVERLAYS:
@@ -125,9 +125,9 @@ __VECTORS          absolute data            C:0000      C:0037       38h
 _sputch_TEXT       normal data              C:1733      C:1761       2fh
 _uputch_TEXT       normal data              C:171A      C:1732       19h
 abs_TEXT           normal data              C:1E7C      C:1EB9       3eh
-amemath_TEXT       normal data              C:11D1      C:1246       76h
+amemath_TEXT       normal data              C:0EF5      C:0F6A       76h
 ball_TEXT          normal data              C:06D0      C:0ABD      3eeh
-blocks_TEXT        normal data              C:12FD      C:14DB      1dfh
+blocks_TEXT        normal data              C:1021      C:11FF      1dfh
 button_TEXT        normal data              C:0D40      C:0DBD       7eh
 CODE               normal data              C:0038      C:01FF      1c8h
 dstring_TEXT       normal data              C:03FB      C:06CF      2d5h
@@ -135,15 +135,15 @@ ebuffer_TEXT       normal data              C:02B3      C:03FA      148h
 FAR_DATA           * segment copy *         C:1EBA      C:22F7      43eh
 game_TEXT          normal data              C:0ABE      C:0B11       54h
 getfreq_TEXT       normal data              C:15C5      C:15DB       17h
-led_TEXT           normal data              C:109A      C:11D0      137h
-llision_TEXT       normal data              C:14DC      C:14E2        7h
+led_TEXT           normal data              C:0DBE      C:0EF4      137h
+llision_TEXT       normal data              C:1200      C:1206        7h
 main_TEXT          normal data              C:0271      C:02B2       42h
 ncoslut_TEXT       normal data              C:0C95      C:0CD3       3fh
 nt_send_TEXT       normal data              C:1B7B      C:1D4E      1d4h
 paddle_TEXT        normal data              C:0B12      C:0C94      183h
-perterm_TEXT       normal data              C:0DBE      C:1099      2dch
+perterm_TEXT       normal data              C:1207      C:14E2      2dch
 putch_TEXT         normal data              C:15DC      C:1638       5dh
-racktro_TEXT       normal data              C:1247      C:12FC       b6h
+racktro_TEXT       normal data              C:0F6B      C:1020       b6h
 reverse_TEXT       normal data              C:1D4F      C:1E23       d5h
 sio_TEXT           normal data              C:14E3      C:15C4       e2h
 startup            normal data              C:0200      C:0270       71h
@@ -183,7 +183,7 @@ Module: ..\UART\COMMON\WRITEUART0.C (Library: zslLYD.lib) Version: 1:0 02/23/200
     Segment: teuart0_TEXT                        C:1660      C:1719       bah
 
 
-Module: .\MAIN.C (File: main.obj) Version: 1:0 06/18/2008 14:46:35
+Module: .\MAIN.C (File: main.obj) Version: 1:0 06/18/2008 14:55:29
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
@@ -198,7 +198,7 @@ Module: API\LEDFRAMEBUFFER.C (File: ledframebuffer.obj) Version: 1:0 06/18/2008 
     Segment: FAR_BSS                             E:0102      E:0115       14h
 
 
-Module: API\LEDSTRING.C (File: ledstring.obj) Version: 1:0 06/18/2008 14:45:36
+Module: API\LEDSTRING.C (File: ledstring.obj) Version: 1:0 06/18/2008 14:55:29
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
@@ -336,12 +336,12 @@ Module: common\uwmul.asm (Library: crtrevaaLDD.lib) Version: 1:0 02/23/2005 13:2
     Segment: CODE                                C:013A      C:016C       33h
 
 
-Module: CRACKTRO\CRACKTRO.C (File: cracktro.obj) Version: 1:0 06/18/2008 14:45:37
+Module: CRACKTRO\CRACKTRO.C (File: cracktro.obj) Version: 1:0 06/18/2008 14:55:30
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
     Segment: FAR_DATA                            E:06E0      E:0731       52h
-    Segment: racktro_TEXT                        C:1247      C:12FC       b6h
+    Segment: racktro_TEXT                        C:0F6B      C:1020       b6h
 
 
 Module: GAME\BALL.C (File: ball.obj) Version: 1:0 06/18/2008 14:46:35
@@ -356,18 +356,18 @@ Module: GAME\BLOCKS.C (File: blocks.obj) Version: 1:0 06/18/2008 14:45:37
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: blocks_TEXT                         C:12FD      C:14DB      1dfh
+    Segment: blocks_TEXT                         C:1021      C:11FF      1dfh
     Segment: FAR_BSS                             E:0162      E:02DD      17ch
 
 
-Module: GAME\COLLISION.C (File: collision.obj) Version: 1:0 06/18/2008 14:47:15
+Module: GAME\COLLISION.C (File: collision.obj) Version: 1:0 06/18/2008 14:55:30
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: llision_TEXT                        C:14DC      C:14E2        7h
+    Segment: llision_TEXT                        C:1200      C:1206        7h
 
 
-Module: GAME\GAME.C (File: game.obj) Version: 1:0 06/18/2008 14:46:35
+Module: GAME\GAME.C (File: game.obj) Version: 1:0 06/18/2008 14:55:29
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
@@ -375,7 +375,7 @@ Module: GAME\GAME.C (File: game.obj) Version: 1:0 06/18/2008 14:46:35
     Segment: game_TEXT                           C:0ABE      C:0B11       54h
 
 
-Module: GAME\PADDLE.C (File: paddle.obj) Version: 1:0 06/18/2008 14:46:17
+Module: GAME\PADDLE.C (File: paddle.obj) Version: 1:0 06/18/2008 14:55:29
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
@@ -402,14 +402,14 @@ Module: HLI\HYPERTERM.C (File: hyperterm.obj) Version: 1:0 06/18/2008 14:45:37
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
     Segment: FAR_DATA                            E:0736      E:073A        5h
-    Segment: perterm_TEXT                        C:0DBE      C:1099      2dch
+    Segment: perterm_TEXT                        C:1207      C:14E2      2dch
 
 
 Module: HLI\LED.C (File: led.obj) Version: 1:0 06/18/2008 14:45:37
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: led_TEXT                            C:109A      C:11D0      137h
+    Segment: led_TEXT                            C:0DBE      C:0EF4      137h
 
 
 Module: HLI\TIMER.C (File: timer.obj) Version: 1:0 06/18/2008 14:45:37
@@ -425,7 +425,7 @@ Module: MATH\LAMEMATH.C (File: lamemath.obj) Version: 1:0 06/18/2008 14:45:37
 
     Name                                        Base        Top      Size
     --------------------------------------- ----------- ----------- ---------
-    Segment: amemath_TEXT                        C:11D1      C:1246       76h
+    Segment: amemath_TEXT                        C:0EF5      C:0F6A       76h
 
 
 Module: MATH\SINCOSLUT.C (File: sincoslut.obj) Version: 1:0 06/18/2008 14:45:36
@@ -568,24 +568,24 @@ _ball_spawnnew_random_upwards         C:077E BALL            ball_TEXT
 _ball_split                           C:07CB BALL            ball_TEXT                       
 _balls                                E:0116 BALL            FAR_BSS                         
 _balls_move                           C:09EB BALL            ball_TEXT                       
-_block_coords_in_area                 C:1322 BLOCKS          blocks_TEXT                     
-_block_hit                            C:149A BLOCKS          blocks_TEXT                     
-_block_on                             C:136B BLOCKS          blocks_TEXT                     
-_block_setvalue                       C:140B BLOCKS          blocks_TEXT                     
-_block_value_on                       C:13DC BLOCKS          blocks_TEXT                     
+_block_coords_in_area                 C:1046 BLOCKS          blocks_TEXT                     
+_block_hit                            C:11BE BLOCKS          blocks_TEXT                     
+_block_on                             C:108F BLOCKS          blocks_TEXT                     
+_block_setvalue                       C:112F BLOCKS          blocks_TEXT                     
+_block_value_on                       C:1100 BLOCKS          blocks_TEXT                     
 _blocks                               E:0162 BLOCKS          FAR_BSS                         
-_blocks_clear                         C:12FD BLOCKS          blocks_TEXT                     
+_blocks_clear                         C:1021 BLOCKS          blocks_TEXT                     
 _c_startup                            C:0200 startupl        startup                         
 _ceil                                 C:003A fpdumyl         CODE                            
 _character_data                       E:0303 LEDSTRING       FAR_DATA                        
 _close_periphdevice                   C:0039 zsldevinit      CODE                            
-_collission                           C:14DC COLLISION       llision_TEXT                    
+_collission                           C:1200 COLLISION       llision_TEXT                    
 _cosh                                 C:003A fpdumyl         CODE                            
-_cracktro                             C:12EE CRACKTRO        racktro_TEXT                    
-_cracktro_drawrainbow                 C:124E CRACKTRO        racktro_TEXT                    
-_cracktro_init                        C:1247 CRACKTRO        racktro_TEXT                    
-_cracktro_mainloop                    C:12D5 CRACKTRO        racktro_TEXT                    
-_destroy_block                        C:1468 BLOCKS          blocks_TEXT                     
+_cracktro                             C:1012 CRACKTRO        racktro_TEXT                    
+_cracktro_drawrainbow                 C:0F72 CRACKTRO        racktro_TEXT                    
+_cracktro_init                        C:0F6B CRACKTRO        racktro_TEXT                    
+_cracktro_mainloop                    C:0FF9 CRACKTRO        racktro_TEXT                    
+_destroy_block                        C:118C BLOCKS          blocks_TEXT                     
 _errno                                E:0100 startupl        FAR_BSS                         
 _exit                                 C:026F startupl        startup                         
 _exp                                  C:003A fpdumyl         CODE                            
@@ -649,31 +649,31 @@ _z_button_right                       C:0D91 BUTTON          button_TEXT
 _z_buttons_init                       C:0D40 BUTTON          button_TEXT                     
 _z_buttons_read                       C:0D5F BUTTON          button_TEXT                     
 _z_cos                                C:0CB3 SINCOSLUT       ncoslut_TEXT                    
-_z_hyperterm_blinkfast                C:0FC6 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_blinkslow                C:0F9B HYPERTERM       perterm_TEXT                    
-_z_hyperterm_bold                     C:0FF1 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_clear                    C:0EB2 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_formatreset              C:0EDD HYPERTERM       perterm_TEXT                    
-_z_hyperterm_goto                     C:0E47 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_hidecurser               C:1072 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_init                     C:0E05 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_italic                   C:101C HYPERTERM       perterm_TEXT                    
-_z_hyperterm_put                      C:0DBE HYPERTERM       perterm_TEXT                    
-_z_hyperterm_putstring                C:0DCF HYPERTERM       perterm_TEXT                    
-_z_hyperterm_setbgcolor               C:0F63 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_setfgcolor               C:0F08 HYPERTERM       perterm_TEXT                    
-_z_hyperterm_underline                C:1047 HYPERTERM       perterm_TEXT                    
-_z_lame_div                           C:1209 LAMEMATH        amemath_TEXT                    
-_z_lame_mod                           C:11D1 LAMEMATH        amemath_TEXT                    
+_z_hyperterm_blinkfast                C:140F HYPERTERM       perterm_TEXT                    
+_z_hyperterm_blinkslow                C:13E4 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_bold                     C:143A HYPERTERM       perterm_TEXT                    
+_z_hyperterm_clear                    C:12FB HYPERTERM       perterm_TEXT                    
+_z_hyperterm_formatreset              C:1326 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_goto                     C:1290 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_hidecurser               C:14BB HYPERTERM       perterm_TEXT                    
+_z_hyperterm_init                     C:124E HYPERTERM       perterm_TEXT                    
+_z_hyperterm_italic                   C:1465 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_put                      C:1207 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_putstring                C:1218 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_setbgcolor               C:13AC HYPERTERM       perterm_TEXT                    
+_z_hyperterm_setfgcolor               C:1351 HYPERTERM       perterm_TEXT                    
+_z_hyperterm_underline                C:1490 HYPERTERM       perterm_TEXT                    
+_z_lame_div                           C:0F2D LAMEMATH        amemath_TEXT                    
+_z_lame_mod                           C:0EF5 LAMEMATH        amemath_TEXT                    
 _z_ledfb_clear_block                  C:03BA LEDFRAMEBUFFER  ebuffer_TEXT                    
 _z_ledfb_clear_dot                    C:0382 LEDFRAMEBUFFER  ebuffer_TEXT                    
 _z_ledfb_put_dot                      C:034C LEDFRAMEBUFFER  ebuffer_TEXT                    
 _z_ledfb_set_column                   C:02B3 LEDFRAMEBUFFER  ebuffer_TEXT                    
 _z_ledfb_write                        C:02CE LEDFRAMEBUFFER  ebuffer_TEXT                    
-_z_leds_clear_all                     C:11BA LED             led_TEXT                        
-_z_leds_clear_block                   C:1172 LED             led_TEXT                        
-_z_leds_init                          C:109A LED             led_TEXT                        
-_z_leds_set_column                    C:10CF LED             led_TEXT                        
+_z_leds_clear_all                     C:0EDE LED             led_TEXT                        
+_z_leds_clear_block                   C:0E96 LED             led_TEXT                        
+_z_leds_init                          C:0DBE LED             led_TEXT                        
+_z_leds_set_column                    C:0DF3 LED             led_TEXT                        
 _z_ledstring_putchar                  C:03FB LEDSTRING       dstring_TEXT                    
 _z_ledstring_putscrollingstring       C:050F LEDSTRING       dstring_TEXT                    
 _z_ledstring_putstring                C:048C LEDSTRING       dstring_TEXT                    

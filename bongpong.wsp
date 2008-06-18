@@ -494,6 +494,7 @@ ptn_Child2=Document-1
 ptn_Child3=Document-2
 ptn_Child4=Document-3
 ptn_Child5=Document-4
+ptn_Child6=Document-5
 
 [WorkState_v1_1.Frames.ChildFrames.Document-0]
 ptn_Child1=ViewFrame-0
@@ -502,8 +503,8 @@ ptn_Child1=ViewFrame-0
 DocPathName=game\collision.c
 DocTemplateIndex=0
 DocumentString=IDE Document
-IsActiveChildFrame=False
-WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPMOPPPPPPJDAAAAAAJDAAAAAAMJDAAAAAGDCAAAAA
+IsActiveChildFrame=True
+WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPMOPPPPPPJDAAAAAAJDAAAAAAMJDAAAAAGDCAAAAA
 
 [WorkState_v1_1.Frames.ChildFrames.Document-1]
 ptn_Child1=ViewFrame-0
@@ -542,12 +543,22 @@ ptn_Child1=ViewFrame-0
 DocPathName=GAME\PADDLE.C
 DocTemplateIndex=0
 DocumentString=IDE Document
-IsActiveChildFrame=True
-WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPMOPPPPPPFIAAAAAAFIAAAAAAJNDAAAAADHCAAAAA
+IsActiveChildFrame=False
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPMOPPPPPPFIAAAAAAFIAAAAAAJNDAAAAADHCAAAAA
+
+[WorkState_v1_1.Frames.ChildFrames.Document-5]
+ptn_Child1=ViewFrame-0
+
+[WorkState_v1_1.Frames.ChildFrames.Document-5.ViewFrame-0]
+DocPathName=game\ball.h
+DocTemplateIndex=0
+DocumentString=IDE Document
+IsActiveChildFrame=False
+WindowPlacement=MCAAAAAAAAAAAAAABAAAAAAAPPPPPPPPPPPPPPPPMPPPPPPPMOPPPPPPIJAAAAAAIJAAAAAAMODAAAAAGICAAAAA
 
 [WorkState_v1_1.Frames.MainFrame]
-Title=bongpong -- ZDS II - Z8 Encore! Family -- PADDLE.C - [PADDLE.C]
-WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPHIDAAAAAMKCAAAAAAHHAAAAAJIEAAAAA
+Title=bongpong -- ZDS II - Z8 Encore! Family -- collision.c - [collision.c]
+WindowPlacement=MCAAAAAACAAAAAAADAAAAAAAAADIPPPPAADIPPPPPPPPPPPPPPPPPPPPHIDAAAAAMKCAAAAAAHHAAAAAJIEAAAAA
 
 [WorkState_v1_1.ToolBarMgr]
 CoolLook=True
