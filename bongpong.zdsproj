@@ -19,6 +19,7 @@
 <file filter-key="">math\lamemath.c</file>
 <file filter-key="">cracktro\cracktro.c</file>
 <file filter-key="">game\blocks.c</file>
+<file filter-key="">game\collision.c</file>
 </files>
 
 <!-- configuration information -->

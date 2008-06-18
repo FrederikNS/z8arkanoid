@@ -52,7 +52,7 @@ void paddle_draw(void)
 
 char paddle_collission(int x, int y)
 {
-	if(y > PADDLE_Y<<8 && y < (PADDLE_Y+1)<<8 && x > paddle.x && x < paddle.x + width<<8)
+	if(y > PADDLE_Y<<8 && y < (PADDLE_Y+1)<<8 && x > paddle.x && x < paddle.x + paddle.width<<8)
 		return 1;
 	return 0;
 }

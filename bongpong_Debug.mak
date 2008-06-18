@@ -72,6 +72,8 @@ clean:
             del C:\Projects\zilog\z8proj\cracktro.obj
 	@if exist C:\Projects\zilog\z8proj\blocks.obj  \
             del C:\Projects\zilog\z8proj\blocks.obj
+	@if exist C:\Projects\zilog\z8proj\collision.obj  \
+            del C:\Projects\zilog\z8proj\collision.obj
 
 rebuildall: clean Debug
 
@@ -95,7 +97,8 @@ OBJS =  \
             C:\Projects\zilog\z8proj\led.obj  \
             C:\Projects\zilog\z8proj\lamemath.obj  \
             C:\Projects\zilog\z8proj\cracktro.obj  \
-            C:\Projects\zilog\z8proj\blocks.obj
+            C:\Projects\zilog\z8proj\blocks.obj  \
+            C:\Projects\zilog\z8proj\collision.obj
 
 bongpong: $(OBJS)
 	 $(LINK)  @C:\Projects\zilog\z8proj\bongpong_Debug.linkcmd
@@ -123,9 +126,9 @@ C:\Projects\zilog\z8proj\main.obj :  \
             C:\Projects\zilog\z8proj\HLI\hyperterm.h  \
             C:\Projects\zilog\z8proj\HLI\led.h  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
-            C:\Projects\zilog\z8proj\cracktro\cracktro.h  \
             C:\Projects\zilog\z8proj\game\ball.h  \
             C:\Projects\zilog\z8proj\game\blocks.h  \
+            C:\Projects\zilog\z8proj\game\collision.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\main.c
@@ -181,6 +184,7 @@ C:\Projects\zilog\z8proj\game.obj :  \
             C:\Projects\zilog\z8proj\HLI\timer.h  \
             C:\Projects\zilog\z8proj\game\ball.h  \
             C:\Projects\zilog\z8proj\game\blocks.h  \
+            C:\Projects\zilog\z8proj\game\collision.h  \
             C:\Projects\zilog\z8proj\game\game.h  \
             C:\Projects\zilog\z8proj\game\paddle.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\game.c
@@ -293,4 +297,13 @@ C:\Projects\zilog\z8proj\blocks.obj :  \
             C:\Projects\zilog\z8proj\game\blocks.c  \
             C:\Projects\zilog\z8proj\game\blocks.h
 	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\blocks.c
+
+C:\Projects\zilog\z8proj\collision.obj :  \
+            C:\Projects\zilog\z8proj\game\collision.c  \
+            C:\Projects\zilog\z8proj\game\ball.h  \
+            C:\Projects\zilog\z8proj\game\blocks.h  \
+            C:\Projects\zilog\z8proj\game\collision.h  \
+            C:\Projects\zilog\z8proj\game\game.h  \
+            C:\Projects\zilog\z8proj\game\paddle.h
+	 $(CC)  $(CFLAGS) C:\Projects\zilog\z8proj\game\collision.c
 
