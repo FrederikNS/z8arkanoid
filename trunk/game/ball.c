@@ -1,6 +1,5 @@
 #include "ball.h"
 
-#define BALLS_MAX 8
 #define START_SPEED (1<<8)
 
 typedef struct{
@@ -130,7 +129,7 @@ void balls_move(void)
 
 void ball_collide(int i, char direction, int anglescale)
 {
-	ball* b = balls[i];
+	ball* b = &balls[i];
 	if(direction == 1) {
 		b->y -= b->y;
 	}

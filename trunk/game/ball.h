@@ -1,6 +1,8 @@
 #ifndef __BALL_H
 #define __BALL_H
 
+#define BALLS_MAX 8
+
 void ball_spawnnew(char x, char y, int xv, int yv);
 void ball_spawnnew_random_upwards(char x, char y);
 void ball_split(void);
