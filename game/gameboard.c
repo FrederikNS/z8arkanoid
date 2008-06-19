@@ -1,8 +1,9 @@
 #include "gameboard.h"
 #include "../API/API.h"
+#include <sio.h>
 #define term_goto(line,column) z_hyperterm_goto(column,line)
 /*
- *This class is dedicated to draw the initial gameboard. 
+ *This class is dedicated to draw the initial gameboard and highscore list. 
  *It is after the initiation not to be changed.
  *The rest happens in the blank space.
  *The gameboard is drawn using ASCII art, putting the small pieces together as a frame.
@@ -11,6 +12,12 @@
  *Game area size is: 64x21
  *Game area starts at column 3, ends in column 66. No further.
  *It spans from line 3 to 23. No further.
+ *
+ *The highscore size is 28x20
+ *The name entering area starts from column 27, line 6, and goes 14 lines down to line 20.
+ *The name entering area supports five characters, no more.
+ *The score area begins at column 37, line 6 and likewise goes 14 lines down to line 20.
+ *The score area supports 9 digits, no more.
  *
  *The scoreboard in the right side:
  *Lives count starts at column 69 and ends in column 79. No further.
@@ -25,7 +32,7 @@
 
 
 void gameboard_draw(void) {
-	int i = 0;
+	int i;
 //First line:
 	//ReflexBall text
 	term_goto(1,30); z_hyperterm_putstring("ReflexBall");
@@ -36,19 +43,17 @@ void gameboard_draw(void) {
 	//Rightwards Splitter
 	term_goto(1,40); z_hyperterm_put(0xCC);
 	//Straight line piece
-	for(i; i<=26; i++) {
+	for(i=0; i<=26; i++) {
 		term_goto(1,2+i);
 		z_hyperterm_put(0xCD);
 	}
-	i=0;
-	for(i; i<=26; i++) {
+	for(i=0; i<=26; i++) {
 		term_goto(1,41+i);
 		z_hyperterm_put(0xCD);
 	}
 	term_goto(1,69); z_hyperterm_put(0xCD);
 	term_goto(1,70); z_hyperterm_put(0xCD);
-	i=0;
-	for(i;i<=4;i++){
+	for(i=0;i<=4;i++){
 		term_goto(1,72+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -64,8 +69,7 @@ void gameboard_draw(void) {
 	//Lives text
 	term_goto(2,72); z_hyperterm_putstring("LIVES");
 	//Vertical line piece
-	i=0;
-	for(i; i<=20; i++) {
+	for(i=0; i<=20; i++) {
 		term_goto(2+i,1);
 		z_hyperterm_put(0xBA);
 	}
@@ -80,18 +84,15 @@ void gameboard_draw(void) {
 	//Right top corner
 	term_goto(2,67); z_hyperterm_put(0xBB);
 	//Straight line piece
-	i=0;
-	for(i; i<=25; i++) {
+	for(i=0; i<=25; i++) {
 		term_goto(2,3+i);
 		z_hyperterm_put(0xCD);
 	}
-	i=0;
-	for(i; i<=9; i++) {
+	for(i=0; i<=9; i++) {
 		term_goto(2,30+i);
 		z_hyperterm_put(0xCD);
 	}
-	i=0;
-	for(i; i<=25; i++) {
+	for(i=0; i<=25; i++) {
 		term_goto(2,41+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -104,21 +105,18 @@ void gameboard_draw(void) {
 	term_goto(2,80); z_hyperterm_put(0xB9);
 //Third Line:
 	//Vertical line piece
-	i=0;
-	for(i; i<=19; i++) {
+	for(i=0; i<=19; i++) {
 		term_goto(3+i,2);
 		z_hyperterm_put(0xBA);
 	}
-	i=0;
-	for(i; i<=19; i++) {
+	for(i=0; i<=19; i++) {
 		term_goto(3+i,67);
 		z_hyperterm_put(0xBA);
 	}
 	//Straight line piece
 	term_goto(3,69); z_hyperterm_put(0xCD);
 	term_goto(3,70); z_hyperterm_put(0xCD);
-	i=0;
-	for(i;i<=4;i++){
+	for(i=0;i<=4;i++){
 		term_goto(3,72+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -133,13 +131,11 @@ void gameboard_draw(void) {
 	term_goto(3,80); z_hyperterm_put(0xB9);
 //Fourth Line:
 	//Vertical line piece
-	i=0;
-	for(i; i<=2; i++) {
+	for(i=0; i<=2; i++) {
 		term_goto(4+i,68);
 		z_hyperterm_put(0xBA);
 	}
-	i=0;
-	for(i; i<=2; i++) {
+	for(i=0; i<=2; i++) {
 		term_goto(4+i,80);
 		z_hyperterm_put(0xBA);
 	}
@@ -152,8 +148,7 @@ void gameboard_draw(void) {
 	//Straight line piece
 	term_goto(7,69); z_hyperterm_put(0xCD);
 	term_goto(7,70); z_hyperterm_put(0xCD);
-	i=0;
-	for(i;i<=4;i++){
+	for(i=0;i<=4;i++){
 		term_goto(7,72+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -181,8 +176,7 @@ void gameboard_draw(void) {
 	//Straight line piece
 	term_goto(9,69); z_hyperterm_put(0xCD);
 	term_goto(9,70); z_hyperterm_put(0xCD);
-	i=0;
-	for(i;i<=4;i++){
+	for(i=0;i<=4;i++){
 		term_goto(9,72+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -195,13 +189,11 @@ void gameboard_draw(void) {
 	term_goto(9,80); z_hyperterm_put(0xB9);
 //Tenth Line:
 	//Vertical line piece
-	i=0;
-	for(i; i<=2; i++) {
+	for(i=0; i<=2; i++) {
 		term_goto(10+i,68);
 		z_hyperterm_put(0xBA);
 	}
-	i=0;
-	for(i; i<=2; i++) {
+	for(i=0; i<=2; i++) {
 		term_goto(10+i,80);
 		z_hyperterm_put(0xBA);
 	}
@@ -216,8 +208,7 @@ void gameboard_draw(void) {
 	//Straight line piece
 	term_goto(13,69); z_hyperterm_put(0xCD);
 	term_goto(13,70); z_hyperterm_put(0xCD);
-	i=0;
-	for(i;i<=4;i++){
+	for(i=0;i<=4;i++){
 		term_goto(13,72+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -245,8 +236,7 @@ void gameboard_draw(void) {
 	//Straight line piece
 	term_goto(15,69); z_hyperterm_put(0xCD);
 	term_goto(15,70); z_hyperterm_put(0xCD);
-	i=0;
-	for(i;i<=4;i++){
+	for(i=0;i<=4;i++){
 		term_goto(15,72+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -259,20 +249,17 @@ void gameboard_draw(void) {
 	term_goto(15,80); z_hyperterm_put(0xB9);
 //Sixteenth Line:
 	//Vertical line piece
-	i=0;
-	for(i; i<=2; i++) {
+	for(i=0; i<=2; i++) {
 		term_goto(16+i,68);
 		z_hyperterm_put(0xBA);
 	}
-	i=0;
-	for(i; i<=2; i++) {
+	for(i=0; i<=2; i++) {
 		term_goto(16+i,80);
 		z_hyperterm_put(0xBA);
 	}
 //Nineteenth Line:
 	//Straight line piece
-	i=0;
-	for(i; i<=10; i++) {
+	for(i=0; i<=10; i++) {
 		term_goto(19,69+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -281,8 +268,7 @@ void gameboard_draw(void) {
 	//Leftwards Splitter
 	term_goto(19,80); z_hyperterm_put(0xB9);
 //Twentieth Line:
-	i=0;
-	for(i; i<=2;i++){
+	for(i=0; i<=2;i++){
 		term_goto(20+i,80);
 		z_hyperterm_put(0xBA);
 	}
@@ -293,8 +279,7 @@ void gameboard_draw(void) {
 	term_goto(23,1); z_hyperterm_put(0xC8);
 	term_goto(23,67); z_hyperterm_put(0xC8);
 	//Straight line piece
-	i=0;
-	for(i; i<=11; i++) {
+	for(i=0; i<=11; i++) {
 		term_goto(23,68+i);
 		z_hyperterm_put(0xCD);
 	}
@@ -303,5 +288,75 @@ void gameboard_draw(void) {
 	term_goto(23,80); z_hyperterm_put(0xBC);
 }
 
-
-
+void gameboard_draw_highscore(void) {
+	int i;
+	z_hyperterm_clear();
+	gameboard_draw();
+//First line highscore
+	//Printing the left directed arrows
+	for(i=0;i<=9;i++){
+		term_goto(3,21+i);
+		z_hyperterm_put(0xAE);
+	}
+	//Printing "HIGHSCORE"
+	term_goto(3,30); z_hyperterm_putstring("HIGHSCORE");
+	//Printing the right directed arrows
+	for(i=0;i<=10;i++){
+		term_goto(3,39+i);
+		z_hyperterm_put(0xAF);
+	}
+//Fourth line highscore
+	//Drawing "NAME"
+	term_goto(4,27); z_hyperterm_putstring("NAME");
+	//Drawing "SCORE"
+	term_goto(4,37); z_hyperterm_putstring("SCORE");
+//Twentythird line highscore
+	//Drawing the left directed arrows
+	for(i=0;i<=11;i++){
+		term_goto(23,21+i);
+		z_hyperterm_put(0xAE);
+	}
+	//Drawing "TOP15"
+	term_goto(23,32); z_hyperterm_putstring("TOP15");
+	//Drawing the right directed arrows
+	for(i=0;i<=12;i++){
+		term_goto(23,37+i);
+		z_hyperterm_put(0xAF);
+	}
+//21sh COLUMN highscore
+	//Drawing the pyramids
+	for(i=0;i<=18;i++){
+		term_goto(4+i,21);
+		z_hyperterm_put(0x7F);
+	}
+//22nd COLUMN highscore
+	//Drawing the position numbers
+	for(i=1;i<=5;i++){
+		term_goto(15+i,22);
+		printf("%d", i);
+	}
+//23rd COLUMN highscore
+	//Drawing the position numbers
+	for(i=0;i<=15;i++){
+		term_goto(6+i,17);
+		if(i<10){
+			printf("%d",i);
+		}
+		else {
+			printf("%d",i-10);
+		}
+		z_hyperterm_put('.');
+	}
+//34th COLUMN highscore
+	//Drawing the pyramids
+	for(i=0;i<=18;i++){
+		term_goto(4+i,34);
+		z_hyperterm_put(0x7F);
+	}
+//48th COLUMN highscore
+	//Drawing the pyramids
+	for(i=0;i<=18;i++){
+		term_goto(4+i,48);
+		z_hyperterm_put(0x7F);
+	}
+}
