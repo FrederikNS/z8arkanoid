@@ -2,7 +2,7 @@
 
 //Does not work, fuckings to the precompiler
 //unsigned char board[BOARD_WIDTH*BOARD_HEIGHT*2/8];
-unsigned char blocks[380];
+unsigned char blocks[320];
 
 void blocks_clear(void) {
 	int i;
@@ -23,8 +23,8 @@ unsigned char* block_on(int x, int y)
 	//uncomment next 2 lines for fixed point coords
 	//x >>= 8;
 	//y >>= 8;
-	x -= 1; //1 character gap between blocks and walls
-	y -= 1; 
+	//x -= 1; //1 character gap between blocks and walls
+	//y -= 1; 
 	if(block_coords_in_area(x, y))
 		return &blocks[BLOCKS_WIDTH*y + x];
 

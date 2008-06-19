@@ -164,8 +164,8 @@ void ball_collide(int i, char direction, int anglescale)
 
 void balls_move_and_collide(void)
 {
-	char i, dir, xdir, ydir, movdir;
-	int dx, dy, xv_left, yv_left, fail;
+	signed char i, dir, xdir, ydir, movdir, collided;
+	signed int dx, dy, xv_left, yv_left, fail;
 	for(i = 0; i < BALLS_MAX; i++) {
 		ball* b = &balls[i];
 		if(b->active) {
@@ -175,17 +175,17 @@ void balls_move_and_collide(void)
 			xdir = LEFT;
 			ydir = UP;
 
-			dx = b->x & 0xFF;
-			dy = b->y & 0xFF;
+			dx = (b->x & 0xFF)+1;
+			dy = (b->y & 0xFF)+1;
 
 			if(b->xv > 0) {
 				xdir = RIGHT;
-				dx = 0xFF - dx;
+				dx = (0xFF- dx)+2;
 			}
 
 			if(b->yv > 0) {
 				ydir = DOWN;
-				dy = 0xFF - dy;
+				dy = (0xFF - dy)+2;
 			}
 			fail = 0;
 			while(xv_left || yv_left)
@@ -194,38 +194,41 @@ void balls_move_and_collide(void)
 					z_hyperterm_goto(0, 3); printf("Sigh");
 				}
 
-				//if(b->xv * dy > b->yv * dx && xv_left > dx)
-				if(xv_left * dy > yv_left * dx || dy==0)
+				if(xv_left * dy > yv_left * dx || (xv_left && !yv_left))
 				{
-					if(block_hit((b->x>>8)+((xdir*dx)>>8), b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir > 20<<8)
+					if(xv_left < dx)
 					{
+						z_hyperterm_goto(10, 10); z_hyperterm_putstring("xneg   ");
+						b->x += xv_left * xdir;
+						xv_left = 0;
+						dx -= xv_left;
+					}
+					else if(block_hit((b->x>>8)+((xdir*dx)>>8), b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= 64<<8)
+					{
+						z_hyperterm_goto(10, 9); z_hyperterm_putstring("xmaj bh");
 						b->xv = -b->xv;
-						if(b->x < 0) b->x = 0;
-						if(b->x >= 20<<8) b->x = (20<<8) - 1;
 						break;
 					}
 					else {
+						z_hyperterm_goto(10, 11); z_hyperterm_putstring("xmaj nb");
 						b->x += dx * xdir;
 						xv_left -= dx;
 						dx = 0x100;
 					}
 				}
-				if(xv_left < dx)
-				{
-					b->x += xv_left * xdir;
-					xv_left = 0;
-				}
 
 				//notice the <= instead of <
-
-				//if(b->xv * dy <= b->yv * dx && yv_left > dy)
-				if(xv_left * dy <= yv_left * dx || dx==0)
+				else if(xv_left * dy <= yv_left * dx || (!xv_left && yv_left))
 				{
-					if(block_hit(b->x>>8, (b->y>>8)+((ydir*dy)>>8)) || b->y + dy * ydir < 0 || b->y + dy * ydir > 15<<8)
+					if(yv_left < dy)
+					{
+						b->y += yv_left * ydir;
+						yv_left = 0;
+						dy -= yv_left;
+					}
+					if(block_hit(b->x>>8, (b->y>>8)+((ydir*dy)>>8)) || b->y + dy * ydir < 0 || b->y + dy * ydir >= 21<<8)
 					{
 						b->yv = -b->yv;
-						if(b->y < 0) b->y = 0;
-						if(b->y >= 15<<8) b->y = (15<<8) - 1;
 						break;
 					}
 					else {
@@ -234,12 +237,13 @@ void balls_move_and_collide(void)
 						dy = 0x100;
 					}
 				}
-				if(yv_left < dy)
-				{
-					b->y += yv_left * ydir;
-					yv_left = 0;
-				}
 			}
+/*
+			if(b->x < 0) b->x = 0;
+			if(b->x >= 64<<8) b->x = (64<<8) - 1;
+			if(b->y < 0) b->y = 0;
+			if(b->y >= 21<<8) b->y = (21<<8) - 1;
+*/
 		}
 	}
 }
@@ -263,8 +267,20 @@ void balls_draw(void)
 	ball* b = balls;
 	for(i = 0; i < BALLS_MAX; i++, b++) {
 		if(b->active) {
-			z_hyperterm_goto((b->x>>8) + 5, (b->y>>8) + 5);
+			z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
 			z_hyperterm_put('O');
+		}
+	}
+}
+
+void balls_clear(void)
+{
+	int i;
+	ball* b = balls;
+	for(i = 0; i < BALLS_MAX; i++, b++) {
+		if(b->active) {
+			z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
+			z_hyperterm_put(' ');
 		}
 	}
 }

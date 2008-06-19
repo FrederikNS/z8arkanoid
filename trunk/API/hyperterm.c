@@ -54,14 +54,14 @@ void z_hyperterm_formatreset(void)
 void z_hyperterm_setfgcolor(char c)
 {
 	CSI();
-	PUT('3');
 	if(c>9)
 	{
-		PUT('1');
+		PUT('4');
 		PUT(c+'0'-10);
 	}
 	else
 	{
+		PUT('3');
 		PUT(c+'0');
 	}
 	SGR_TERMINATE();
