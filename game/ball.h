@@ -26,6 +26,7 @@ void ball_scalevelocity(char i, int scale);
 //void balls_move(void);
 void balls_move_and_collide(void);
 void balls_draw(void);
-void balls_clear(void);
+void balls_store_coords(void);
+void balls_clear_stored_coords(void);
 
 #endif
