@@ -16,9 +16,11 @@
 <file filter-key="">HLI\button.c</file>
 <file filter-key="">HLI\led.c</file>
 <file filter-key="">math\lamemath.c</file>
+<file filter-key="">cracktro\cracktro.c</file>
 <file filter-key="">game\blocks.c</file>
 <file filter-key="">game\collision.c</file>
 <file filter-key="">API\hyperterm.c</file>
+<file filter-key="">game\gameboard.c</file>
 </files>
 
 <!-- configuration information -->

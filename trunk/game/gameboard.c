@@ -24,7 +24,7 @@
  */
 
 
-void draw_gameboard(void) {
+void gameboard_draw(void) {
 	int i = 0;
 //First line:
 	//ReflexBall text
