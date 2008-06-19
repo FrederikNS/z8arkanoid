@@ -1,5 +1,6 @@
 #include "ball.h"
 #include "blocks.h"
+#include "paddle.h"
 #include "../math/math.h"
 #include "../api/hyperterm.h"
 
@@ -13,6 +14,8 @@ typedef struct{
 	int y;
 	int xv;
 	int yv;
+	int oldx;
+	int oldy;
 	char active;
 } ball;
 
@@ -59,9 +62,8 @@ void ball_spawnnew_random_upwards(int x, int y)
 	b->active = 1;
 	b->x = x<<8;
 	b->y = y<<8;
-	b->xv = rand()&0xF - 31;
-	b->yv = -rand()&0xF;
-
+	b->xv = z_cos(rand());
+	b->yv = z_sin(rand());
 }
 
 void ball_split(void)
@@ -162,88 +164,104 @@ void ball_collide(int i, char direction, int anglescale)
 #define VERT 1
 #define HORI 0
 
+#define ASSERT(x, r) if(!(x)) {z_hyperterm_goto(1,1); printf(r);while(1);}
+
 void balls_move_and_collide(void)
 {
-	signed char i, dir, xdir, ydir, movdir, collided;
+	signed char i, xdir, ydir;
 	signed int dx, dy, xv_left, yv_left, fail;
+
+	balls_store_coords();
+
 	for(i = 0; i < BALLS_MAX; i++) {
 		ball* b = &balls[i];
 		if(b->active) {
 			xv_left = ABS(b->xv);
 			yv_left = ABS(b->yv);
 
-			xdir = LEFT;
-			ydir = UP;
-
-			dx = (b->x & 0xFF)+1;
-			dy = (b->y & 0xFF)+1;
-
 			if(b->xv > 0) {
 				xdir = RIGHT;
-				dx = (0xFF- dx)+2;
+				dx = 0x100 - (b->x & 0xFF);
+			} else {
+				xdir = LEFT;
+				dx = (b->x & 0xFF)+1;
 			}
 
 			if(b->yv > 0) {
 				ydir = DOWN;
-				dy = (0xFF - dy)+2;
+				dy = 0x100 - (b->y & 0xFF);
+			} else {
+				ydir = UP;
+				dy = (b->y & 0xFF)+1;
 			}
 			fail = 0;
 			while(xv_left || yv_left)
 			{
 				if(fail++ > 100) {
-					z_hyperterm_goto(0, 3); printf("Sigh");
+					z_hyperterm_goto(0, 0); z_hyperterm_putstring(" -_-' ");
+					break;
 				}
+				/*
+				ASSERT(dx > 0, "dx < 0");
+				ASSERT(dx <= 0x100, "dx > 0x100");
+				ASSERT(dy > 0, "dy < 0");
+				ASSERT(dy <= 0x100, "dy > 0x100");
+				ASSERT(yv_left >= 0, "neg yleft");
+				ASSERT(xv_left >= 0, "neg xleft");*/
 
-				if(xv_left * dy > yv_left * dx || (xv_left && !yv_left))
+				if(xv_left * dy > yv_left * dx)
 				{
-					if(xv_left < dx)
+					if(xv_left <= dx)
 					{
-						z_hyperterm_goto(10, 10); z_hyperterm_putstring("xneg   ");
+						//z_hyperterm_goto(10, 10); z_hyperterm_putstring("xneg   ");
 						b->x += xv_left * xdir;
-						xv_left = 0;
 						dx -= xv_left;
+						xv_left = 0;
 					}
-					else if(block_hit((b->x>>8)+((xdir*dx)>>8), b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= 64<<8)
+					else if(block_hit((b->x+xdir*dx)>>8, b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= 64<<8 || paddle_collission(b->x+xdir*dx, b->y))
 					{
-						z_hyperterm_goto(10, 9); z_hyperterm_putstring("xmaj bh");
+						//z_hyperterm_goto(10, 9); z_hyperterm_putstring("xmaj bh");
 						b->xv = -b->xv;
 						break;
 					}
 					else {
-						z_hyperterm_goto(10, 11); z_hyperterm_putstring("xmaj nb");
+						//z_hyperterm_goto(10, 11); z_hyperterm_putstring("xmaj nb");
 						b->x += dx * xdir;
 						xv_left -= dx;
 						dx = 0x100;
 					}
 				}
 
-				//notice the <= instead of <
-				else if(xv_left * dy <= yv_left * dx || (!xv_left && yv_left))
+				//if(yv_left * dx > xv_left * dy)
+				else
 				{
-					if(yv_left < dy)
+					if(yv_left <= dy)
 					{
+						//z_hyperterm_goto(10, 10); z_hyperterm_putstring("yneg   ");
 						b->y += yv_left * ydir;
-						yv_left = 0;
 						dy -= yv_left;
+						yv_left = 0;
 					}
-					if(block_hit(b->x>>8, (b->y>>8)+((ydir*dy)>>8)) || b->y + dy * ydir < 0 || b->y + dy * ydir >= 21<<8)
+					else if(block_hit(b->x>>8, (b->y+ydir*dy)>>8) || b->y + dy * ydir < 0 || b->y + dy * ydir >= 21<<8 || paddle_collission(b->x, b->y+ydir*dy))
 					{
+						//z_hyperterm_goto(10, 9); z_hyperterm_putstring("ymaj bh");
 						b->yv = -b->yv;
 						break;
 					}
 					else {
+						//z_hyperterm_goto(10, 9); z_hyperterm_putstring("ymaj nb");
 						b->y += dy*ydir;
 						yv_left -= dy;
 						dy = 0x100;
 					}
 				}
 			}
-/*
+
 			if(b->x < 0) b->x = 0;
 			if(b->x >= 64<<8) b->x = (64<<8) - 1;
 			if(b->y < 0) b->y = 0;
 			if(b->y >= 21<<8) b->y = (21<<8) - 1;
-*/
+
 		}
 	}
 }
@@ -260,6 +278,18 @@ void balls_move_and_collide(void)
 	}
 }
 */
+
+void balls_store_coords(void)
+{
+	int i;
+	ball* b = balls;
+	for(i = 0; i < BALLS_MAX; i++, b++) {
+		if(b->active) {
+			b->oldx = b->x>>8;
+			b->oldy = b->y>>8;
+		}
+	}
+}
 
 void balls_draw(void)
 {
@@ -267,12 +297,17 @@ void balls_draw(void)
 	ball* b = balls;
 	for(i = 0; i < BALLS_MAX; i++, b++) {
 		if(b->active) {
-			z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
-			z_hyperterm_put('O');
+			if(b->x>>8 != b->oldx || b->y>>8 != b->oldy) {
+				z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
+				if(b->y&(1<<7)) z_hyperterm_put(220);
+				else z_hyperterm_put(223);
+				z_hyperterm_goto((b->oldx) + 3, (b->oldy) + 3);
+				z_hyperterm_put(' ');
+			}
 		}
 	}
 }
-
+/*
 void balls_clear(void)
 {
 	int i;
@@ -284,5 +319,5 @@ void balls_clear(void)
 		}
 	}
 }
-
+*/
 

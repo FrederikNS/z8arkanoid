@@ -32,27 +32,27 @@ int paddl_decreasewidth(void)
 void paddle_reset(void)
 {
 	paddle.width = PADDLE_STARTWIDTH;
-	paddle.x = 40<<8 - PADDLE_STARTWIDTH<<7; // x = center_x - width/2
+	paddle.x = 32<<8 - PADDLE_STARTWIDTH<<7; // x = center_x - width/2
 }
 
 int paddle_movehorizontally(int value)
 {
 	paddle.x += value;
 	if(paddle.x < 0) paddle.x = 0;
-	if(paddle.x>>8 + paddle.width > 78) paddle.x = (78 - paddle.width)<<8;
+	if((paddle.x>>8) + paddle.width > 64) paddle.x = (64 - paddle.width)<<8;
 }
 
 void paddle_draw(void)
 {
 	int i;
-	z_hyperterm_goto(2 + paddle.x >> 8, PADDLE_Y+1);
+	z_hyperterm_goto(2 + paddle.x >> 8, PADDLE_Y+2);
 	for(i = 0; i < paddle.width; i++)
 		z_hyperterm_put('#');
 }
 
 char paddle_collission(int x, int y)
 {
-	if(y > PADDLE_Y<<8 && y < (PADDLE_Y+1)<<8 && x > paddle.x && x < paddle.x + paddle.width<<8)
+	if(y > PADDLE_Y<<8 && y < (PADDLE_Y+1)<<8 && x > paddle.x && x < paddle.x + (paddle.width<<8))
 		return 1;
 	return 0;
 }
