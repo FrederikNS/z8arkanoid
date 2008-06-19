@@ -10,7 +10,6 @@ int main(void) {
 	z_timer_start(0x1000, 4);
 	z_buttons_init();
 	EI();
-	draw_gameboard();
 	while(1) {
 //		game_mainloop();
 //		z_timer_makebusy();
