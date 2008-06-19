@@ -1,4 +1,5 @@
 #include "blocks.h"
+#include "../API/API.h"
 
 //Does not work, fuckings to the precompiler
 //unsigned char board[BOARD_WIDTH*BOARD_HEIGHT*2/8];
