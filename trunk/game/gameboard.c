@@ -318,20 +318,26 @@ void gameboard_draw_highscore(void) {
 	term_goto(3,30); z_hyperterm_putstring("HIGHSCORE");
 	//Printing the right directed arrows, yellow
 	z_hyperterm_setfgcolor(11);
-	for(i=0;i<=10;i++){
+	for(i=0;i<=9;i++){
 		term_goto(3,39+i);
 		z_hyperterm_put(0xAF);
 	}
 //Fourth line highscore
 	//Drawing "NAME"
 	z_hyperterm_setfgcolor(9);
-	term_goto(4,27); z_hyperterm_putstring("NAME");
+	term_goto(4,26); z_hyperterm_putstring("NAME");
 	//Drawing "SCORE"
 	z_hyperterm_setfgcolor(10);
-	term_goto(4,37); z_hyperterm_putstring("SCORE");
+	term_goto(4,39); z_hyperterm_putstring("SCORE");
+//Fifth line highscore
+	//Drawing the seperator
+	z_hyperterm_setfgcolor(11);
+	for(i=0;i<=27;i++){
+		term_goto(5,21+i);
+		z_hyperterm_put(0x23);
+	}
 //Twentythird line highscore
 	//Drawing the left directed arrows, yellow
-	z_hyperterm_setfgcolor(11);
 	for(i=0;i<=11;i++){
 		term_goto(23,21+i);
 		z_hyperterm_put(0xAE);
@@ -340,26 +346,26 @@ void gameboard_draw_highscore(void) {
 	term_goto(23,32); z_hyperterm_putstring("TOP15");
 	//Drawing the right directed arrows, yellow
 	z_hyperterm_setfgcolor(11);
-	for(i=0;i<=12;i++){
+	for(i=0;i<=11;i++){
 		term_goto(23,37+i);
 		z_hyperterm_put(0xAF);
 	}
 //21sh COLUMN highscore
-	//Drawing the pyramids
-	for(i=0;i<=17;i++){
+	//Drawing the verticals
+	for(i=0;i<=18;i++){
 		term_goto(4+i,21);
-		z_hyperterm_put(0x7F);
+		z_hyperterm_put(0x23);
 	}
 //22nd COLUMN highscore
 	//Drawing the position numbers
-	for(i=1;i<=5;i++){
-		z_hyperterm_setfgcolor(i);
-		term_goto(14+i,22);
-		printf('1');
+	for(i=0;i<=5;i++){
+		z_hyperterm_setfgcolor(i+10);
+		term_goto(16+i,22);
+		z_hyperterm_put('1');
 	}
 //23rd COLUMN highscore
 	//Drawing the position numbers
-	for(i=0;i<=15;i++){
+	for(i=1;i<=15;i++){
 		z_hyperterm_setfgcolor(i);
 		term_goto(6+i,23);
 		if(i<10){
@@ -371,16 +377,16 @@ void gameboard_draw_highscore(void) {
 		z_hyperterm_put('.');
 	}
 //34th COLUMN highscore
-	//Drawing the pyramids, yellow
+	//Drawing the verticals, yellow
 	z_hyperterm_setfgcolor(11);
-	for(i=0;i<=17;i++){
+	for(i=0;i<=18;i++){
 		term_goto(4+i,34);
-		z_hyperterm_put(0x7F);
+		z_hyperterm_put(0x23);
 	}
-//48th COLUMN highscore
-	//Drawing the pyramids
-	for(i=0;i<=17;i++){
+//49th COLUMN highscore
+	//Drawing the verticals
+	for(i=0;i<=18;i++){
 		term_goto(4+i,48);
-		z_hyperterm_put(0x7F);
+		z_hyperterm_put(0x23);
 	}
 }
