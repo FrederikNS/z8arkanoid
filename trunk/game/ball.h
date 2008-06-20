@@ -1,7 +1,7 @@
 #ifndef __BALL_H
 #define __BALL_H
 
-#define BALLS_MAX 8
+#define BALLS_MAX 16
 
 void balls_init(void);
 

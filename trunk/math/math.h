@@ -15,5 +15,13 @@
 
 #define CLAMP(a, b, c) MAX(MIN(c, a), b)
 
+/*
+#define FIXED_PRECISION 4
+#define FIXED_FRAC 0xF
+
+#define I_TO_F(x) ((x)<<FIXED_PRECISION)
+#define F_TO_I(x) ((x)>>FIXED_PRECISION)
+#define FRAC(x) ((x)&FIXED_FRAC)
+*/
 #endif
 
