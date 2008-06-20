@@ -1,6 +1,7 @@
 #include "ball.h"
 #include "blocks.h"
 #include "paddle.h"
+#include "gameboard.h"
 #include "../math/math.h"
 #include "../api/hyperterm.h"
 
@@ -27,7 +28,6 @@ void balls_init(void)
 	for(i = 0; i < BALLS_MAX; i++) balls[i].active = 0;
 }
 
-//Fuckings to the compiler
 int get_inactive_ball(void)
 {
 	int i;
@@ -48,8 +48,6 @@ void ball_spawnnew(int x, int y, int xv, int yv)
 	b->y = y<<8;
 	b->xv = xv;
 	b->yv = yv;
-	//z_hyperterm_goto(5,5);
-	//printf("%d, %d, %d, %d", b->x, b->y, b->xv, b->yv);
 }
 
 void ball_spawnnew_random_upwards(int x, int y)
@@ -127,35 +125,6 @@ void ball_scalevelocity(char i, int scale)
 	balls[i].xv = (balls[i].xv * scale)>>8;
 	balls[i].yv = (balls[i].yv * scale)>>8;
 }
-/*
-void balls_move(void)
-{
-	int i;
-	//Ignore the fact that some balls are inactive since it doesn't matter.
-	for(i = 0; i < BALLS_MAX; i++) {
-		balls[i].x += balls[i].xv;
-		balls[i].y += balls[i].yv;
-	}
-}
-
-// |cos -sin|   | x |
-// |sin  cos| * | y |
-
-//Directions:
-//1: Vertical
-//2: Horizontal
-
-void ball_collide(int i, char direction, int anglescale)
-{
-	ball* b = &balls[i];
-	if(direction == 1) {
-		b->y -= b->y;
-	}
-	else {
-		b->x -= b->x;
-	}
-}
-*/
 
 #define LEFT -1
 #define RIGHT 1
@@ -169,7 +138,7 @@ void ball_collide(int i, char direction, int anglescale)
 void balls_move_and_collide(void)
 {
 	signed char i, xdir, ydir;
-	unsigned int dx, dy, xv_left, yv_left, fail;
+	unsigned int dx, dy, xv_left, yv_left;
 	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
 	balls_store_coords();
@@ -199,32 +168,11 @@ void balls_move_and_collide(void)
 				dy = (b->y & 0xFF)+1;
 			}
 
-			//failure counter - shouldn't go above 4-5 for most balls
-			fail = 0;
-
 			//While there is still travelling left on either the x or y axis, do:
 			while(xv_left || yv_left)
 			{
 				xm = xv_left * dy;
 				ym = yv_left * dx;
-
-				//If the failure counter goes over 100, we're fucked.
-				if(fail++ > 100) {
-					z_hyperterm_goto(0, 0); z_hyperterm_putstring(" -_-' ");
-					z_hyperterm_goto(1, 24); printf("    %lu, %lu    %u,%u    %u,%u            ", xm, ym, dx, dy, xv_left, yv_left);
-					break;
-				}
-
-				ASSERT(xm >= 0, "XM !!!");
-				ASSERT(ym >= 0, "YM !!!");
-
-
-				ASSERT(dx >= 0, "dx < 0");
-				ASSERT(dx <= 0x100, "dx > 0x100");
-				ASSERT(dy >= 0, "dy < 0");
-				ASSERT(dy <= 0x100, "dy > 0x100");
-				ASSERT(yv_left >= 0, "neg yleft");
-				ASSERT(xv_left >= 0, "neg xleft");
 
 				//the ball crosses the x axis before the y axis
 				if(xm > ym || !dy)
@@ -238,7 +186,7 @@ void balls_move_and_collide(void)
 						xv_left = 0;
 					}
 					//the block collides with something
-					//reverse the x-direction and break the loop
+					//move it to the edge, reverse the x-direction
 					else if(block_hit((b->x+xdir*dx)>>8, b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 /*|| paddle_collission(b->x+xdir*dx, b->y)*/)
 					{
 						b->xv = -b->xv;
@@ -246,8 +194,6 @@ void balls_move_and_collide(void)
 						xv_left -= dx-1;
 						dx = 0x100;
 						xdir = -xdir;
-						//b->xv = -b->xv;
-						//break;
 					}
 					//the block did not collide with anything.
 					//move it to the next block
@@ -257,7 +203,6 @@ void balls_move_and_collide(void)
 						dx = 0x100;
 					}
 				}
-
 				//the ball crosses the y axis before the x axis
 				else
 				{
@@ -274,9 +219,6 @@ void balls_move_and_collide(void)
 						yv_left -= dy-1;
 						dy = 0x100;
 						ydir = -ydir;
-
-						//b->yv = -b->yv;
-						//break;
 					}
 					else {
 						b->y += dy*ydir;
@@ -285,28 +227,9 @@ void balls_move_and_collide(void)
 					}
 				}
 			}
-/*
-			if(b->x < 0) b->x = 0;
-			if(b->x >= GAMEFIELD_WIDTH<<8) b->x = (GAMEFIELD_WIDTH<<8) - 1;
-			if(b->y < 0) b->y = 0;
-			if(b->y >= GAMEFIELD_HEIGHT<<8) b->y = (GAMEFIELD_HEIGHT<<8) - 1;*/
-
 		}
 	}
 }
-
-/*
-void balls_move_and_collide(void)
-{
-	int i;
-	ball* b = balls;
-	for(i = 0; i < BALLS_MAX; i++, b++) {
-		if(b->active) {
-
-		}
-	}
-}
-*/
 
 void balls_store_coords(void)
 {
@@ -336,17 +259,4 @@ void balls_draw(void)
 		}
 	}
 }
-/*
-void balls_clear(void)
-{
-	int i;
-	ball* b = balls;
-	for(i = 0; i < BALLS_MAX; i++, b++) {
-		if(b->active) {
-			z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
-			z_hyperterm_put(' ');
-		}
-	}
-}
-*/
 
