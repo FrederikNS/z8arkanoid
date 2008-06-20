@@ -13,29 +13,16 @@ run gameloop
 
 void game_init()
 {
+	int i;
 	paddle_reset();
 	balls_init();
 	z_hyperterm_formatreset();
 	z_hyperterm_setbgcolor(0);
 	z_hyperterm_clear();
 	gameboard_draw();
-
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
-	ball_spawnnew_random_upwards(10,10);
+	gameboard_draw_highscore();
+	for(i = 0; i < BALLS_MAX; i++)
+		ball_spawnnew_random_upwards(10,10);
 }
 
 char game_mainloop()
@@ -52,7 +39,7 @@ char game_mainloop()
 	if(z_button_right()) paddle_movehorizontally(1<<8);
 	if(z_button_left()) paddle_movehorizontally(-(1<<8));
 	balls_move_and_collide();
-	balls_draw();
+	//balls_draw();
 	z_hyperterm_goto(0, 0);
 //	printf("Ball 0: %d,\t %d,\t %d,\t %d. \nBall 1: %d,\t %d,\t %d,\t %d",
 //		ball_getx(0)>>8, ball_gety(0)>>8, ball_getxv(0), ball_getyv(0),
@@ -64,7 +51,7 @@ char game_mainloop()
 	//* if no balls are left, die and lose a life.
 */
 	//Draw stuff
-	paddle_draw();
+	//paddle_draw();
 
 	return 0; //The game is not done
 }
