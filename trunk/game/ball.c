@@ -215,7 +215,7 @@ void balls_move_and_collide(void)
 					break;
 				}
 
-/*				ASSERT(xm >= 0, "XM !!!");
+				ASSERT(xm >= 0, "XM !!!");
 				ASSERT(ym >= 0, "YM !!!");
 
 
@@ -224,7 +224,7 @@ void balls_move_and_collide(void)
 				ASSERT(dy >= 0, "dy < 0");
 				ASSERT(dy <= 0x100, "dy > 0x100");
 				ASSERT(yv_left >= 0, "neg yleft");
-				ASSERT(xv_left >= 0, "neg xleft");*/
+				ASSERT(xv_left >= 0, "neg xleft");
 
 				//the ball crosses the x axis before the y axis
 				if(xm > ym || !dy)
@@ -239,10 +239,15 @@ void balls_move_and_collide(void)
 					}
 					//the block collides with something
 					//reverse the x-direction and break the loop
-					else if(block_hit((b->x+xdir*dx)>>8, b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= 64<<8 || paddle_collission(b->x+xdir*dx, b->y))
+					else if(block_hit((b->x+xdir*dx)>>8, b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 /*|| paddle_collission(b->x+xdir*dx, b->y)*/)
 					{
 						b->xv = -b->xv;
-						break;
+						b->x += (dx-1)*xdir;
+						xv_left -= dx-1;
+						dx = 0x100;
+						xdir = -xdir;
+						//b->xv = -b->xv;
+						//break;
 					}
 					//the block did not collide with anything.
 					//move it to the next block
@@ -262,10 +267,16 @@ void balls_move_and_collide(void)
 						dy -= yv_left;
 						yv_left = 0;
 					}
-					else if(block_hit(b->x>>8, (b->y+ydir*dy)>>8) || b->y + dy * ydir < 0 || b->y + dy * ydir >= 21<<8 || paddle_collission(b->x, b->y+ydir*dy))
+					else if(block_hit(b->x>>8, (b->y+ydir*dy)>>8) || b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 /*|| paddle_collission(b->x, b->y+ydir*dy)*/)
 					{
 						b->yv = -b->yv;
-						break;
+						b->y += (dy-1)*ydir;
+						yv_left -= dy-1;
+						dy = 0x100;
+						ydir = -ydir;
+
+						//b->yv = -b->yv;
+						//break;
 					}
 					else {
 						b->y += dy*ydir;
@@ -274,11 +285,11 @@ void balls_move_and_collide(void)
 					}
 				}
 			}
-
+/*
 			if(b->x < 0) b->x = 0;
-			if(b->x >= 64<<8) b->x = (64<<8) - 1;
+			if(b->x >= GAMEFIELD_WIDTH<<8) b->x = (GAMEFIELD_WIDTH<<8) - 1;
 			if(b->y < 0) b->y = 0;
-			if(b->y >= 21<<8) b->y = (21<<8) - 1;
+			if(b->y >= GAMEFIELD_HEIGHT<<8) b->y = (GAMEFIELD_HEIGHT<<8) - 1;*/
 
 		}
 	}
