@@ -10,7 +10,7 @@ char block_coords_in_area(int x, int y);
 unsigned char* block_on(int x, int y);
 unsigned char block_value_on(int x, int y);
 void block_setvalue(int x, int y, int value);
-void block_draw(int x, int y);
+void block_draw(char x, char y);
 void block_draw_all(void);
 void destroy_block(int x, int y);
 char block_hit(int x, int y);

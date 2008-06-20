@@ -169,16 +169,20 @@ void ball_collide(int i, char direction, int anglescale)
 void balls_move_and_collide(void)
 {
 	signed char i, xdir, ydir;
-	signed int dx, dy, xv_left, yv_left, fail;
+	unsigned int dx, dy, xv_left, yv_left, fail;
+	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
 	balls_store_coords();
 
 	for(i = 0; i < BALLS_MAX; i++) {
 		ball* b = &balls[i];
 		if(b->active) {
+			//Calculate the distance to travel on the x and y axis.
 			xv_left = ABS(b->xv);
 			yv_left = ABS(b->yv);
 
+			//Calculate the x and y distance from the pixel to the
+			//nearest whole number (i.e, no fractional bits)
 			if(b->xv > 0) {
 				xdir = RIGHT;
 				dx = 0x100 - (b->x & 0xFF);
@@ -194,62 +198,76 @@ void balls_move_and_collide(void)
 				ydir = UP;
 				dy = (b->y & 0xFF)+1;
 			}
+
+			//failure counter - shouldn't go above 4-5 for most balls
 			fail = 0;
+
+			//While there is still travelling left on either the x or y axis, do:
 			while(xv_left || yv_left)
 			{
+				xm = xv_left * dy;
+				ym = yv_left * dx;
+
+				//If the failure counter goes over 100, we're fucked.
 				if(fail++ > 100) {
 					z_hyperterm_goto(0, 0); z_hyperterm_putstring(" -_-' ");
+					z_hyperterm_goto(1, 24); printf("    %lu, %lu    %u,%u    %u,%u            ", xm, ym, dx, dy, xv_left, yv_left);
 					break;
 				}
-				/*
-				ASSERT(dx > 0, "dx < 0");
+
+/*				ASSERT(xm >= 0, "XM !!!");
+				ASSERT(ym >= 0, "YM !!!");
+
+
+				ASSERT(dx >= 0, "dx < 0");
 				ASSERT(dx <= 0x100, "dx > 0x100");
-				ASSERT(dy > 0, "dy < 0");
+				ASSERT(dy >= 0, "dy < 0");
 				ASSERT(dy <= 0x100, "dy > 0x100");
 				ASSERT(yv_left >= 0, "neg yleft");
 				ASSERT(xv_left >= 0, "neg xleft");*/
 
-				if(xv_left * dy > yv_left * dx)
+				//the ball crosses the x axis before the y axis
+				if(xm > ym || !dy)
 				{
-					if(xv_left <= dx)
+					//the ball has so little travelling left to do that it stays inside the current block.
+					//just move it and be fone with it.
+					if(xv_left < dx)
 					{
-						//z_hyperterm_goto(10, 10); z_hyperterm_putstring("xneg   ");
 						b->x += xv_left * xdir;
 						dx -= xv_left;
 						xv_left = 0;
 					}
+					//the block collides with something
+					//reverse the x-direction and break the loop
 					else if(block_hit((b->x+xdir*dx)>>8, b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= 64<<8 || paddle_collission(b->x+xdir*dx, b->y))
 					{
-						//z_hyperterm_goto(10, 9); z_hyperterm_putstring("xmaj bh");
 						b->xv = -b->xv;
 						break;
 					}
+					//the block did not collide with anything.
+					//move it to the next block
 					else {
-						//z_hyperterm_goto(10, 11); z_hyperterm_putstring("xmaj nb");
 						b->x += dx * xdir;
 						xv_left -= dx;
 						dx = 0x100;
 					}
 				}
 
-				//if(yv_left * dx > xv_left * dy)
+				//the ball crosses the y axis before the x axis
 				else
 				{
-					if(yv_left <= dy)
+					if(yv_left < dy)
 					{
-						//z_hyperterm_goto(10, 10); z_hyperterm_putstring("yneg   ");
 						b->y += yv_left * ydir;
 						dy -= yv_left;
 						yv_left = 0;
 					}
 					else if(block_hit(b->x>>8, (b->y+ydir*dy)>>8) || b->y + dy * ydir < 0 || b->y + dy * ydir >= 21<<8 || paddle_collission(b->x, b->y+ydir*dy))
 					{
-						//z_hyperterm_goto(10, 9); z_hyperterm_putstring("ymaj bh");
 						b->yv = -b->yv;
 						break;
 					}
 					else {
-						//z_hyperterm_goto(10, 9); z_hyperterm_putstring("ymaj nb");
 						b->y += dy*ydir;
 						yv_left -= dy;
 						dy = 0x100;

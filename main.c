@@ -7,7 +7,7 @@ int main(void) {
 	DI();
 	z_leds_init();
 	z_hyperterm_init();
-	z_timer_start(0x1000, 2);
+	z_timer_start(0x100, 1);
 	z_buttons_init();
 	EI();
 	while(1) {

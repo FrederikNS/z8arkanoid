@@ -19,8 +19,17 @@ void game_init()
 	z_hyperterm_setbgcolor(0);
 	z_hyperterm_clear();
 	gameboard_draw();
-	ball_spawnnew(10, 10, -50, -50);
-	ball_spawnnew(12, 3, 70, 31);
+
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
+	ball_spawnnew_random_upwards(10,10);
 	ball_spawnnew_random_upwards(10,10);
 	ball_spawnnew_random_upwards(10,10);
 	ball_spawnnew_random_upwards(10,10);
@@ -40,8 +49,8 @@ char game_mainloop()
 
 */
 	//* move balls, move paddle
-	if(z_button_right()&1) paddle_movehorizontally(1<<8);
-	if(z_button_left()&4) paddle_movehorizontally(-1<<8);
+	if(z_button_right()) paddle_movehorizontally(1<<8);
+	if(z_button_left()) paddle_movehorizontally(-(1<<8));
 	balls_move_and_collide();
 	balls_draw();
 	z_hyperterm_goto(0, 0);
