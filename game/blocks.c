@@ -57,7 +57,7 @@ void block_setvalue(int x, int y, int value){
 //FIX
 
 void block_draw(char x, char y){
-	z_hyperterm_goto(x*2+3,y+3);
+	z_hyperterm_goto((x<<2)+3,y+3);
 	switch(block_values_on(x,y)){
 		case INVISIBLE_BLOCK:
 		case NO_BLOCK:
@@ -120,7 +120,7 @@ void block_destroy(int x, int y) {
 //2 - the block was destroyed! Bounce!
 
 char block_hit_screen_coord(int x, int y){
-	return block_hit((x-3)/2,y-3);
+	return block_hit((x-3)>>1,y-3);
 }
 
 char block_hit(int x, int y) {
