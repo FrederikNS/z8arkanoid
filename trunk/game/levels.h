@@ -7,3 +7,4 @@
  *
  */
 
+extern const char level[][BLOCKS_HEIGHT*BLOCKS_WIDTH];

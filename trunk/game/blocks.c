@@ -1,5 +1,6 @@
 #include "blocks.h"
 #include "../API/API.h"
+#include "levels.h"
 
 //Does not work, fuckings to the precompiler
 //unsigned char board[BOARD_WIDTH*BOARD_HEIGHT*2/8];
@@ -17,14 +18,20 @@ enum BLOCK_TYPES_ {
 	HARD_BLOCK_3         //8
 } BLOCK_TYPES;
 
-
-
 void blocks_clear(void) {
 	int x, y;
 	for(x=0;x<BLOCKS_WIDTH;x++){
 		for(y=0;y<BLOCKS_HEIGHT;y++){
 			block_destroy(x,y);
+			block_draw_all();
 		}
+	}
+}
+
+void blocks_load(int lvl) {
+	int i;
+	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++){
+		blocks[i] = level[lvl][i];
 	}
 }
 
