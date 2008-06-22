@@ -187,7 +187,7 @@ void balls_move_and_collide(void)
 					}
 					//the block collides with something
 					//move it to the edge, reverse the x-direction
-					else if(block_hit(b->x+xdir*dx, b->y) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || paddle_collission_fixed(b->x+xdir*dx, b->y))
+					else if(block_hit(b->x+xdir*dx, b->y) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || paddle_collision_fixed(b->x+xdir*dx, b->y))
 					{
 						b->xv = -b->xv;
 						b->x += (dx-1)*xdir;
@@ -212,7 +212,7 @@ void balls_move_and_collide(void)
 						dy -= yv_left;
 						yv_left = 0;
 					}
-					else if(block_hit_fixed(b->x, b->y+ydir*dy) || b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || paddle_collission_fixed(b->x, b->y+ydir*dy))
+					else if(block_hit_fixed(b->x, b->y+ydir*dy) || b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || paddle_collision_fixed(b->x, b->y+ydir*dy))
 					{
 						b->yv = -b->yv;
 						b->y += (dy-1)*ydir;
@@ -253,8 +253,7 @@ void balls_draw(void)
 				z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
 				if(b->y&(1<<7)) z_hyperterm_put(220);
 				else z_hyperterm_put(223);
-				z_hyperterm_goto((b->oldx) + 3, (b->oldy) + 3);
-				z_hyperterm_put(' ');
+				z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
 			}
 		}
 	}

@@ -8,6 +8,6 @@ void paddle_reset(void);
 int paddle_move(int value);
 void paddle_draw(void);
 char paddle_collision(int x, int y);
-char paddle_collision_fix(int x, int y);
+char paddle_collision_fixed(int x, int y);
 
 #endif

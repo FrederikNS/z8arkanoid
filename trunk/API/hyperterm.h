@@ -3,6 +3,9 @@
 
 void z_hyperterm_init(void);
 void z_hyperterm_put(char c);
+void z_hyperterm_put_on(char c, int x, int y);
+void z_hyperterm_clear_point(char c, int x, int y);
+void z_hyperterm_clearpoint(int x, int y);
 void z_hyperterm_putstring(char* c);
 void z_hyperterm_goto(unsigned char column, unsigned char row);
 void z_hyperterm_clear(void);

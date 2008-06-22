@@ -48,7 +48,7 @@ unsigned char* block_on(int x, int y) {
 	//x >>= 8;
 	//y >>= 8;
 	//x -= 1; //1 character gap between blocks and walls
-	//y -= 1; 
+	//y -= 1;
 	if(block_coords_in_area(x, y))
 		return &blocks[x+y*BLOCKS_WIDTH];
 	return 0;
@@ -64,46 +64,45 @@ void block_setvalue(int x, int y, int value){
 }
 
 //FIX
-
 void block_draw(char x, char y){
 	z_hyperterm_goto((x<<2)+3,y+3);
 	switch(block_value_on(x,y)){
 		case INVISIBLE_BLOCK:
 		case NO_BLOCK:
 			z_hyperterm_setfgcolor(0);
-			z_hyperterm_put(8x28);
-			z_hyperterm_put(8x28);
+			z_hyperterm_put(0x28);
+			z_hyperterm_put(0x28);
 			break;
 		case FAKE_BLOCK:
 		case REGULAR_BLOCK:
 			z_hyperterm_setfgcolor(12);
-			z_hyperterm_put(8xB2);
-			z_hyperterm_put(8xB2);
+			z_hyperterm_put(0xB2);
+			z_hyperterm_put(0xB2);
 			break;
 		case EXPLOSIVE_BLOCK:
 			z_hyperterm_setfgcolor(1);
-			z_hyperterm_put(8xCF);
-			z_hyperterm_put(8xCF);
+			z_hyperterm_put(0xCF);
+			z_hyperterm_put(0xCF);
 			break;
 		case INDESTRUCTIBLE_BLOCK:
 			z_hyperterm_setfgcolor(11);
-			z_hyperterm_put(8xDB);
-			z_hyperterm_put(8xDB);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_1:
 			z_hyperterm_setfgcolor(8);
-			z_hyperterm_put(8xDB);
-			z_hyperterm_put(8xDB);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_2:
 			z_hyperterm_setfgcolor(7);
-			z_hyperterm_put(8xDB);
-			z_hyperterm_put(8xDB);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_3:
 			z_hyperterm_setfgcolor(15);
-			z_hyperterm_put(8xDB);
-			z_hyperterm_put(8xDB);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
 			break;
 	}
 }
@@ -133,7 +132,7 @@ char block_hit_fixed(int x, int y){
 }
 
 char block_hit(int x, int y){
-	return block_hit((x-3)>>1,y-3);
+	return block_hit_coord((x-3)>>1,y-3);
 }
 
 char block_hit_coord(int x, int y) {
