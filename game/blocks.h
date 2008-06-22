@@ -13,6 +13,7 @@ void block_setvalue(int x, int y, int value);
 void block_draw(char x, char y);
 void block_draw_all(void);
 void destroy_block(int x, int y);
+char block_hit_screen_coord(int x, int y);
 char block_hit(int x, int y);
 
 #endif
