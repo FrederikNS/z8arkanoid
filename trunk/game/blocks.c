@@ -122,14 +122,14 @@ void block_destroy(int x, int y) {
 //2 - the block was destroyed! Bounce!
 
 char block_hit_fixed(int x, int y){
-return block_hit(x>>8,
+	return block_hit(x>>8,y>>8);
 }
 
-char block_hit_screen_coord(int x, int y){
+char block_hit(int x, int y){
 	return block_hit((x-3)>>1,y-3);
 }
 
-char block_hit(int x, int y) {
+char block_hit_coord(int x, int y) {
 	unsigned char* block = block_on(x, y);
 	if(!block || !*block) return 0; //Either the block is empty, or the coords are out of range, so no need for the ball to bounce off.
 	switch(block_value_on(x,y)){
@@ -138,23 +138,23 @@ char block_hit(int x, int y) {
 			block_destroy(x,y);
 			break;
 		case EXPLOSIVE_BLOCK:
-			block_hit(x-1,y-1);
+			block_hit_coord(x-1,y-1);
 			block_draw(x-1,y-1);
-			block_hit(x-1,y);
+			block_hit_coord(x-1,y);
 			block_draw(x-1,y);
-			block_hit(x-1,y+1);
+			block_hit_coord(x-1,y+1);
 			block_draw(x-1,y+1);
-			block_hit(x,y-1);
+			block_hit_coord(x,y-1);
 			block_draw(x,y-1);
 			block_destroy(x,y);
 			block_draw(x,y);
-			block_hit(x,y+1);
+			block_hit_coord(x,y+1);
 			block_draw(x,y+1);
-			block_hit(x+1,y-1);
+			block_hit_coord(x+1,y-1);
 			block_draw(x+1,y-1);
-			block_hit(x+1,y);
+			block_hit_coord(x+1,y);
 			block_draw(x+1,y);
-			block_hit(x+1,y+1);
+			block_hit_coord(x+1,y+1);
 			block_draw(x+1,y+1);
 			break;
 		case INDESTRUCTIBLE_BLOCK:
