@@ -2,6 +2,7 @@
 #include "../API/API.h"
 #include <sio.h>
 #define term_goto(line,column) z_hyperterm_goto(column,line)
+#define ESC 0x1B
 /*
  *This class is dedicated to draw the initial gameboard and highscore list. 
  *It is after the initiation not to be changed.
@@ -29,12 +30,32 @@
  *Level count starts at column 60 and ends in column 79. No further.
  *It spans from line 16 to 18. No further.
  */
+/* void fgcolor(int foreground) {
+    Value      foreground     Value     foreground
+    ------------------------------------------------
+      0        Black            8       Dark Gray
+      1        Red              9       Light Red
+      2        Green           10       Light Green
+      3        Brown           11       Yellow
+      4        Blue            12       Light Blue
+      5        Purple          13       Light Purple
+      6        Cyan            14       Light Cyan
+      7        Light Gray      15       White
+
+  int type = 22;             // normal text
+	if (foreground > 7) {
+	  type = 1;                // bold text
+		foreground -= 8;
+	}
+  printf("%c[%d;%dm", ESC, type, foreground+30);
+}*/
 
 
 void gameboard_draw(void) {
 	int i;
 //Background color, black
 	z_hyperterm_setbgcolor(0);
+	z_hyperterm_clear();
 //First line:
 	//ReflexBall text, red
 	z_hyperterm_setfgcolor(9);
@@ -287,7 +308,7 @@ void gameboard_draw(void) {
 		z_hyperterm_put(0xBA);
 	}
 //Twentysecond Line:
-	term_goto(22,72);z_hyperterm_put(0xB8);z_hyperterm_putstring("2008");
+	//term_goto(22,72);z_hyperterm_put(0xB8);z_hyperterm_putstring("2008");
 //Twentyfourth Line:
 	//Bottom Left Corner
 	term_goto(23,1); z_hyperterm_put(0xC8);
@@ -359,14 +380,14 @@ void gameboard_draw_highscore(void) {
 //22nd COLUMN highscore
 	//Drawing the position numbers
 	for(i=0;i<=5;i++){
-		z_hyperterm_setfgcolor(i+10);
+		z_hyperterm_setfgcolor(6-i);
 		term_goto(16+i,22);
 		z_hyperterm_put('1');
 	}
 //23rd COLUMN highscore
 	//Drawing the position numbers
 	for(i=1;i<=15;i++){
-		z_hyperterm_setfgcolor(i);
+		z_hyperterm_setfgcolor(16-i);
 		term_goto(6+i,23);
 		if(i<10){
 			printf("%d",i);
