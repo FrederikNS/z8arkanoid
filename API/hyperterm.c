@@ -118,3 +118,14 @@ void z_hyperterm_hidecurser(void)
 	CSI();
 	z_hyperterm_putstring("?25l");
 }
+
+void z_hyperterm_clearpoint(int x, int y)
+{
+	z_hyperterm_put_on(' ', x, y);
+}
+
+void z_hyperterm_put_on(char c, int x, int y)
+{
+	z_hyperterm_goto(x, y);
+	z_hyperterm_put(c);
+}

@@ -9,7 +9,7 @@
 #define LEFTBOUND_X = 0
 #define RIGHTBOUND_X = 64
 
-struct 
+struct
 {
 	int x;
 	int width;
@@ -63,7 +63,7 @@ int paddle_move(int value)
 void paddle_draw(void)
 {
 	int i;
-	z_hyperterm_goto(paddle.x+2, PADDLE_Y);
+	z_hyperterm_goto(paddle.x+2, PADDLE_Y+2);
 	for(i = 0; i < paddle.width; i++)
 		z_hyperterm_put('#');
 }
@@ -74,6 +74,7 @@ char paddle_collision(int x, int y)
 		return 1;
 	return 0;
 }
-char paddle_collision_fix(int x, int y){
+
+char paddle_collision_fixed(int x, int y){
 	return paddle_collision(x>>8,y>>8);
 }
