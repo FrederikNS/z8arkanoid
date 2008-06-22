@@ -2,7 +2,6 @@
 #define __GAME_H
 
 #include "ball.h"
-#include "collision.h"
 #include "blocks.h"
 #include "paddle.h"
 #include "gameboard.h"

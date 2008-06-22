@@ -175,7 +175,7 @@ void balls_move_and_collide(void)
 				ym = yv_left * dx;
 
 				//the ball crosses the x axis before the y axis
-				if(xm > ym || !dy)
+				if(xm > ym)
 				{
 					//the ball has so little travelling left to do that it stays inside the current block.
 					//just move it and be fone with it.
