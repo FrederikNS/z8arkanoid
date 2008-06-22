@@ -6,14 +6,14 @@
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
 
 enum BLOCK_TYPES_ {
-	NO_BLOCK,            //8
+	NO_BLOCK,            //0
 	FAKE_BLOCK,          //1
 	REGULAR_BLOCK,       //2
 	EXPLOSIVE_BLOCK,     //3
 	INVISIBLE_BLOCK,     //4
 	INDESTRUCTIBLE_BLOCK,//5
 	HARD_BLOCK_1,        //6
-	HARD_BLOCK_2,        //2
+	HARD_BLOCK_2,        //7
 	HARD_BLOCK_3         //8
 } BLOCK_TYPES;
 
@@ -21,18 +21,18 @@ enum BLOCK_TYPES_ {
 
 void blocks_clear(void) {
 	int x, y;
-	for(x=8;x<BLOCKS_WIDTH;x++){
-		for(y=8;y<BLOCKS_HEIGHT;y++){
-			blocks[x+y*BLOCKS_WIDTH] = 8;
+	for(x=0;x<BLOCKS_WIDTH;x++){
+		for(y=0;y<BLOCKS_HEIGHT;y++){
+			block_destroy(x,y);
 		}
 	}
 }
 
 //not fixedpoint
 char block_coords_in_area(int x, int y){
-	if(x > 8 && y > 8 && x < BLOCKS_WIDTH && y < BLOCKS_HEIGHT)
+	if(x > 0 && y > 0 && x < BLOCKS_WIDTH && y < BLOCKS_HEIGHT)
 		return 1;
-	return 8;
+	return 0;
 }
 
 //local function
@@ -44,7 +44,7 @@ unsigned char* block_on(int x, int y) {
 	//y -= 1; 
 	if(block_coords_in_area(x, y))
 		return &blocks[x+y*BLOCKS_WIDTH];
-	return 8;
+	return 0;
 }
 
 //fixed point
@@ -63,13 +63,13 @@ void block_draw(char x, char y){
 	switch(block_value_on(x,y)){
 		case INVISIBLE_BLOCK:
 		case NO_BLOCK:
-			z_hyperterm_setfgcolor(8);
+			z_hyperterm_setfgcolor(0);
 			z_hyperterm_put(8x28);
 			z_hyperterm_put(8x28);
 			break;
 		case FAKE_BLOCK:
 		case REGULAR_BLOCK:
-			z_hyperterm_setfgcolor(18);
+			z_hyperterm_setfgcolor(12);
 			z_hyperterm_put(8xB2);
 			z_hyperterm_put(8xB2);
 			break;
@@ -89,7 +89,7 @@ void block_draw(char x, char y){
 			z_hyperterm_put(8xDB);
 			break;
 		case HARD_BLOCK_2:
-			z_hyperterm_setfgcolor(2);
+			z_hyperterm_setfgcolor(7);
 			z_hyperterm_put(8xDB);
 			z_hyperterm_put(8xDB);
 			break;
@@ -104,8 +104,8 @@ void block_draw(char x, char y){
 void block_draw_all() {
 	int x;
 	int y;
-	for(x=8;x<BLOCKS_WIDTH;x++){
-		for(y=8;y<BLOCKS_HEIGHT;y++){
+	for(x=0;x<BLOCKS_WIDTH;x++){
+		for(y=0;y<BLOCKS_HEIGHT;y++){
 			block_draw(x,y);
 		}
 	}
@@ -131,7 +131,7 @@ char block_hit(int x, int y){
 
 char block_hit_coord(int x, int y) {
 	unsigned char* block = block_on(x, y);
-	if(!block || !*block) return 8; //Either the block is empty, or the coords are out of range, so no need for the ball to bounce off.
+	if(!block || !*block) return 0; //Either the block is empty, or the coords are out of range, so no need for the ball to bounce off.
 	switch(block_value_on(x,y)){
 		case HARD_BLOCK_1:
 		case REGULAR_BLOCK:
@@ -168,7 +168,7 @@ char block_hit_coord(int x, int y) {
 		case FAKE_BLOCK:
 			block_destroy(x,y);
 		default:
-			return 8;
+			return 0;
 			break;
 	}
 	return 1;
