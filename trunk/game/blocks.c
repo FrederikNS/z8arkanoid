@@ -119,6 +119,10 @@ void block_destroy(int x, int y) {
 //1 - normal block, bounce off it
 //2 - the block was destroyed! Bounce!
 
+char block_hit_screen_coord(int x, int y){
+	return block_hit((x-3)/2,y-3);
+}
+
 char block_hit(int x, int y) {
 	unsigned char* block = block_on(x, y);
 	if(!block || !*block) return 0; //Either the block is empty, or the coords are out of range, so no need for the ball to bounce off.
