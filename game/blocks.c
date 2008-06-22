@@ -128,15 +128,23 @@ char block_hit(int x, int y) {
 			break;
 		case EXPLOSIVE_BLOCK:
 			block_hit(x-1,y-1);
+			block_draw(x-1,y-1);
 			block_hit(x-1,y);
+			block_draw(x-1,y);
 			block_hit(x-1,y+1);
+			block_draw(x-1,y+1);
 			block_hit(x,y-1);
+			block_draw(x,y-1);
 			block_destroy(x,y);
+			block_draw(x,y);
 			block_hit(x,y+1);
+			block_draw(x,y+1);
 			block_hit(x+1,y-1);
+			block_draw(x+1,y-1);
 			block_hit(x+1,y);
+			block_draw(x+1,y);
 			block_hit(x+1,y+1);
-			block_set_value(x,y,NO_BLOCK);
+			block_draw(x+1,y+1);
 			break;
 		case INDESTRUCTIBLE_BLOCK:
 			break;
