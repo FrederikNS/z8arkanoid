@@ -24,7 +24,7 @@ int paddle_increasewidth(void)
 {
 	paddle.width+=2;
 	if(paddle.width > PADDLE_MAXWIDTH) paddle.width = PADDLE_MAXWIDTH;
-	if(paddle.x + paddle.width > 64+3) paddle.x = 64 - paddle.width+3;
+	if(paddle.x + paddle.width -1 > 64) paddle.x = 64 - paddle.width+1;
 }
 
 
