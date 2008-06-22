@@ -54,16 +54,19 @@ void z_hyperterm_formatreset(void)
 void z_hyperterm_setfgcolor(char c)
 {
 	CSI();
-	if(c>9)
+	if(c>7)
 	{
-		PUT('4');
-		PUT(c+'0'-10);
+		c-=8;
+		PUT('1');
+		PUT(';');
 	}
 	else
 	{
-		PUT('3');
-		PUT(c+'0');
+		PUT('22');
+		PUT(';');
 	}
+	PUT('3');
+	PUT(c+'0');
 	SGR_TERMINATE();
 }
 

@@ -138,7 +138,7 @@ void ball_scalevelocity(char i, int scale)
 void balls_move_and_collide(void)
 {
 	signed char i, xdir, ydir;
-	unsigned int dx, dy, xv_left, yv_left;
+	unsigned int dx, dy, xv_left, yv_left, tmp_dist;
 	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
 	balls_store_coords();
@@ -187,7 +187,7 @@ void balls_move_and_collide(void)
 					}
 					//the block collides with something
 					//move it to the edge, reverse the x-direction
-					else if(block_hit((b->x+xdir*dx)>>8, b->y>>8) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 /*|| paddle_collission(b->x+xdir*dx, b->y)*/)
+					else if(block_hit(b->x+xdir*dx, b->y) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || paddle_collission_fixed(b->x+xdir*dx, b->y))
 					{
 						b->xv = -b->xv;
 						b->x += (dx-1)*xdir;
@@ -212,7 +212,7 @@ void balls_move_and_collide(void)
 						dy -= yv_left;
 						yv_left = 0;
 					}
-					else if(block_hit(b->x>>8, (b->y+ydir*dy)>>8) || b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 /*|| paddle_collission(b->x, b->y+ydir*dy)*/)
+					else if(block_hit_fixed(b->x, b->y+ydir*dy) || b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || paddle_collission_fixed(b->x, b->y+ydir*dy))
 					{
 						b->yv = -b->yv;
 						b->y += (dy-1)*ydir;
