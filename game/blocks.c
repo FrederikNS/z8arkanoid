@@ -24,8 +24,8 @@ enum BLOCK_TYPES_ {
 	HARD_BLOCK_3         //8
 } BLOCK_TYPES;
 
-
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
+int blocks_left_var;
 
 /*
  Functions
@@ -56,6 +56,21 @@ void blocks_loadlevel(int lvl) {
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		blocks[i] = levels[lvl][i];
 	}
+}
+
+
+void block_counter(){
+	int i;
+	amount=0;
+	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
+		if(*blocks[i]!=NO_BLOCK || *blocks[i]!=INDESTRUCTIBLE_BLOCK)
+			++amount;
+	}
+	blocks_left_var=amount;
+}
+
+return blocks_left(){
+	return blocks_left;
 }
 
 /*
@@ -190,6 +205,7 @@ char block_hit_coord(int x, int y) {
 		case HARD_BLOCK_1:
 		case REGULAR_BLOCK:
 			*block = NO_BLOCK;
+			--blocks_left_var;
 			break;
 		case EXPLOSIVE_BLOCK:
 			block_hit_coord(x-1,y-1);
@@ -197,6 +213,7 @@ char block_hit_coord(int x, int y) {
 			block_hit_coord(x-1,y+1);
 			block_hit_coord(x,y-1);
 			*block = NO_BLOCK;
+			--blocks_left_var;
 			block_hit_coord(x,y+1);
 			block_hit_coord(x+1,y-1);
 			block_hit_coord(x+1,y);
@@ -219,6 +236,7 @@ char block_hit_coord(int x, int y) {
 			//block_destroy(x,y);
 			*block = NO_BLOCK;
 			block_draw(x,y);
+			--blocks_left_var;
 		default:
 			return 0;
 			break;
