@@ -12,7 +12,8 @@ void z_hyperterm_clear(void);
 
 //Formatting
 void z_hyperterm_formatreset(void);
-void z_hyperterm_setfgcolor(char c);
+void z_hyperterm_setfgcolor(int foreground);
+//void z_hyperterm_setfgcolor(char c);
 void z_hyperterm_setbgcolor(char c);
 void z_hyperterm_blinkslow(void);
 void z_hyperterm_blinkfast(void);

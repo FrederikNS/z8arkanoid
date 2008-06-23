@@ -2,7 +2,6 @@
 #include "../API/API.h"
 #define term_goto(line,column) z_hyperterm_goto(column,line)
 #define ESC 0x1B
-
 #include <stdio.h>
 
 /*
@@ -32,6 +31,7 @@
  *Level count starts at column 60 and ends in column 79. No further.
  *It spans from line 16 to 18. No further.
  */
+
 
 void gameboard_draw(void) {
 	int i;

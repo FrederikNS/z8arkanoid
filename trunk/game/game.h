@@ -5,6 +5,7 @@
 #include "blocks.h"
 #include "paddle.h"
 #include "gameboard.h"
+#include "gameinfo.h"
 
 char game_mainloop(void);
 
