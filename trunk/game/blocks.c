@@ -3,8 +3,8 @@
 #include "levels.h"
 
 /*
-Local constants, fields and function prototypes
-*/
+ Local constants, fields and function prototypes
+ */
 
 char block_coords_in_area(int x, int y);
 unsigned char* block_on(int x, int y);
@@ -28,14 +28,14 @@ enum BLOCK_TYPES_ {
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
 
 /*
-Functions
-*/
+ Functions
+ */
 
 /*
-Name: blocks_clear
-Functionality: clears all blocks.
-Note: Does not remove the blocks from the screen.
-*/
+ Name: blocks_clear
+ Functionality: clears all blocks.
+ Note: Does not remove the blocks from the screen.
+ */
 
 void blocks_clear(void)
 {
@@ -44,12 +44,12 @@ void blocks_clear(void)
 }
 
 /*
-Name: blocks_loadlevel
-Functionality: Loads a level into the block memory
-Arguments:
-	lvl:	Level number, from levels.c
-Note: Lvl is zero-indexed.
-*/
+ Name: blocks_loadlevel
+ Functionality: Loads a level into the block memory
+ Arguments:
+ lvl:	Level number, from levels.c
+ Note: Lvl is zero-indexed.
+ */
 
 void blocks_loadlevel(int lvl) {
 	int i;
@@ -59,12 +59,12 @@ void blocks_loadlevel(int lvl) {
 }
 
 /*
-Name: blocks_coords_in_area
-Functionality: Returns true (1) if the given coordinates are inside the block-area.
-Arguments:
-	x, y: coordinates in block coords.
-Note: block coords
-*/
+ Name: blocks_coords_in_area
+ Functionality: Returns true (1) if the given coordinates are inside the block-area.
+ Arguments:
+ x, y: coordinates in block coords.
+ Note: block coords
+ */
 
 char block_coords_in_area(int x, int y) {
 	if(x >= 0 && y >= 0 && x < BLOCKS_WIDTH && y < BLOCKS_HEIGHT)
@@ -73,24 +73,24 @@ char block_coords_in_area(int x, int y) {
 }
 
 /*
-Name: block_on
-Functionality: Returns a pointer to the memory address holding the value of the block on x, y
-Arguments:
-	x, y: coordinates in block coords.
-Note: block coords
-*/
+ Name: block_on
+ Functionality: Returns a pointer to the memory address holding the value of the block on x, y
+ Arguments:
+ x, y: coordinates in block coords.
+ Note: block coords
+ */
 unsigned char* block_on(int x, int y) {
 	if(block_coords_in_area(x, y))
 		return &blocks[x+y*BLOCKS_WIDTH];
 	return 0;
 }
 /*
-Name: block_draw
-Functionality: Draws the block on the given coordinates to the screen.
-Arguments:
-	x, y: coordinates in block coords.
-Note: block coords
-*/
+ Name: block_draw
+ Functionality: Draws the block on the given coordinates to the screen.
+ Arguments:
+ x, y: coordinates in block coords.
+ Note: block coords
+ */
 void block_draw(char x, char y) {
 	z_hyperterm_goto((x<<1)+3,y+3);
 	switch(*block_on(x,y)){
@@ -135,9 +135,9 @@ void block_draw(char x, char y) {
 }
 
 /*
-Name: blocks_draw
-Functionality: Draws all blogs to the screen
-*/
+ Name: blocks_draw
+ Functionality: Draws all blogs to the screen
+ */
 
 void blocks_draw() {
 	int x;
@@ -150,12 +150,12 @@ void blocks_draw() {
 }
 
 /*
-Name: block_hit_fixed
-Functionality: hits the block on the given coordinate.
-Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
-Arguments:
-	x, y: coordinates for the block in gamespace fixed point
-*/
+ Name: block_hit_fixed
+ Functionality: hits the block on the given coordinate.
+ Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
+ Arguments:
+ x, y: coordinates for the block in gamespace fixed point
+ */
 
 
 char block_hit_fixed(int x, int y) {
@@ -163,25 +163,25 @@ char block_hit_fixed(int x, int y) {
 }
 
 /*
-Name: block_hit
-Functionality: hits the block on the given coordinate.
-Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
-Arguments:
-	x, y: coordinates for the block in gamespace integers
-*/
+ Name: block_hit
+ Functionality: hits the block on the given coordinate.
+ Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
+ Arguments:
+ x, y: coordinates for the block in gamespace integers
+ */
 
 char block_hit(int x, int y){
 	return block_hit_coord(x>>1,y);
 }
 
 /*
-Name: block_hit
-Functionality: hits the block on the given coordinate.
-Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
-Arguments:
-	x, y: coordinates for the block in blockspace fixed point
-Note: block coords
-*/
+ Name: block_hit
+ Functionality: hits the block on the given coordinate.
+ Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
+ Arguments:
+ x, y: coordinates for the block in blockspace fixed point
+ Note: block coords
+ */
 
 char block_hit_coord(int x, int y) {
 	unsigned char* block = block_on(x, y);
@@ -201,6 +201,9 @@ char block_hit_coord(int x, int y) {
 			block_hit_coord(x+1,y-1);
 			block_hit_coord(x+1,y);
 			block_hit_coord(x+1,y+1);
+			break;
+		case INVISIBLE_BLOCK:
+			*block = 2
 			break;
 		case INDESTRUCTIBLE_BLOCK:
 			break;
