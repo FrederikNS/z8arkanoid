@@ -17,7 +17,6 @@
 <file filter-key="">HLI\led.c</file>
 <file filter-key="">math\lamemath.c</file>
 <file filter-key="">game\blocks.c</file>
-<file filter-key="">game\collision.c</file>
 <file filter-key="">API\hyperterm.c</file>
 <file filter-key="">game\gameboard.c</file>
 <file filter-key="">game\levels.c</file>
@@ -52,7 +51,7 @@
 <option name="bitfieldsize" type="integer" change-action="rebuild">32</option>
 <option name="charsize" type="integer" change-action="rebuild">8</option>
 <option name="const" type="string" change-action="compile">ROM</option>
-<option name="debug" type="boolean" change-action="compile">false</option>
+<option name="debug" type="boolean" change-action="compile">true</option>
 <option name="define" type="string" change-action="compile">_Z8F6403,_Z8ENCORE_640_FAMILY,_Z8ENCORE_F640X,_MODEL_LARGE</option>
 <option name="doublesize" type="integer" change-action="rebuild">32</option>
 <option name="expmac" type="boolean" change-action="none">false</option>
