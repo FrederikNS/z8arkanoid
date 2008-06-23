@@ -97,8 +97,8 @@ void block_draw(char x, char y) {
 		case INVISIBLE_BLOCK:
 		case NO_BLOCK:
 			z_hyperterm_setfgcolor(0);
-			z_hyperterm_put(0x28);
-			z_hyperterm_put(0x28);
+			z_hyperterm_put(0x20);
+			z_hyperterm_put(0x20);
 			break;
 		case FAKE_BLOCK:
 		case REGULAR_BLOCK:
