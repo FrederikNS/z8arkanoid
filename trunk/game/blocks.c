@@ -118,13 +118,13 @@ void block_draw(char x, char y) {
 			break;
 		case HARD_BLOCK_1:
 			z_hyperterm_setfgcolor(7);
-			z_hyperterm_put(0xB0);
-			z_hyperterm_put(0xB0);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_2:
 			z_hyperterm_setfgcolor(8);
-			z_hyperterm_put(0xB1);
-			z_hyperterm_put(0xB1);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_3:
 			z_hyperterm_setfgcolor(15);
@@ -203,7 +203,7 @@ char block_hit_coord(int x, int y) {
 			block_hit_coord(x+1,y+1);
 			break;
 		case INVISIBLE_BLOCK:
-			*block = REGULAR_BLOCK
+			*block = REGULAR_BLOCK;
 			break;
 		case INDESTRUCTIBLE_BLOCK:
 			break;
