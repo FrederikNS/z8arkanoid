@@ -189,21 +189,21 @@ char block_hit_coord(int x, int y) {
 	switch(*block){
 		case HARD_BLOCK_1:
 		case REGULAR_BLOCK:
-			*block = 0;
+			*block = NO_BLOCK;
 			break;
 		case EXPLOSIVE_BLOCK:
 			block_hit_coord(x-1,y-1);
 			block_hit_coord(x-1,y);
 			block_hit_coord(x-1,y+1);
 			block_hit_coord(x,y-1);
-			*block = 0;
+			*block = NO_BLOCK;
 			block_hit_coord(x,y+1);
 			block_hit_coord(x+1,y-1);
 			block_hit_coord(x+1,y);
 			block_hit_coord(x+1,y+1);
 			break;
 		case INVISIBLE_BLOCK:
-			*block = 2
+			*block = REGULAR_BLOCK
 			break;
 		case INDESTRUCTIBLE_BLOCK:
 			break;
@@ -217,7 +217,7 @@ char block_hit_coord(int x, int y) {
 			break;
 		case FAKE_BLOCK:
 			//block_destroy(x,y);
-			*block = 0;
+			*block = NO_BLOCK;
 		default:
 			return 0;
 			break;
