@@ -42,9 +42,12 @@ char game_mainloop(void)
 	static char needsinit = 1;
 	if(needsinit) { game_init(); needsinit = 0; }
 
-	if(z_button_right()) paddle_move(1);
-	if(z_button_left()) paddle_move(-1);
+	if(z_button_right()) paddle_moveright();
+	if(z_button_left()) paddle_moveleft();
 	if(z_button_middle()) paddle_increasewidth();
+#ifdef GBA
+	if(KEYPRESS_DOWN) paddle_decreasewidth();
+#endif
 	balls_move_and_collide();
 	balls_draw();
 	paddle_draw();

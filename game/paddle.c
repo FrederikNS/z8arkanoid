@@ -22,16 +22,22 @@ void paddle_fixposition(void)
 
 void paddle_increasewidth(void)
 {
-	paddle.width+=2;
-	if(paddle.width > PADDLE_MAXWIDTH) paddle.width = PADDLE_MAXWIDTH;
+	if(paddle.width < PADDLE_MAXWIDTH) {
+		paddle.width+=2;
+		paddle.x -= 1;
+		paddle_fixposition();
+	}
 }
 
 
 void paddle_decreasewidth(void)
 {
-	//int i;
-	paddle.width-=2;
-	if(paddle.width < PADDLE_MINWIDTH) paddle.width = PADDLE_MINWIDTH;
+	if(paddle.width > PADDLE_MINWIDTH) {
+		z_hyperterm_clearpoint(3 + paddle.x, 3 + PADDLE_Y);
+		z_hyperterm_clearpoint(3 + paddle.x+paddle.width-1, 3 + PADDLE_Y);
+		paddle.width-=2;
+		paddle.x += 1;
+	}
 }
 
 void paddle_reset(void)
@@ -40,16 +46,22 @@ void paddle_reset(void)
 	paddle.x = (GAMEFIELD_WIDTH>>1) - (PADDLE_STARTWIDTH>>1); // x = center_x - width/2
 }
 
-void paddle_move(int value)
+void paddle_moveleft(void)
 {
-	if(value < 0) {
-		z_hyperterm_put_on(' ', paddle.x + 2 + paddle.width, PADDLE_Y + 3);
+	if(paddle.x > 0) {
+		z_hyperterm_put_on(' ', paddle.x+paddle.width+2, PADDLE_Y + 3);
+		paddle.x--;
+		//z_hyperterm_put_on('#', paddle.x+3, PADDLE_Y + 3);
 	}
-	else if(value > 0) {
+}
+
+void paddle_moveright(void)
+{
+	if(paddle.x + paddle.width < GAMEFIELD_WIDTH) {
 		z_hyperterm_put_on(' ', paddle.x + 3, PADDLE_Y + 3);
+		//z_hyperterm_put_on('#', paddle.x+paddle.width+3, PADDLE_Y + 3);
+		paddle.x++;
 	}
-	paddle.x += value;
-	paddle_fixposition();
 }
 
 void paddle_draw(void)
