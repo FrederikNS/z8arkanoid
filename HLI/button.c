@@ -20,8 +20,8 @@ char z_button_right(void)
 char z_button_middle(void)
 {
 	if(0x40==(0x40&PFIN))
-		return 1;
-	return 0;
+		return 0;
+	return 1;
 }
 
 char z_button_left(void)
