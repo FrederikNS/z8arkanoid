@@ -71,7 +71,7 @@ void block_counter(){
 }
 
 int blocks_left(){
-	return blocks_left;
+	return blocks_left_var;
 }
 
 /*
