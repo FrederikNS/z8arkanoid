@@ -56,13 +56,13 @@ void blocks_loadlevel(int lvl) {
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		blocks[i] = levels[lvl][i];
 	}
-	block_draw_all();
+	block_draw();
 }
 
 
 void block_counter(){
 	int i;
-	amount=0;
+	int amount=0;
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		if(*blocks[i]!=NO_BLOCK || *blocks[i]!=INDESTRUCTIBLE_BLOCK)
 			++amount;
@@ -70,7 +70,7 @@ void block_counter(){
 	blocks_left_var=amount;
 }
 
-return blocks_left(){
+int blocks_left(){
 	return blocks_left;
 }
 
