@@ -32,26 +32,6 @@
  *Level count starts at column 60 and ends in column 79. No further.
  *It spans from line 16 to 18. No further.
  */
-/* void fgcolor(int foreground) {
-    Value      foreground     Value     foreground
-    ------------------------------------------------
-      0        Black            8       Dark Gray
-      1        Red              9       Light Red
-      2        Green           10       Light Green
-      3        Brown           11       Yellow
-      4        Blue            12       Light Blue
-      5        Purple          13       Light Purple
-      6        Cyan            14       Light Cyan
-      7        Light Gray      15       White
-
-  int type = 22;             // normal text
-	if (foreground > 7) {
-	  type = 1;                // bold text
-		foreground -= 8;
-	}
-  printf("%c[%d;%dm", ESC, type, foreground+30);
-}*/
-
 
 void gameboard_draw(void) {
 	int i;
