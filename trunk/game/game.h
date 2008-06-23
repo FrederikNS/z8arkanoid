@@ -6,6 +6,6 @@
 #include "paddle.h"
 #include "gameboard.h"
 
-void game_mainloop(void);
+char game_mainloop(void);
 
 #endif

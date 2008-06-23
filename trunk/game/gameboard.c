@@ -1,10 +1,12 @@
 #include "gameboard.h"
 #include "../API/API.h"
-#include <sio.h>
 #define term_goto(line,column) z_hyperterm_goto(column,line)
 #define ESC 0x1B
+
+#include <stdio.h>
+
 /*
- *This class is dedicated to draw the initial gameboard and highscore list. 
+ *This class is dedicated to draw the initial gameboard and highscore list.
  *It is after the initiation not to be changed.
  *The rest happens in the blank space.
  *The gameboard is drawn using ASCII art, putting the small pieces together as a frame.
@@ -196,7 +198,7 @@ void gameboard_draw(void) {
 	term_goto(8,77); z_hyperterm_put(0xCC);
 	//Straight line piece
 	term_goto(8,69); z_hyperterm_put(0xCD);
-	term_goto(8,70); z_hyperterm_put(0xCD);	
+	term_goto(8,70); z_hyperterm_put(0xCD);
 	term_goto(8,78); z_hyperterm_put(0xCD);
 	term_goto(8,79); z_hyperterm_put(0xCD);
 	//Leftwards Splitter
@@ -390,10 +392,12 @@ void gameboard_draw_highscore(void) {
 		z_hyperterm_setfgcolor(16-i);
 		term_goto(6+i,23);
 		if(i<10){
+#ifndef GBA
 			printf("%d",i);
 		}
 		else {
 			printf("%d",i-10);
+#endif
 		}
 		z_hyperterm_put('.');
 	}
