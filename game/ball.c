@@ -4,9 +4,14 @@
 #include "gameboard.h"
 #include "../math/math.h"
 #include "../api/hyperterm.h"
+#include <stdlib.h> //Used for randomization
 
-#include <stdlib.h>
-#include <stdio.h>
+/*
+Local constants, fields and function prototypes
+*/
+
+int ball_get_inactive(void);
+void balls_store_coords(void);
 
 #define START_SPEED (1<<8)
 
@@ -22,23 +27,47 @@ typedef struct{
 
 ball balls[BALLS_MAX];
 
+/*
+Functions
+*/
+
+/*
+Name: balls_init
+Functionality: initializes the memory reserved for the balls
+*/
+
 void balls_init(void)
 {
 	int i;
 	for(i = 0; i < BALLS_MAX; i++) balls[i].active = 0;
 }
 
-int get_inactive_ball(void)
+/*
+Name: balls_get_inactive
+Functionality: Returns the index of an inactive ball. Returns -1 if there are no inactive balls.
+Note: Remember to check for the negative value and act accordingly.
+*/
+
+int balls_get_inactive(void)
 {
 	int i;
 	for(i = 0; i < BALLS_MAX; i++) if(!balls[i].active) return i;
 	return -1;
 }
 
-void ball_spawnnew(int x, int y, int xv, int yv)
+/*
+Name: ball_spawnnew
+Functionality: Spawns a new ball at the given x,y coordinate with the movementvector (xv, yv)
+Arguments:
+	x,y:	Gamespace coordinates for the new ball
+	xv, yv:	Movement vector for the new ball in fixed point.
+Note: x,y are in gamespace coords, xv/yv are in fixed point.
+*/
+
+void balls_spawnnew(int x, int y, int xv, int yv)
 {
 	ball* b;
-	int index = get_inactive_ball();
+	int index = balls_get_inactive();
 	if(index<0) return;
 
 	b = &balls[index];
@@ -50,77 +79,63 @@ void ball_spawnnew(int x, int y, int xv, int yv)
 	b->yv = yv;
 }
 
-void ball_spawnnew_random_upwards(int x, int y)
+/*
+Name: balls_spawnnew_random_upwards
+Functionality: Spawns a ball moving upwards in a random direction
+Arguments:
+	x,y:	Gamespace coordinates for the new ball
+Note: Gamespace coords
+*/
+
+void balls_spawnnew_random_upwards(int x, int y)
 {
 	ball* b;
-	int index = get_inactive_ball();
+	int dir;
+	int index = balls_get_inactive();
 	if(index<0) return;
 
 	b = &balls[index];
 	b->active = 1;
 	b->x = x<<8;
 	b->y = y<<8;
-	b->xv = z_cos(rand());
-	b->yv = z_sin(rand());
+	dir = rand();
+	b->xv = z_cos(dir);
+	b->yv = z_sin(dir);
 }
 
-void ball_split(void)
+/*
+Name: balls_split
+Functionality: Splits all balls into two
+Note: Just stops splitting if there are no balls left
+*/
+
+void balls_split(void)
 {
 	//TODO
 }
 
-char ball_isactive(char i)
-{
-	return balls[i].active;
-}
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
 
-char ball_amount()
+char balls_amount()
 {
 	int i, amount = 0;
-	for(i = 0; i < BALLS_MAX; i++) if(ball_isactive(i)) amount++;
+	for(i = 0; i < BALLS_MAX; i++) if(balls[i].active) amount++;
+	return amount;
 }
 
-int ball_getx(int i)
-{
-	return balls[i].x;
-}
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
 
-int ball_gety(int i)
-{
-	return balls[i].y;
-}
-
-void ball_setx(char i, int x)
-{
-	balls[i].x = x;
-}
-
-void ball_sety(char i, int y)
-{
-	balls[i].y = y;
-}
-
-int ball_getxv(int i)
-{
-	return balls[i].xv;
-}
-
-int ball_getyv(int i)
-{
-	return balls[i].yv;
-}
-
-void ball_setxv(char i, int xv)
-{
-	balls[i].xv = xv;
-}
-
-void ball_setyv(char i, int yv)
-{
-	balls[i].yv = yv;
-}
-
-void ball_scalevelocity(char i, int scale)
+void ball_scalevelocity(unsigned char i, int scale)
 {
 	balls[i].xv = (balls[i].xv * scale)>>8;
 	balls[i].yv = (balls[i].yv * scale)>>8;
@@ -130,16 +145,63 @@ void ball_scalevelocity(char i, int scale)
 #define RIGHT 1
 #define UP -1
 #define DOWN 1
-#define VERT 1
-#define HORI 0
 
-#define ASSERT(x, r) if(!(x)) {z_hyperterm_goto(1,1); printf(r);while(1);}
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
+
+void balls_store_coords(void)
+{
+	int i;
+	ball* b = balls;
+	for(i = 0; i < BALLS_MAX; i++, b++) {
+		if(b->active) {
+			b->oldx = b->x>>8;
+			b->oldy = b->y>>8;
+		}
+	}
+}
+
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
+
+void balls_draw(void)
+{
+	int i;
+	ball* b = balls;
+	z_hyperterm_setfgcolor(7);
+	z_hyperterm_setbgcolor(0);
+	for(i = 0; i < BALLS_MAX; i++, b++) {
+		if(b->active) {
+			if(b->x>>8 != b->oldx || b->y>>8 != b->oldy) {
+				z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
+				if(b->y&(1<<7)) z_hyperterm_put(220);
+				else z_hyperterm_put(223);
+				z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
+			}
+		}
+	}
+}
+
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
 
 void balls_move_and_collide(void)
 {
 	signed char i, xdir, ydir;
-	unsigned int dx, dy, xv_left, yv_left, tmp_dist;
-	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
+	unsigned int dx, dy, xv_left, yv_left;
+	unsigned int xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
 	balls_store_coords();
 
@@ -187,7 +249,7 @@ void balls_move_and_collide(void)
 					}
 					//the block collides with something
 					//move it to the edge, reverse the x-direction
-					else if(block_hit(b->x+xdir*dx, b->y) || b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || paddle_collision_fixed(b->x+xdir*dx, b->y))
+					else if(b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || block_hit_fixed(b->x+xdir*dx, b->y) || paddle_collision_fixed(b->x+xdir*dx, b->y))
 					{
 						b->xv = -b->xv;
 						b->x += (dx-1)*xdir;
@@ -212,7 +274,7 @@ void balls_move_and_collide(void)
 						dy -= yv_left;
 						yv_left = 0;
 					}
-					else if(block_hit_fixed(b->x, b->y+ydir*dy) || b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || paddle_collision_fixed(b->x, b->y+ydir*dy))
+					else if(b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || block_hit_fixed(b->x, b->y+ydir*dy) || paddle_collision_fixed(b->x, b->y+ydir*dy))
 					{
 						b->yv = -b->yv;
 						b->y += (dy-1)*ydir;
@@ -226,34 +288,6 @@ void balls_move_and_collide(void)
 						dy = 0x100;
 					}
 				}
-			}
-		}
-	}
-}
-
-void balls_store_coords(void)
-{
-	int i;
-	ball* b = balls;
-	for(i = 0; i < BALLS_MAX; i++, b++) {
-		if(b->active) {
-			b->oldx = b->x>>8;
-			b->oldy = b->y>>8;
-		}
-	}
-}
-
-void balls_draw(void)
-{
-	int i;
-	ball* b = balls;
-	for(i = 0; i < BALLS_MAX; i++, b++) {
-		if(b->active) {
-			if(b->x>>8 != b->oldx || b->y>>8 != b->oldy) {
-				z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
-				if(b->y&(1<<7)) z_hyperterm_put(220);
-				else z_hyperterm_put(223);
-				z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
 			}
 		}
 	}

@@ -1,13 +1,12 @@
 #include "paddle.h"
+#include "gameboard.h"
 #include "../API/API.H"
 #include "../HLI/HLI.h"
 
 #define PADDLE_STARTWIDTH 7
 #define PADDLE_MAXWIDTH 15
 #define PADDLE_MINWIDTH 3
-#define PADDLE_Y 22
-#define LEFTBOUND_X = 0
-#define RIGHTBOUND_X = 64
+#define PADDLE_Y (GAMEFIELD_HEIGHT - 2)
 
 struct
 {
@@ -15,62 +14,55 @@ struct
 	int width;
 } paddle;
 
-int paddle_getx(void)
+void paddle_fixposition(void)
 {
-	return paddle.x;
+	if(paddle.x < 0) paddle.x = 0;
+	if(paddle.x + paddle.width > GAMEFIELD_WIDTH) paddle.x = GAMEFIELD_WIDTH - paddle.width;
 }
 
-int paddle_increasewidth(void)
+void paddle_increasewidth(void)
 {
 	paddle.width+=2;
 	if(paddle.width > PADDLE_MAXWIDTH) paddle.width = PADDLE_MAXWIDTH;
-	if(paddle.x + paddle.width -1 > 64) paddle.x = 64 - paddle.width+1;
 }
 
 
-int paddle_decreasewidth(void)
+void paddle_decreasewidth(void)
 {
-	int i;
+	//int i;
 	paddle.width-=2;
 	if(paddle.width < PADDLE_MINWIDTH) paddle.width = PADDLE_MINWIDTH;
-	z_hyperterm_goto(paddle.x+paddle.width+1, PADDLE_Y);
-	for(i=0;i<=1;i++){
-		z_hyperterm_put(' ');
-	}
 }
 
 void paddle_reset(void)
 {
 	paddle.width = PADDLE_STARTWIDTH;
-	paddle.x = 32 - (PADDLE_STARTWIDTH>>1); // x = center_x - width/2
+	paddle.x = (GAMEFIELD_WIDTH>>1) - (PADDLE_STARTWIDTH>>1); // x = center_x - width/2
 }
 
-int paddle_move(int value)
+void paddle_move(int value)
 {
+	if(value < 0) {
+		z_hyperterm_put_on(' ', paddle.x + 2 + paddle.width, PADDLE_Y + 3);
+	}
+	else if(value > 0) {
+		z_hyperterm_put_on(' ', paddle.x + 3, PADDLE_Y + 3);
+	}
 	paddle.x += value;
-	if(paddle.x < 1) paddle.x = 1;
-	if(paddle.x + paddle.width -1 > 64) paddle.x = 64 - paddle.width + 1;
-	if(value<0){
-		z_hyperterm_goto(paddle.x+paddle.width+1, PADDLE_Y);
-		z_hyperterm_put(' ');
-	}
-	else{
-		z_hyperterm_goto(paddle.x-value-2, PADDLE_Y);
-		z_hyperterm_put(' ');
-	}
+	paddle_fixposition();
 }
 
 void paddle_draw(void)
 {
 	int i;
-	z_hyperterm_goto(paddle.x+2, PADDLE_Y+2);
-	for(i = 0; i < paddle.width; i++)
-		z_hyperterm_put('#');
+	z_hyperterm_goto(paddle.x + 3, PADDLE_Y + 3);
+	z_hyperterm_setfgcolor(3);
+	for(i = 0; i < paddle.width; i++) z_hyperterm_put('#');
 }
 
 char paddle_collision(int x, int y)
 {
-	if(y > PADDLE_Y && y < (PADDLE_Y+1) && x > paddle.x && x < paddle.x + paddle.width)
+	if(y == PADDLE_Y && x >= paddle.x && x < paddle.x + paddle.width)
 		return 1;
 	return 0;
 }

@@ -19,6 +19,7 @@
 <file filter-key="">game\blocks.c</file>
 <file filter-key="">API\hyperterm.c</file>
 <file filter-key="">game\gameboard.c</file>
+<file filter-key="">game\levels.c</file>
 </files>
 
 <!-- configuration information -->
