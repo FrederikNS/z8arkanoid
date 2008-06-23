@@ -7,6 +7,7 @@ void gameinfo_livesdecrease(int lives_decrease);
 int gameinfo_getlives(void);
 void gameinfo_scoreincrease(int score_increase);
 void gameinfo_scoredecrease(int score_decrease);
+void gameinfo_getscore(void);
 int gameinfo_levelincrease(int level_increase);
 int gameinfo_leveldecrease(int level_decrease);
 int gameinfo_getlevel(void);

@@ -45,7 +45,7 @@ char game_mainloop(void)
 
 	if(z_button_right()) paddle_moveright();
 	if(z_button_left()) paddle_moveleft();
-	if(z_button_middle()) paddle_increasewidth();
+	if(z_button_middle()) gameinfo_livesdecrease(1);
 #ifdef GBA
 	if(KEYPRESS_DOWN) paddle_decreasewidth();
 #endif
