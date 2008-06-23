@@ -218,6 +218,7 @@ char block_hit_coord(int x, int y) {
 		case FAKE_BLOCK:
 			//block_destroy(x,y);
 			*block = NO_BLOCK;
+			block_draw(x,y);
 		default:
 			return 0;
 			break;
