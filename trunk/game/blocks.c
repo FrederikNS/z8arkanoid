@@ -64,7 +64,7 @@ void block_counter(){
 	int i;
 	int amount=0;
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
-		if(*blocks[i]!=NO_BLOCK || *blocks[i]!=INDESTRUCTIBLE_BLOCK)
+		if(*blocks[i]!=NO_BLOCK && *blocks[i]!=INDESTRUCTIBLE_BLOCK)
 			++amount;
 	}
 	blocks_left_var=amount;
