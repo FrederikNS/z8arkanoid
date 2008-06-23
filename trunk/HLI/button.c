@@ -19,14 +19,14 @@ char z_button_right(void)
 
 char z_button_middle(void)
 {
-	if(0x40==0x40&PFIN)
+	if(0x40==(0x40&PFIN))
 		return 1;
 	return 0;
 }
 
 char z_button_left(void)
 {
-	if(0x8==0x8&PDIN)
+	if(0x8==(0x8&PDIN))
 		return 1;
 		return 0;
 }
