@@ -84,21 +84,6 @@ unsigned char* block_on(int x, int y) {
 		return &blocks[x+y*BLOCKS_WIDTH];
 	return 0;
 }
-<<<<<<< .mine
-
-//fixed point
-unsigned char block_value_on(int x, int y){
-	return *block_on(x, y);
-}
-
-void block_setvalue(int x, int y, int value){
-	if(block_coords_in_area(x, y)) *block_on(x, y) = value;
-}
-
-void block_draw(char x, char y){
-	z_hyperterm_goto((x<<1)+3,y+3);
-	switch(block_value_on(x,y)){
-=======
 /*
 Name: block_draw
 Functionality: Draws the block on the given coordinates to the screen.
@@ -109,7 +94,6 @@ Note: block coords
 void block_draw(char x, char y) {
 	z_hyperterm_goto((x<<1)+3,y+3);
 	switch(*block_on(x,y)){
->>>>>>> .r47
 		case INVISIBLE_BLOCK:
 		case NO_BLOCK:
 			z_hyperterm_setfgcolor(0);
@@ -173,11 +157,8 @@ Arguments:
 	x, y: coordinates for the block in gamespace fixed point
 */
 
-<<<<<<< .mine
-char block_hit_fixed(int x, int y){
-=======
+
 char block_hit_fixed(int x, int y) {
->>>>>>> .r47
 	return block_hit(x>>8,y>>8);
 }
 
