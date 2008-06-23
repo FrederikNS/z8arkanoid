@@ -25,8 +25,9 @@ void game_init()
 	z_hyperterm_clear();
 	gameboard_draw();
 	//gameboard_draw_highscore();
+	gameinfo_init();
 	z_hyperterm_goto(0, 0);
-	blocks_loadlevel(0);
+	blocks_loadlevel(gameinfo_getlevel());
 	blocks_draw();
 
 	for(i = 0; i < 1; i++)
