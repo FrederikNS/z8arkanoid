@@ -56,6 +56,7 @@ void blocks_loadlevel(int lvl) {
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		blocks[i] = levels[lvl][i];
 	}
+	block_draw_all();
 }
 
 
