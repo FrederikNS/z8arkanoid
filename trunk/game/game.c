@@ -28,7 +28,6 @@ void game_init()
 	gameinfo_init();
 	z_hyperterm_goto(0, 0);
 	blocks_loadlevel(gameinfo_getlevel());
-	blocks_draw();
 
 	for(i = 0; i < 1; i++)
 		balls_spawnnew_random_upwards(30,17);
@@ -45,7 +44,7 @@ char game_mainloop(void)
 
 	if(z_button_right()) paddle_moveright();
 	if(z_button_left()) paddle_moveleft();
-	if(z_button_middle()) gameinfo_livesdecrease(1);
+	if(z_button_middle()) blocks_loadlevel(gameinfo_levelincrease(1));
 #ifdef GBA
 	if(KEYPRESS_DOWN) paddle_decreasewidth();
 #endif

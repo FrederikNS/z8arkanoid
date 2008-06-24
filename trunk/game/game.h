@@ -3,6 +3,7 @@
 
 #include "ball.h"
 #include "blocks.h"
+#include "levels.h"
 #include "paddle.h"
 #include "gameboard.h"
 #include "gameinfo.h"
