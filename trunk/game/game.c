@@ -23,14 +23,14 @@ void game_init()
 	z_hyperterm_formatreset();
 	z_hyperterm_setbgcolor(0);
 	z_hyperterm_clear();
-	gameboard_draw();
+//	gameboard_draw();
 	//gameboard_draw_highscore();
 	gameinfo_init();
 	z_hyperterm_goto(0, 0);
 	blocks_loadlevel(gameinfo_getlevel());
 
-	for(i = 0; i < 1; i++)
-		balls_spawnnew_random_upwards(30,17);
+//	for(i = 0; i < 1; i++)
+//		balls_spawnnew_random_upwards(30,17);
 #ifdef GBA
 	while(!KEYPRESS_START);
 #endif
@@ -53,4 +53,13 @@ char game_mainloop(void)
 	paddle_draw();
 
 	return 0; //The game is not done
+}
+
+void game_levelinit(void) {
+	paddle_reset();
+	balls_init();
+	gameboard_draw();
+	gameinfo_drawinfo();	
+	blocks_draw();
+	balls_spawnnew_random_upwards(30,17);
 }

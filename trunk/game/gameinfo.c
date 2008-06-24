@@ -80,8 +80,4 @@ void gameinfo_drawinfo(void) {
 	term_goto(17,71);
 	z_hyperterm_setfgcolor(12);
 	printf("%d%c",level+1,0x20);
-//Drawing the counter:
-	term_goto(20,71);
-	z_hyperterm_setfgcolor(12);
-	printf("%d%c",blocks_left(),0x20);
 }
