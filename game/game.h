@@ -9,5 +9,6 @@
 #include "gameinfo.h"
 
 char game_mainloop(void);
+void game_levelinit(void);
 
 #endif

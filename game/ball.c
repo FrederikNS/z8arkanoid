@@ -192,7 +192,7 @@ void balls_draw(void)
 void ball_deflect(ball* b, int angle)
 {
 	b->angle = 2 * angle - b->angle;
-	b->angle += (rand()&7) - 4;
+//	b->angle += (rand()&7) - 4;
 }
 
 void ball_move_and_collide(ball* b)

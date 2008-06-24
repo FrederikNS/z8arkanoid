@@ -29,7 +29,6 @@ enum BLOCK_TYPES_ {
 } BLOCK_TYPES;
 
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
-int blocks_left_var;
 
 /*
  Functions
@@ -57,30 +56,21 @@ void blocks_clear(void)
 
 void blocks_loadlevel(int lvl) {
 	int i;
-//	int amount=0;
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		blocks[i] = levels[lvl][i];
-	//	if(blocks[i]!=NO_BLOCK && blocks[i]!=INDESTRUCTIBLE_BLOCK)
-	//		++amount;
 	}
-	//blocks_left_var=amount;
-	block_counter();
-	blocks_draw();
+	game_levelinit();
 }
 
 
-void block_counter(){
+int block_counter(){
 	int i;
 	int amount=0;
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		if((blocks[i]!=NO_BLOCK) && (blocks[i]!=INDESTRUCTIBLE_BLOCK))
-			++amount;
+			amount++;
 	}
-	blocks_left_var=amount;
-}
-
-int blocks_left(){
-	return blocks_left_var;
+	return amount;
 }
 
 /*
@@ -216,9 +206,8 @@ char block_hit_coord(int x, int y) {
 			gameinfo_scoreincrease(5);
 		case REGULAR_BLOCK:
 			*block = NO_BLOCK;
-			--blocks_left_var;
 			gameinfo_scoreincrease(10);
-			if(blocks_left() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
+			if(block_counter() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
 			break;
 		case EXPLOSIVE_BLOCK:
 			block_hit_coord(x-1,y-1);
@@ -226,8 +215,7 @@ char block_hit_coord(int x, int y) {
 			block_hit_coord(x-1,y+1);
 			block_hit_coord(x,y-1);
 			*block = NO_BLOCK;
-			--blocks_left_var;
-			if(blocks_left() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
+			if(block_counter() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
 			block_hit_coord(x,y+1);
 			block_hit_coord(x+1,y-1);
 			block_hit_coord(x+1,y);
@@ -252,8 +240,7 @@ char block_hit_coord(int x, int y) {
 			//block_destroy(x,y);
 			*block = NO_BLOCK;
 			block_draw(x,y);
-			--blocks_left_var;
-			if(blocks_left() == 0) { blocks_loadlevel(gameinfo_levelincrease(1));}
+			if(block_counter() == 0) { blocks_loadlevel(gameinfo_levelincrease(1));}
 			gameinfo_scoreincrease(10);
 		default:
 			return 0;
