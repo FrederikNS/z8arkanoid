@@ -26,8 +26,7 @@ char z_button_middle(void)
 
 char z_button_left(void)
 {
-	if(0x8==(0x8&PDIN))
+	if(0x8==(0x8&PDIN)||0x20==(0x20&PFIN))
 		return 1;
 	return 0;
 }
-
