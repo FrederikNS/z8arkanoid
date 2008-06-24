@@ -1,4 +1,5 @@
 #include "gameinfo.h"
+#include "blocks.h"
 #include "../API/API.h"
 #include <stdio.h>
 #define term_goto(line,column) z_hyperterm_goto(column,line)
@@ -6,7 +7,7 @@
 #define LEVEL_MAX 2
 #define LEVEL_MIN 0
 #define LIVES_MAX 10
-#define LIVES_MIN
+#define LIVES_MIN 0
 int score;
 char lives;
 char level;
@@ -14,7 +15,7 @@ char level;
 void gameinfo_init(void){
 	score = 0;
 	lives = 2;
-	level = 2;
+	level = 0;
 	gameinfo_drawinfo();
 }
 
@@ -44,7 +45,7 @@ void gameinfo_scoredecrease(int score_decrease){
 	gameinfo_drawinfo();
 }
 
-void gameinfo_getscore(void){
+int gameinfo_getscore(void){
 	return score;
 }
 
@@ -70,7 +71,7 @@ void gameinfo_drawinfo(void) {
 //Drawing the lives:
 	term_goto(5,71);
 	z_hyperterm_setfgcolor(9);
-	printf("%c%c",lives,0x20);
+	printf("%d%c",lives,0x20);
 //Drawing the score:
 	term_goto(11,71);
 	z_hyperterm_setfgcolor(10);
@@ -78,9 +79,9 @@ void gameinfo_drawinfo(void) {
 //Drawing the level:
 	term_goto(17,71);
 	z_hyperterm_setfgcolor(12);
-	printf("%c%c",level,0x20);
+	printf("%d%c",level+1,0x20);
 //Drawing the counter:
 	term_goto(20,71);
 	z_hyperterm_setfgcolor(12);
-	printf("%c%c",blocks_left(),0x20);
+	printf("%d%c",blocks_left(),0x20);
 }
