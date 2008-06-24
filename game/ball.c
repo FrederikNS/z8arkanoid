@@ -97,7 +97,7 @@ Note: Gamespace coords
 
 void balls_spawnnew_random_upwards(int x, int y)
 {
-	balls_spawnnew(x, y, -(rand()&127), 1<<8);
+	balls_spawnnew(x, y, -(rand()&127), 4<<8);
 }
 
 /*
@@ -199,7 +199,7 @@ void ball_move_and_collide(ball* b)
 {
 	signed char xdir, ydir;
 	unsigned int dx, dy, xv_left, yv_left;
-	unsigned int xm, ym; //x and y "momentum" for lack of better in the middle of the night
+	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
 	//Calculate the distance to travel on the x and y axis.
 	xv_left = ABS((z_cos(b->angle)*b->mod)>>8);

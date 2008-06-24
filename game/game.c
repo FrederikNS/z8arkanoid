@@ -44,7 +44,7 @@ char game_mainloop(void)
 
 	if(z_button_right()) paddle_moveright();
 	if(z_button_left()) paddle_moveleft();
-	if(z_button_middle()) blocks_loadlevel(gameinfo_levelincrease(1));
+	if(z_button_middle()) blocks_randomizedlevel();
 #ifdef GBA
 	if(KEYPRESS_DOWN) paddle_decreasewidth();
 #endif
