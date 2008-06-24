@@ -26,6 +26,7 @@ enum BLOCK_TYPES_ {
 	HARD_BLOCK_1,        //6
 	HARD_BLOCK_2,        //7
 	HARD_BLOCK_3         //8
+	HIT_INVISIBLE_BLOCK  //9
 } BLOCK_TYPES;
 
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
@@ -207,7 +208,8 @@ char block_hit_coord(int x, int y) {
 		case REGULAR_BLOCK:
 			*block = NO_BLOCK;
 			gameinfo_scoreincrease(10);
-			if(block_counter() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
+			if(block_counter() == 0)
+				blocks_loadlevel(gameinfo_levelincrease(1));
 			break;
 		case EXPLOSIVE_BLOCK:
 			block_hit_coord(x-1,y-1);
@@ -215,7 +217,8 @@ char block_hit_coord(int x, int y) {
 			block_hit_coord(x-1,y+1);
 			block_hit_coord(x,y-1);
 			*block = NO_BLOCK;
-			if(block_counter() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
+			if(block_counter() == 0)
+				blocks_loadlevel(gameinfo_levelincrease(1));
 			block_hit_coord(x,y+1);
 			block_hit_coord(x+1,y-1);
 			block_hit_coord(x+1,y);
@@ -236,11 +239,18 @@ char block_hit_coord(int x, int y) {
 			*block = HARD_BLOCK_2;
 			gameinfo_scoreincrease(30);
 			break;
+		case HIT_INVISIBLE_BLOCK:
+			*block = NO_BLOCK;
+			gameinfo_scoreincrease(10);
+			if(block_counter() == 0)
+				blocks_loadlevel(gameinfo_levelincrease(1));
+			break;
 		case FAKE_BLOCK:
 			//block_destroy(x,y);
 			*block = NO_BLOCK;
 			block_draw(x,y);
-			if(block_counter() == 0) { blocks_loadlevel(gameinfo_levelincrease(1));}
+			if(block_counter() == 0)
+				blocks_loadlevel(gameinfo_levelincrease(1));
 			gameinfo_scoreincrease(10);
 		default:
 			return 0;
