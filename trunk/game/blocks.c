@@ -32,10 +32,6 @@ enum BLOCK_TYPES_ {
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
 
 /*
- Functions
- */
-
-/*
  Name: blocks_clear
  Functionality: clears all blocks.
  Note: Does not remove the blocks from the screen.
