@@ -1,6 +1,10 @@
-#include "blocks.h"
+//#include "blocks.h"
 #include "../API/API.h"
-#include "levels.h"
+#include "../game/game.h"
+//#include "levels.h"
+//#include "gameinfo.h"
+//#include "ball.h"
+//#include "paddle.h"
 
 /*
  Local constants, fields and function prototypes
@@ -53,10 +57,15 @@ void blocks_clear(void)
 
 void blocks_loadlevel(int lvl) {
 	int i;
+//	int amount=0;
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
 		blocks[i] = levels[lvl][i];
+	//	if(blocks[i]!=NO_BLOCK && blocks[i]!=INDESTRUCTIBLE_BLOCK)
+	//		++amount;
 	}
-	block_draw();
+	//blocks_left_var=amount;
+	block_counter();
+	blocks_draw();
 }
 
 
@@ -64,7 +73,7 @@ void block_counter(){
 	int i;
 	int amount=0;
 	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++) {
-		if(*blocks[i]!=NO_BLOCK && *blocks[i]!=INDESTRUCTIBLE_BLOCK)
+		if((blocks[i]!=NO_BLOCK) && (blocks[i]!=INDESTRUCTIBLE_BLOCK))
 			++amount;
 	}
 	blocks_left_var=amount;
@@ -204,9 +213,12 @@ char block_hit_coord(int x, int y) {
 	if(!block || !*block) return 0; //Either the block is empty, or the coords are out of range, so no need for the ball to bounce off.
 	switch(*block){
 		case HARD_BLOCK_1:
+			gameinfo_scoreincrease(5);
 		case REGULAR_BLOCK:
 			*block = NO_BLOCK;
 			--blocks_left_var;
+			gameinfo_scoreincrease(10);
+			if(blocks_left() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
 			break;
 		case EXPLOSIVE_BLOCK:
 			block_hit_coord(x-1,y-1);
@@ -215,6 +227,7 @@ char block_hit_coord(int x, int y) {
 			block_hit_coord(x,y-1);
 			*block = NO_BLOCK;
 			--blocks_left_var;
+			if(blocks_left() == 0){ blocks_loadlevel(gameinfo_levelincrease(1));}
 			block_hit_coord(x,y+1);
 			block_hit_coord(x+1,y-1);
 			block_hit_coord(x+1,y);
@@ -228,19 +241,22 @@ char block_hit_coord(int x, int y) {
 		case HARD_BLOCK_2:
 			//block_setvalue(x,y,HARD_BLOCK_1);
 			*block = HARD_BLOCK_1;
+			gameinfo_scoreincrease(20);
 			break;
 		case HARD_BLOCK_3:
 			//block_setvalue(x,y,HARD_BLOCK_2);
 			*block = HARD_BLOCK_2;
+			gameinfo_scoreincrease(30);
 			break;
 		case FAKE_BLOCK:
 			//block_destroy(x,y);
 			*block = NO_BLOCK;
 			block_draw(x,y);
 			--blocks_left_var;
+			if(blocks_left() == 0) { blocks_loadlevel(gameinfo_levelincrease(1));}
+			gameinfo_scoreincrease(10);
 		default:
 			return 0;
-			break;
 	}
 	block_draw(x,y);
 	return 1;
