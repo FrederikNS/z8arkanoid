@@ -1,6 +1,7 @@
 //#include "blocks.h"
 #include "../API/API.h"
 #include "../game/game.h"
+#include <stdlib.h>
 //#include "levels.h"
 //#include "gameinfo.h"
 //#include "ball.h"
@@ -25,7 +26,7 @@ enum BLOCK_TYPES_ {
 	INDESTRUCTIBLE_BLOCK,//5
 	HARD_BLOCK_1,        //6
 	HARD_BLOCK_2,        //7
-	HARD_BLOCK_3         //8
+	HARD_BLOCK_3,        //8
 	HIT_INVISIBLE_BLOCK  //9
 } BLOCK_TYPES;
 
@@ -59,6 +60,14 @@ void blocks_loadlevel(int lvl) {
 	game_levelinit();
 }
 
+void blocks_randomizedlevel(void) {
+	int i;
+	for(i=0;i<BLOCKS_WIDTH*BLOCKS_HEIGHT;i++){
+		blocks[i] = rand()&7;
+		if(blocks[i] == 6) blocks[i] = 8;
+	}
+	game_levelinit();
+}
 
 int block_counter(){
 	int i;
@@ -113,32 +122,22 @@ void block_draw(char x, char y) {
 			z_hyperterm_put(0x20);
 			break;
 		case FAKE_BLOCK:
-<<<<<<< .mine
-			z_hyperterm_setfgcolor(3)
-			z_hyperterm_put(0xDB);
-			z_hyperterm_put(0xDB);
-=======
-			z_hyperterm_setfgcolor(11
+			z_hyperterm_setfgcolor(2);
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
->>>>>>> .r86
 		case REGULAR_BLOCK:
 			z_hyperterm_setfgcolor(12);
 			z_hyperterm_put(0xB2);
 			z_hyperterm_put(0xB2);
 			break;
 		case EXPLOSIVE_BLOCK:
-			z_hyperterm_setfgcolor(9);
+			z_hyperterm_setfgcolor(1);
 			z_hyperterm_put(0xCF);
 			z_hyperterm_put(0xCF);
 			break;
 		case INDESTRUCTIBLE_BLOCK:
-<<<<<<< .mine
 			z_hyperterm_setfgcolor(5);
-=======
-			z_hyperterm_setfgcolor(10);
->>>>>>> .r86
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;

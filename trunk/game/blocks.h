@@ -9,6 +9,7 @@ int block_counter(void);
 int blocks_left(void);
 void blocks_draw(void);
 void blocks_loadlevel(int lvl);
+void blocks_randomizedlevel(void);
 char block_hit(int x, int y);
 char block_hit_fixed(int x, int y);
 char block_coords_in_area(int x, int y);
