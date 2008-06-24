@@ -9,23 +9,21 @@
 /*
 Local constants, fields and function prototypes
 */
-
-int ball_get_inactive(void);
-void balls_store_coords(void);
-
-#define START_SPEED (1<<8)
-
 typedef struct{
 	int x;
 	int y;
-	int xv;
-	int yv;
+	int angle;
+	int mod;
 	int oldx;
 	int oldy;
 	char active;
 } ball;
 
 ball balls[BALLS_MAX];
+
+int ball_get_inactive(void);
+void balls_store_coords(void);
+void ball_split(ball* b);
 
 /*
 Functions
@@ -64,19 +62,29 @@ Arguments:
 Note: x,y are in gamespace coords, xv/yv are in fixed point.
 */
 
-void balls_spawnnew(int x, int y, int xv, int yv)
+void balls_spawnnew(int x, int y, int angle, int mod)
+{
+	balls_spawnnew_fixed(x<<8, y<<8, angle, mod);
+}
+
+/*
+Name: ball_spawnnew_fixed
+Note: Same as ball_spawnnew, but with start coords already given in fixed point
+*/
+
+void balls_spawnnew_fixed(int x, int y, int angle, int mod)
 {
 	ball* b;
 	int index = balls_get_inactive();
 	if(index<0) return;
 
 	b = &balls[index];
-	if(!b) return;
+
 	b->active = 1;
-	b->x = x<<8;
-	b->y = y<<8;
-	b->xv = xv;
-	b->yv = yv;
+	b->x = x;
+	b->y = y;
+	b->angle = angle;
+	b->mod = mod;
 }
 
 /*
@@ -89,29 +97,21 @@ Note: Gamespace coords
 
 void balls_spawnnew_random_upwards(int x, int y)
 {
-	ball* b;
-	int dir;
-	int index = balls_get_inactive();
-	if(index<0) return;
-
-	b = &balls[index];
-	b->active = 1;
-	b->x = x<<8;
-	b->y = y<<8;
-	dir = rand();
-	b->xv = z_cos(dir);
-	b->yv = z_sin(dir);
+	balls_spawnnew(x, y, -(rand()&127), 1<<8);
 }
 
 /*
-Name: balls_split
-Functionality: Splits all balls into two
-Note: Just stops splitting if there are no balls left
+Name: ball_split
+Functionality: Splits a ball into two
+Note: Does not split if there are too many balls on the screen.
 */
 
-void balls_split(void)
+void ball_split(ball* b)
 {
-	//TODO
+	if(balls_amount() >= BALLS_MAX)
+		return;
+	balls_spawnnew_fixed(b->x, b->y, b->angle + 10, b->mod);
+	b->angle -= 10;
 }
 
 /*
@@ -137,8 +137,7 @@ Note:
 
 void ball_scalevelocity(unsigned char i, int scale)
 {
-	balls[i].xv = (balls[i].xv * scale)>>8;
-	balls[i].yv = (balls[i].yv * scale)>>8;
+	balls[i].mod = (balls[i].mod * scale)>>8;
 }
 
 #define LEFT -1
@@ -190,6 +189,113 @@ void balls_draw(void)
 	}
 }
 
+void ball_deflect(ball* b, int angle)
+{
+	b->angle = 2 * angle - b->angle;
+	b->angle += (rand()&7) - 4;
+}
+
+void ball_move_and_collide(ball* b)
+{
+	signed char xdir, ydir;
+	unsigned int dx, dy, xv_left, yv_left;
+	unsigned int xm, ym; //x and y "momentum" for lack of better in the middle of the night
+
+	//Calculate the distance to travel on the x and y axis.
+	xv_left = ABS((z_cos(b->angle)*b->mod)>>8);
+	yv_left = ABS((z_sin(b->angle)*b->mod)>>8);
+
+	//Calculate the x and y distance from the pixel to the
+	//nearest whole number and store the sign of the travelling direction
+	if(z_cos(b->angle) > 0) {
+		xdir = RIGHT;
+		dx = 0x100 - (b->x & 0xFF);
+	}
+	else {
+		xdir = LEFT;
+		dx = (b->x & 0xFF)+1;
+	}
+
+	if(z_sin(b->angle) > 0) {
+		ydir = DOWN;
+		dy = 0x100 - (b->y & 0xFF);
+	}
+	else {
+		ydir = UP;
+		dy = (b->y & 0xFF)+1;
+	}
+
+	//While there is still travelling left on either the x or y axis, do:
+	while(xv_left || yv_left)
+	{
+		xm = xv_left * dy;
+		ym = yv_left * dx;
+
+		if(xm > ym)
+		{
+			//the ball crosses the x axis before the y axis
+			if(xv_left < dx)
+			{
+				//the ball has so little travelling left to do that it stays inside the current block.
+				//just move it and be done with it.
+				b->x += xv_left * xdir;
+				dx -= xv_left;
+				xv_left = 0;
+			}
+			else if(b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || block_hit_fixed(b->x+xdir*dx, b->y) || paddle_collision_fixed(b->x+xdir*dx, b->y))
+			{
+				//the block collides with something
+				//move it to the edge, reverse the x-direction
+				ball_deflect(b, 64);
+				b->x += (dx-1)*xdir;
+				xv_left -= dx-1;
+				dx = 0x100;
+				xdir = -xdir;
+			}
+			else
+			{
+				//the ball did not collide with anything.
+				//move it to the next block
+				b->x += dx * xdir;
+				xv_left -= dx;
+				dx = 0x100;
+			}
+		}
+		else
+		{
+			//the ball crosses the y axis before the x axis
+			if(yv_left < dy)
+			{
+				b->y += yv_left * ydir;
+				dy -= yv_left;
+				yv_left = 0;
+			}
+			else if(paddle_collision_fixed(b->x, b->y+ydir*dy))
+			{
+				ball_deflect(b, paddle_getangle(b->x));
+				b->y += (dy-1)*ydir;
+				yv_left -= dy-1;
+				dy = 0x100;
+				ydir = -ydir;
+			}
+			else if(b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || block_hit_fixed(b->x, b->y+ydir*dy))
+			{
+				ball_deflect(b, 0);
+				b->y += (dy-1)*ydir;
+				yv_left -= dy-1;
+				dy = 0x100;
+				ydir = -ydir;
+			}
+			else
+			{
+				b->y += dy*ydir;
+				yv_left -= dy;
+				dy = 0x100;
+			}
+		}
+	}
+}
+
 /*
 Name:
 Functionality:
@@ -199,96 +305,13 @@ Note:
 
 void balls_move_and_collide(void)
 {
-	signed char i, xdir, ydir;
-	unsigned int dx, dy, xv_left, yv_left;
-	unsigned int xm, ym; //x and y "momentum" for lack of better in the middle of the night
-
+	unsigned char i;
 	balls_store_coords();
 
 	for(i = 0; i < BALLS_MAX; i++) {
 		ball* b = &balls[i];
 		if(b->active) {
-			//Calculate the distance to travel on the x and y axis.
-			xv_left = ABS(b->xv);
-			yv_left = ABS(b->yv);
-
-			//Calculate the x and y distance from the pixel to the
-			//nearest whole number (i.e, no fractional bits)
-			if(b->xv > 0) {
-				xdir = RIGHT;
-				dx = 0x100 - (b->x & 0xFF);
-			} else {
-				xdir = LEFT;
-				dx = (b->x & 0xFF)+1;
-			}
-
-			if(b->yv > 0) {
-				ydir = DOWN;
-				dy = 0x100 - (b->y & 0xFF);
-			} else {
-				ydir = UP;
-				dy = (b->y & 0xFF)+1;
-			}
-
-			//While there is still travelling left on either the x or y axis, do:
-			while(xv_left || yv_left)
-			{
-				xm = xv_left * dy;
-				ym = yv_left * dx;
-
-				//the ball crosses the x axis before the y axis
-				if(xm > ym)
-				{
-					//the ball has so little travelling left to do that it stays inside the current block.
-					//just move it and be fone with it.
-					if(xv_left < dx)
-					{
-						b->x += xv_left * xdir;
-						dx -= xv_left;
-						xv_left = 0;
-					}
-					//the block collides with something
-					//move it to the edge, reverse the x-direction
-					else if(b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || block_hit_fixed(b->x+xdir*dx, b->y) || paddle_collision_fixed(b->x+xdir*dx, b->y))
-					{
-						b->xv = -b->xv;
-						b->x += (dx-1)*xdir;
-						xv_left -= dx-1;
-						dx = 0x100;
-						xdir = -xdir;
-					}
-					//the block did not collide with anything.
-					//move it to the next block
-					else {
-						b->x += dx * xdir;
-						xv_left -= dx;
-						dx = 0x100;
-					}
-				}
-				//the ball crosses the y axis before the x axis
-				else
-				{
-					if(yv_left < dy)
-					{
-						b->y += yv_left * ydir;
-						dy -= yv_left;
-						yv_left = 0;
-					}
-					else if(b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || block_hit_fixed(b->x, b->y+ydir*dy) || paddle_collision_fixed(b->x, b->y+ydir*dy))
-					{
-						b->yv = -b->yv;
-						b->y += (dy-1)*ydir;
-						yv_left -= dy-1;
-						dy = 0x100;
-						ydir = -ydir;
-					}
-					else {
-						b->y += dy*ydir;
-						yv_left -= dy;
-						dy = 0x100;
-					}
-				}
-			}
+			ball_move_and_collide(b);
 		}
 	}
 }
