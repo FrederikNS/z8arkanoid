@@ -113,22 +113,32 @@ void block_draw(char x, char y) {
 			z_hyperterm_put(0x20);
 			break;
 		case FAKE_BLOCK:
+<<<<<<< .mine
+			z_hyperterm_setfgcolor(3)
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
+=======
 			z_hyperterm_setfgcolor(11
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
+>>>>>>> .r86
 		case REGULAR_BLOCK:
 			z_hyperterm_setfgcolor(12);
 			z_hyperterm_put(0xB2);
 			z_hyperterm_put(0xB2);
 			break;
 		case EXPLOSIVE_BLOCK:
-			z_hyperterm_setfgcolor(1);
+			z_hyperterm_setfgcolor(9);
 			z_hyperterm_put(0xCF);
 			z_hyperterm_put(0xCF);
 			break;
 		case INDESTRUCTIBLE_BLOCK:
+<<<<<<< .mine
+			z_hyperterm_setfgcolor(5);
+=======
 			z_hyperterm_setfgcolor(10);
+>>>>>>> .r86
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
