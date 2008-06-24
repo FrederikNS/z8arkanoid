@@ -9,5 +9,5 @@ void paddle_moveright(void);
 char paddle_collision(int x, int y);
 char paddle_collision_fixed(int x, int y);
 void paddle_draw(void);
-
+int paddle_getangle(int x);
 #endif

@@ -82,3 +82,10 @@ char paddle_collision(int x, int y)
 char paddle_collision_fixed(int x, int y){
 	return paddle_collision(x>>8,y>>8);
 }
+
+
+int paddle_getangle(int x) {
+	int d = x - (paddle.x << 8); //x is already fixed
+
+	return (d / paddle.width)>>5;
+}
