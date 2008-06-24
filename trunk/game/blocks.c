@@ -117,6 +117,10 @@ void block_draw(char x, char y) {
 			z_hyperterm_put(0x20);
 			break;
 		case FAKE_BLOCK:
+			z_hyperterm_setfgcolor(11
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
+			break;
 		case REGULAR_BLOCK:
 			z_hyperterm_setfgcolor(12);
 			z_hyperterm_put(0xB2);
@@ -128,7 +132,7 @@ void block_draw(char x, char y) {
 			z_hyperterm_put(0xCF);
 			break;
 		case INDESTRUCTIBLE_BLOCK:
-			z_hyperterm_setfgcolor(11);
+			z_hyperterm_setfgcolor(10);
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
@@ -144,6 +148,11 @@ void block_draw(char x, char y) {
 			break;
 		case HARD_BLOCK_3:
 			z_hyperterm_setfgcolor(15);
+			z_hyperterm_put(0xDB);
+			z_hyperterm_put(0xDB);
+			break;
+		case HIT_INVISIBLE_BLOCK:
+			z_hyperterm_setfgcolor(14);
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
