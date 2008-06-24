@@ -133,12 +133,12 @@ void block_draw(char x, char y) {
 			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_1:
-			z_hyperterm_setfgcolor(7);
+			z_hyperterm_setfgcolor(8);
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
 		case HARD_BLOCK_2:
-			z_hyperterm_setfgcolor(8);
+			z_hyperterm_setfgcolor(7);
 			z_hyperterm_put(0xDB);
 			z_hyperterm_put(0xDB);
 			break;
