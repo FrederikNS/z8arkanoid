@@ -2,6 +2,7 @@
 #include "blocks.h"
 #include "paddle.h"
 #include "gameboard.h"
+#include "powerups.h"
 #include "../math/math.h"
 #include "../api/hyperterm.h"
 #include <stdlib.h> //Used for randomization
@@ -97,7 +98,7 @@ Note: Gamespace coords
 
 void balls_spawnnew_random_upwards(int x, int y)
 {
-	balls_spawnnew(x, y, -(rand()&127), 4<<8);
+	balls_spawnnew(x, y, -(rand()&127), 1<<5);
 }
 
 /*
@@ -112,6 +113,21 @@ void ball_split(ball* b)
 		return;
 	balls_spawnnew_fixed(b->x, b->y, b->angle + 10, b->mod);
 	b->angle -= 10;
+}
+
+void balls_split(void)
+{
+	char to_split[BALLS_MAX];
+	unsigned char i;
+	for(i = 0; i < BALLS_MAX; i++) {
+		if(balls[i].active)
+			to_split[i] = 1;
+		else
+			to_split[i] = 0;
+	}
+	for(i = 0; i < BALLS_MAX; i++)
+		if(to_split[i])
+			ball_split(&balls[i]);
 }
 
 /*
@@ -139,11 +155,6 @@ void ball_scalevelocity(unsigned char i, int scale)
 {
 	balls[i].mod = (balls[i].mod * scale)>>8;
 }
-
-#define LEFT -1
-#define RIGHT 1
-#define UP -1
-#define DOWN 1
 
 /*
 Name:
@@ -175,8 +186,11 @@ void balls_draw(void)
 {
 	int i;
 	ball* b = balls;
-	z_hyperterm_setfgcolor(7);
 	z_hyperterm_setbgcolor(0);
+	if(powerups_heavyball()) z_hyperterm_setfgcolor(6);
+	else if (powerups_bombballs()) z_hyperterm_setfgcolor(1);
+	else z_hyperterm_setfgcolor(7);
+
 	for(i = 0; i < BALLS_MAX; i++, b++) {
 		if(b->active) {
 			if(b->x>>8 != b->oldx || b->y>>8 != b->oldy) {
@@ -189,11 +203,37 @@ void balls_draw(void)
 	}
 }
 
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
+
+
 void ball_deflect(ball* b, int angle)
 {
+	int r = rand();
 	b->angle = 2 * angle - b->angle;
-//	b->angle += (rand()&7) - 4;
+	if(r&1) {
+		if(r&2)
+			b->angle--;
+		else
+			b->angle++;
+	}
 }
+
+/*
+Name:
+Functionality:
+Arguments:
+Note:
+*/
+
+#define LEFT -1
+#define RIGHT 1
+#define UP -1
+#define DOWN 1
 
 void ball_move_and_collide(ball* b)
 {
@@ -202,8 +242,8 @@ void ball_move_and_collide(ball* b)
 	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
 	//Calculate the distance to travel on the x and y axis.
-	xv_left = ABS((z_cos(b->angle)*b->mod)>>8);
-	yv_left = ABS((z_sin(b->angle)*b->mod)>>8);
+	xv_left = ABS(z_cos(b->angle)*b->mod)>>4;
+	yv_left = ABS(z_sin(b->angle)*b->mod)>>5;
 
 	//Calculate the x and y distance from the pixel to the
 	//nearest whole number and store the sign of the travelling direction
@@ -246,6 +286,7 @@ void ball_move_and_collide(ball* b)
 			{
 				//the block collides with something
 				//move it to the edge, reverse the x-direction
+				//b->angle = 128 - b->angle;
 				ball_deflect(b, 64);
 				b->x += (dx-1)*xdir;
 				xv_left -= dx-1;
@@ -272,13 +313,22 @@ void ball_move_and_collide(ball* b)
 			}
 			else if(paddle_collision_fixed(b->x, b->y+ydir*dy))
 			{
+				//b->angle = 2*paddle_getangle(b->x) - b->angle;
 				ball_deflect(b, paddle_getangle(b->x));
+				//ball_deflect(b, 0);
+				b->angle = b->angle&0xFF;
+
+				if(b->angle > 248)
+					b->angle = 248;
+				else if(b->angle < 120)
+					b->angle = 120;
+
 				b->y += (dy-1)*ydir;
 				yv_left -= dy-1;
 				dy = 0x100;
 				ydir = -ydir;
 			}
-			else if(b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || block_hit_fixed(b->x, b->y+ydir*dy))
+			else if(b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || block_hit_fixed(b->x, b->y+ydir*dy) /*|| paddle_collision_fixed(b->x, b->y+ydir*dy)*/)
 			{
 				ball_deflect(b, 0);
 				b->y += (dy-1)*ydir;

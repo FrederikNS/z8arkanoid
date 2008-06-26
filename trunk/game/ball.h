@@ -15,5 +15,6 @@ void ball_scalevelocity(unsigned char i, int scale);
 
 void balls_move_and_collide(void);
 void balls_draw(void);
+void balls_split(void);
 
 #endif

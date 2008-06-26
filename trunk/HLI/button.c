@@ -4,7 +4,7 @@ void z_buttons_init(){
 	PDADDR = 0x01;
 	PDCTL |= 0xF;
 	PDADDR = 0;
-	
+
 	PFADDR = 0x01;
 	PFCTL |= 0xF;
 	PFADDR = 0;
@@ -28,7 +28,7 @@ char z_button_left(void)
 {
 	if(0x8!=(0x8&PDIN))
 		return 1;
-	if(0x20!=(0x20&PFIN))
-		return 1;
+	//if(0x20!=(0x20&PFIN))
+	//	return 1;
 	return 0;
 }

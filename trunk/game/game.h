@@ -7,6 +7,7 @@
 #include "paddle.h"
 #include "gameboard.h"
 #include "gameinfo.h"
+#include "powerups.h"
 
 char game_mainloop(void);
 void game_levelinit(void);

@@ -42,7 +42,7 @@ int z_sin(int v)
 
 int z_cos(int v)
 {
-	return sinlut[(v+64)&0xFF];
+	return z_sin(v+64);
 }
 
 

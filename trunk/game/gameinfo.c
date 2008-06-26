@@ -4,7 +4,7 @@
 #include <stdio.h>
 #define term_goto(line,column) z_hyperterm_goto(column,line)
 #define ESC 0x1B
-#define LEVEL_MAX 2
+#define LEVEL_MAX 4
 #define LEVEL_MIN 0
 #define LIVES_MAX 10
 #define LIVES_MIN 0
@@ -29,7 +29,7 @@ void gameinfo_livesdecrease(int lives_decrease){
 	lives -= lives_decrease;
 	if(lives>LIVES_MIN) lives = LIVES_MIN;
 	gameinfo_drawinfo();
-}			  
+}
 
 char gameinfo_getlives(void){
 	return lives;
@@ -49,18 +49,14 @@ int gameinfo_getscore(void){
 	return score;
 }
 
-char gameinfo_levelincrease(int level_increase){
+void gameinfo_levelincrease(int level_increase){
 	level += level_increase;
 	if(level>LEVEL_MAX) level = LEVEL_MAX;
-	gameinfo_drawinfo();
-	return level;
 }
 
-char gameinfo_leveldecrease(int level_decrease){
+void gameinfo_leveldecrease(int level_decrease){
 	level -= level_decrease;
 	if(level>LEVEL_MIN) level = LEVEL_MIN;
-	gameinfo_drawinfo();
-	return level;
 }
 
 char gameinfo_getlevel(void){
