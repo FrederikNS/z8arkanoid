@@ -14,6 +14,5 @@ char block_hit(int x, int y);
 char block_hit_fixed(int x, int y);
 int blocks_amount(void);
 void blocks_reveal_all(void);
-void block_explode_on(int x, int y);
 
 #endif
