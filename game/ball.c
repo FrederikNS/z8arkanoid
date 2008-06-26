@@ -217,12 +217,12 @@ void ball_deflect(ball* b, int angle)
 {
 	int r = rand();
 	b->angle = 2 * angle - b->angle;
-	if(r&1) {
+	/*if(r&1) {
 		if(r&2)
 			b->angle--;
 		else
 			b->angle++;
-	}
+	}*/
 }
 
 /*
@@ -325,22 +325,26 @@ void ball_move_and_collide(ball* b)
 			}
 			else if(paddle_collision_fixed(b->x, b->y+ydir*dy))
 			{
-				//b->angle = 2*paddle_getangle(b->x) - b->angle;
 				ball_deflect(b, paddle_getangle(b->x));
-				//ball_deflect(b, 0);
 				b->angle = b->angle&0xFF;
 
-				if(b->angle > 248)
-					b->angle = 248;
-				else if(b->angle < 120)
-					b->angle = 120;
+				if(b->angle > 240)
+					b->angle = 240;
+				else if(b->angle < 114)
+					b->angle = 114;
 
 				b->y += (dy-1)*ydir;
 				yv_left -= dy-1;
 				dy = 0x100;
 				ydir = -ydir;
 			}
-			else if(b->y + dy * ydir < 0 || b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8 || block_hit_fixed(b->x, b->y+ydir*dy) /*|| paddle_collision_fixed(b->x, b->y+ydir*dy)*/)
+			else if(b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8)
+			{
+				b->active = 0;
+				z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
+				return;
+			}
+			else if(b->y + dy * ydir < 0 || block_hit_fixed(b->x, b->y+ydir*dy))
 			{
 				ball_deflect(b, 0);
 				b->y += (dy-1)*ydir;
