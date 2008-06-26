@@ -13,6 +13,8 @@ char block_coords_in_area(int x, int y);
 unsigned char* block_on(int x, int y);
 void block_draw(int x, int y);
 char block_hit_coord(int x, int y);
+void block_explode_on(int x, int y);
+char block_hit_coord_inner(int x, int y, char explode);
 
 enum BLOCK_TYPES {
 	NO_BLOCK,            //0
@@ -33,7 +35,7 @@ unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
  Name: blocks_clear
  Functionality: clears all blocks.
  Note: Does not remove the blocks from the screen.
- */
+*/
 
 void blocks_clear(void)
 {
@@ -45,9 +47,9 @@ void blocks_clear(void)
  Name: blocks_loadlevel
  Functionality: Loads a level into the block memory
  Arguments:
- lvl:	Level number, from levels.c
+	 lvl:	Level number, from levels.c
  Note: Lvl is zero-indexed.
- */
+*/
 
 int blocks_counter;
 
@@ -79,7 +81,7 @@ void blocks_randomizedlevel(void) {
  Arguments:
  x, y: coordinates in block coords.
  Note: block coords
- */
+*/
 
 char block_coords_in_area(int x, int y) {
 	if(x >= 0 && y >= 0 && x < BLOCKS_WIDTH && y < BLOCKS_HEIGHT)
@@ -93,19 +95,21 @@ char block_coords_in_area(int x, int y) {
  Arguments:
  x, y: coordinates in block coords.
  Note: block coords
- */
+*/
+
 unsigned char* block_on(int x, int y) {
 	if(block_coords_in_area(x, y))
 		return &blocks[x+y*BLOCKS_WIDTH];
 	return 0;
 }
+
 /*
  Name: block_draw
  Functionality: Draws the block on the given coordinates to the screen.
  Arguments:
  x, y: coordinates in block coords.
  Note: block coords
- */
+*/
 
 char blocks_colors[10] = {
 	0,	2,	12,	1,	0,
@@ -128,7 +132,7 @@ void block_draw(int x, int y) {
 /*
  Name: blocks_draw
  Functionality: Draws all blogs to the screen
- */
+*/
 
 void blocks_draw(void) {
 	int x;
@@ -150,7 +154,7 @@ void blocks_draw(void) {
  Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
  Arguments:
  x, y: coordinates for the block in gamespace fixed point
- */
+*/
 
 
 char block_hit_fixed(int x, int y) {
@@ -163,9 +167,10 @@ char block_hit_fixed(int x, int y) {
  Returns: true if the block is/was solid enough to give bounce-back. Used for balls.
  Arguments:
  x, y: coordinates for the block in gamespace integers
- */
+*/
 
-char block_hit(int x, int y){
+char block_hit(int x, int y)
+{
 	return block_hit_coord(x>>1,y);
 }
 
@@ -178,7 +183,12 @@ char block_hit(int x, int y){
  Note: block coords
 */
 
-char block_hit_coord(int x, int y) {
+char block_hit_coord(int x, int y)
+{
+	return block_hit_coord_inner(x, y, powerups_bombballs());
+}
+
+char block_hit_coord_inner(int x, int y, char explode) {
 	unsigned char* block = block_on(x, y);
 	char collide = 1;
 	if(!block || !*block) return 0; //Either the block is empty, or the coords are out of range, so no need for the ball to bounce off.
@@ -189,7 +199,7 @@ char block_hit_coord(int x, int y) {
 			break;
 		case EXPLOSIVE_BLOCK:
 			*block = NO_BLOCK;
-			block_explode_on(x, y);
+			explode = 1;
 			break;
 		case INVISIBLE_BLOCK:
 			*block = REGULAR_BLOCK;
@@ -233,6 +243,8 @@ char block_hit_coord(int x, int y) {
 	if(!*block) blocks_counter--;
 	block_draw(x,y);
 
+	if(explode) block_explode_on(x, y);
+
 	if(powerups_heavyball())
 		return 0;
 
@@ -241,15 +253,15 @@ char block_hit_coord(int x, int y) {
 
 void block_explode_on(int x, int y)
 {
-	block_hit_coord(x-1,y-1);
-	block_hit_coord(x-1,y);
-	block_hit_coord(x-1,y+1);
-	block_hit_coord(x,y-1);
-	block_hit_coord(x,y);
-	block_hit_coord(x,y+1);
-	block_hit_coord(x+1,y-1);
-	block_hit_coord(x+1,y);
-	block_hit_coord(x+1,y+1);
+	block_hit_coord_inner(x - 1, y - 1, 0);
+	block_hit_coord_inner(x - 1, y, 0);
+	block_hit_coord_inner(x - 1, y + 1, 0);
+	block_hit_coord_inner(x, y - 1, 0);
+	block_hit_coord_inner(x, y, 0);
+	block_hit_coord_inner(x, y + 1, 0);
+	block_hit_coord_inner(x + 1, y - 1, 0);
+	block_hit_coord_inner(x + 1, y, 0);
+	block_hit_coord_inner(x + 1, y + 1, 0);
 }
 
 void blocks_reveal_all(void)

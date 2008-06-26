@@ -27,9 +27,7 @@ void game_loadlevel(char l) {
 	gameinfo_drawinfo();
 	blocks_loadlevel(l);
 	blocks_draw();
-	balls_spawnnew_random_upwards(30,17);
-	balls_spawnnew(30, 17, 63, 1<<5);
-	balls_spawnnew(30, 17, 64, 1<<5);
+	balls_spawnnew_random_upwards(30,17,(1<<3)+l);
 	gameinfo_drawinfo();
 	powerups_reset();
 }

@@ -7,7 +7,7 @@ void balls_init(void);
 
 void balls_spawnnew(int x, int y, int xv, int yv);
 void balls_spawnnew_fixed(int x, int y, int angle, int mod);
-void balls_spawnnew_random_upwards(int x, int y);
+void balls_spawnnew_random_upwards(int x, int y, int mod);
 
 char balls_amount(void);
 

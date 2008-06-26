@@ -5,6 +5,7 @@
 #include "powerups.h"
 #include "../math/math.h"
 #include "../api/hyperterm.h"
+#include "../api/debug.h"
 #include <stdlib.h> //Used for randomization
 
 /*
@@ -93,12 +94,13 @@ Name: balls_spawnnew_random_upwards
 Functionality: Spawns a ball moving upwards in a random direction
 Arguments:
 	x,y:	Gamespace coordinates for the new ball
+	mod:	Speed
 Note: Gamespace coords
 */
 
-void balls_spawnnew_random_upwards(int x, int y)
+void balls_spawnnew_random_upwards(int x, int y, int mod)
 {
-	balls_spawnnew(x, y, -(rand()&127), 1<<5);
+	balls_spawnnew(x, y, -(rand()&127), mod);
 }
 
 /*
@@ -235,11 +237,18 @@ Note:
 #define UP -1
 #define DOWN 1
 
+#include <stdio.h>
+
 void ball_move_and_collide(ball* b)
 {
 	signed char xdir, ydir;
 	unsigned int dx, dy, xv_left, yv_left;
-	unsigned long int xm, ym; //x and y "momentum" for lack of better in the middle of the night
+	unsigned long xm, ym; //x and y "momentum" for lack of better in the middle of the night
+
+	if(paddle_collision_fixed(b->x, b->y)) {
+		b->y -= 1<<8;
+		b->angle = -64;
+	}
 
 	//Calculate the distance to travel on the x and y axis.
 	xv_left = ABS(z_cos(b->angle)*b->mod)>>4;
@@ -268,8 +277,11 @@ void ball_move_and_collide(ball* b)
 	//While there is still travelling left on either the x or y axis, do:
 	while(xv_left || yv_left)
 	{
-		xm = xv_left * dy;
-		ym = yv_left * dx;
+		xm = (long)xv_left * (long)dy;
+		ym = (long)yv_left * (long)dx;
+		ASSERT(dy, "!dy");
+		ASSERT(dx, "!dx");
+		ASSERT(!(xm == 0 && ym == 0), "xm & ym = 0");
 
 		if(xm > ym)
 		{

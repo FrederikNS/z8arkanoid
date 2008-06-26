@@ -3,9 +3,9 @@
 #include "../API/API.H"
 #include "../HLI/HLI.h"
 
-#define PADDLE_STARTWIDTH 9
-#define PADDLE_MAXWIDTH 17
-#define PADDLE_MINWIDTH 5
+#define PADDLE_STARTWIDTH 13
+#define PADDLE_MAXWIDTH 21
+#define PADDLE_MINWIDTH 9
 #define PADDLE_Y (GAMEFIELD_HEIGHT - 2)
 
 struct
@@ -91,7 +91,7 @@ char paddle_collision_fixed(int x, int y){
 
 
 int paddle_getangle(int x) {
-	int d = x - (paddle.x << 8); //x is already fixed
+	int d = x - (paddle.x << 8) - (paddle.width<<7); //x is already fixed
 
-	return (d / paddle.width)>>5;
+	return (d / paddle.width)>>3;
 }
