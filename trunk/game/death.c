@@ -38,9 +38,6 @@ void death(void)
 	z_hyperterm_clear();
 	z_hyperterm_formatreset();
 	z_hyperterm_setfgcolor(3);
-	DI();
-	z_timer_start(0x100, 4);
-	EI();
 
 	for(x = 0; x < 66; x++) {
 		for(y = 0; y < 25; y++) {
@@ -49,8 +46,6 @@ void death(void)
 			else
 				z_hyperterm_put_on(skull[y][x], x + 7, y);
 		}
-		z_timer_makebusy();
-		while(z_timer_isbusy());
 	}
 
 	z_hyperterm_setfgcolor(7+8);
@@ -64,9 +59,9 @@ void death(void)
 		z_timer_makebusy();
 		while(z_timer_isbusy());
 	}
-	z_hyperterm_goto(40-16, 25);
+	z_hyperterm_goto(40-12, 25);
 	z_hyperterm_blinkslow();
-	z_hyperterm_putstring("PRESS MIDDLE TO CONTINUE, LAMER!");
+	z_hyperterm_putstring("PRESS MIDDLE TO CONTINUE");
 	while(!z_button_middle());
 }
 

@@ -12,9 +12,9 @@
 Local constants, fields and function prototypes
 */
 typedef struct{
-	int x;
-	int y;
-	int angle;
+	signed int x;
+	signed int y;
+	signed int angle;
 	int mod;
 	int oldx;
 	int oldy;
@@ -100,7 +100,7 @@ Note: Gamespace coords
 
 void balls_spawnnew_random_upwards(int x, int y, int mod)
 {
-	balls_spawnnew(x, y, -(rand()&127), mod);
+	balls_spawnnew(x, y, (-(rand()&63)-32), mod);
 }
 
 /*
@@ -338,13 +338,7 @@ void ball_move_and_collide(ball* b)
 				dy = 0x100;
 				ydir = -ydir;
 			}
-			else if(b->y + dy * ydir >= GAMEFIELD_HEIGHT<<8)
-			{
-				b->active = 0;
-				z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
-				return;
-			}
-			else if(b->y + dy * ydir < 0 || block_hit_fixed(b->x, b->y+ydir*dy))
+			else if((b->y < 0x100 && ydir < 0) || block_hit_fixed(b->x, b->y+ydir*dy))
 			{
 				ball_deflect(b, 0);
 				b->y += (dy-1)*ydir;
@@ -359,6 +353,12 @@ void ball_move_and_collide(ball* b)
 				dy = 0x100;
 			}
 		}
+	}
+	if(b->y >= GAMEFIELD_HEIGHT<<8)
+	{
+		b->active = 0;
+		z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
+		return;
 	}
 }
 

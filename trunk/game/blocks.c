@@ -26,7 +26,8 @@ enum BLOCK_TYPES {
 	HARD_BLOCK_1,        //6
 	HARD_BLOCK_2,        //7
 	HARD_BLOCK_3,        //8
-	HIT_INVISIBLE_BLOCK  //9
+	HIT_INVISIBLE_BLOCK,  //9
+	POWERUP_BLOCK		 //10
 };
 
 unsigned char blocks[BLOCKS_WIDTH*BLOCKS_HEIGHT];
@@ -111,14 +112,16 @@ unsigned char* block_on(int x, int y) {
  Note: block coords
 */
 
-const char blocks_colors[10] = {
+const char blocks_colors[11] = {
 	0,	2,	12,	1,	0,
-	5,	8,	7,	15,	14
+	5,	8,	7,	15,	14,
+	6
 };
 
-const char blocks_symbols[10] = {
+const char blocks_symbols[11] = {
 	0x20,	0xDB,	0xB2,	0xDB,	0x20,
 	0xCF,	0xDB,	0xDB,	0xDB,	0xDB,
+	'*'
 };
 
 void block_draw(int x, int y) {
@@ -200,9 +203,11 @@ char block_hit_coord_inner(int x, int y, char explode) {
 		case EXPLOSIVE_BLOCK:
 			*block = NO_BLOCK;
 			explode = 1;
+			gameinfo_scoreincrease(15);
 			break;
 		case INVISIBLE_BLOCK:
 			*block = REGULAR_BLOCK;
+			gameinfo_scoreincrease(20);
 			break;
 		case HARD_BLOCK_1:
 			gameinfo_scoreincrease(15);
@@ -227,6 +232,11 @@ char block_hit_coord_inner(int x, int y, char explode) {
 			block_draw(x,y);
 			gameinfo_scoreincrease(10);
 			collide = 0;
+			break;
+		case POWERUP_BLOCK:
+			powerup_spawn();
+			*block = NO_BLOCK;
+			gameinfo_scoreincrease(10);
 			break;
 	}
 

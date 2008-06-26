@@ -48,6 +48,9 @@ void paddle_decreasewidth(void)
 
 void paddle_reset(void)
 {
+	int i;
+	z_hyperterm_goto(paddle.x + 3, PADDLE_Y + 3);
+	for(i = 0; i < paddle.width; i++) z_hyperterm_put(' ');
 	paddle.width = PADDLE_STARTWIDTH;
 	paddle.x = (GAMEFIELD_WIDTH>>1) - (PADDLE_STARTWIDTH>>1); // x = center_x - width/2
 }
