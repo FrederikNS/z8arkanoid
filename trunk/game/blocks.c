@@ -111,12 +111,12 @@ unsigned char* block_on(int x, int y) {
  Note: block coords
 */
 
-char blocks_colors[10] = {
+const char blocks_colors[10] = {
 	0,	2,	12,	1,	0,
 	5,	8,	7,	15,	14
 };
 
-char blocks_symbols[10] = {
+const char blocks_symbols[10] = {
 	0x20,	0xDB,	0xB2,	0xDB,	0x20,
 	0xCF,	0xDB,	0xDB,	0xDB,	0xDB,
 };
