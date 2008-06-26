@@ -3,9 +3,9 @@
 #include "../API/API.H"
 #include "../HLI/HLI.h"
 
-#define PADDLE_STARTWIDTH 7
-#define PADDLE_MAXWIDTH 15
-#define PADDLE_MINWIDTH 3
+#define PADDLE_STARTWIDTH 9
+#define PADDLE_MAXWIDTH 17
+#define PADDLE_MINWIDTH 5
 #define PADDLE_Y (GAMEFIELD_HEIGHT - 2)
 
 struct
@@ -20,9 +20,15 @@ void paddle_fixposition(void)
 	if(paddle.x + paddle.width > GAMEFIELD_WIDTH) paddle.x = GAMEFIELD_WIDTH - paddle.width;
 }
 
+char paddle_ismaxwidth(void)
+{
+	if(paddle.width == PADDLE_MAXWIDTH) return 1;
+	return 0;
+}
+
 void paddle_increasewidth(void)
 {
-	if(paddle.width < PADDLE_MAXWIDTH) {
+	if(!paddle_ismaxwidth()) {
 		paddle.width+=2;
 		paddle.x -= 1;
 		paddle_fixposition();

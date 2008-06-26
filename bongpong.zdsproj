@@ -21,6 +21,7 @@
 <file filter-key="">game\gameboard.c</file>
 <file filter-key="">game\levels.c</file>
 <file filter-key="">game\gameinfo.c</file>
+<file filter-key="">game\powerups.c</file>
 </files>
 
 <!-- configuration information -->
