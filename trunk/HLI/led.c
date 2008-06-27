@@ -2,6 +2,10 @@
 #include "led.h"
 #include "../math/lamemath.h"
 
+/*
+ Name: z_leds_init
+ Functionality: Initiates the leds for use
+*/
 void z_leds_init(void)
 {
 	PEAF = 0x00;		//PE Alt func = Port
@@ -17,6 +21,10 @@ void z_leds_init(void)
 	PGCTL= 0X00;     // OUTPUT	           : updated
 }
 
+/*
+ Name: z_leds_set_column
+ Functionality: Sets a column in the array to the defined bits
+*/
 void z_leds_set_column(int column, int value)
 {
 	//int xf = 4-column%5;
@@ -33,6 +41,10 @@ void z_leds_set_column(int column, int value)
 	}
 }
 
+/*
+ Name: z_leds_clear_block
+ Functionality: Turns all the leds on a block off
+*/
 void z_leds_clear_block(int block) {
 	//Make sure that bits are low
 	PEOUT = 0;
@@ -45,6 +57,10 @@ void z_leds_clear_block(int block) {
 	}
 }
 
+/*
+ Name: z_leds_clear_all
+ Functionality: Turns all the led on the blocks off
+*/
 void z_leds_clear_all(void)
 {
 	PEOUT = 0;
