@@ -1,7 +1,11 @@
-#include "../api/hyperterm.h"
-#include "../hli/timer.h"
-#include "../hli/button.h"
+#include "../api/api.h"
+#ifndef GBA
 #include <ez8.h>
+#include "../hli/timer.h"
+#else
+#include "../../lglib/lglib.h"
+#endif
+#include "../hli/button.h"
 
 const char skull[25][67] = {
 "                              ..i:rrr,                  :Ji       ",
@@ -49,15 +53,20 @@ void death(void)
 	}
 
 	z_hyperterm_setfgcolor(7+8);
+#ifndef GBA
 	DI();
 	z_timer_start(0x800, 5);
 	EI();
-
+#endif
 	z_hyperterm_goto(40-8, 6);
 	for(x = 0; x < 16; x++) {
 		z_hyperterm_put(gameover[x]);
+#ifndef GBA
 		z_timer_makebusy();
 		while(z_timer_isbusy());
+#else
+		IntrVBlankWait();
+#endif
 	}
 	z_hyperterm_goto(40-12, 25);
 	z_hyperterm_blinkslow();

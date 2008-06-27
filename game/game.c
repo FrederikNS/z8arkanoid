@@ -26,9 +26,11 @@ void game_restartlevel(void)
 	blocks_draw();
 	balls_spawnnew_random_upwards(30,17,(1<<3)+gameinfo_getlevel());
 	powerups_reset();
+#ifndef GBA
 	DI();
 	z_timer_start(0xC0, 1);
 	EI();
+#endif
 }
 
 void game_loadlevel(char l) {
@@ -41,9 +43,11 @@ void game_loadlevel(char l) {
 	blocks_draw();
 	balls_spawnnew_random_upwards(30,17,(1<<3)+l);
 	powerups_reset();
+#ifndef GBA
 	DI();
 	z_timer_start(0xC0, 1);
 	EI();
+#endif
 }
 
 extern void death_drawskull(void);
@@ -60,12 +64,16 @@ void game_mainloop(void)
 		balls_draw();
 		paddle_draw();
 
+#ifdef GBA
+		if(blocks_amount() <= 0 || KEYPRESS_SELECT)
+#else
 		if(blocks_amount() <= 0)
+#endif
 		{
 			gameinfo_levelincrease(1);
 			game_loadlevel(gameinfo_getlevel());
 		}
-		else if(balls_amount() <= 0 || z_button_middle())
+		else if(balls_amount() <= 0)
 		{
 			gameinfo_livesdecrease(1);
 			gameinfo_drawinfo();
@@ -73,8 +81,12 @@ void game_mainloop(void)
 			game_printfailure();
 			game_restartlevel();
 		}
+#ifdef GBA
+		IntrVBlankWait();
+#else
 		z_timer_makebusy();
 		while(z_timer_isbusy()) rand();
+#endif
 	}
 }
 

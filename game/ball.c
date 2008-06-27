@@ -215,7 +215,7 @@ Note:
 
 void ball_deflect(ball* b, int angle)
 {
-	int r = rand();
+	//int r = rand();
 	b->angle = 2 * angle - b->angle;
 	/*if(r&1) {
 		if(r&2)
