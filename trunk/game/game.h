@@ -9,7 +9,7 @@
 #include "gameinfo.h"
 #include "powerups.h"
 
-char game_mainloop(void);
+void game_mainloop(void);
 void game_levelinit(void);
 
 #endif
