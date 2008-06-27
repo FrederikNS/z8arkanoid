@@ -8,15 +8,21 @@
 #include "../../lglib/lglib.h"
 #endif
 
+//prototypes for local functions.
+
 void game_loadlevel(char l);
 void game_printfailure(void);
 
+
+//initializes the game
 void game_init()
 {
 	gameinfo_init();
 	game_loadlevel(0);
+	gameboard_draw();
 }
 
+//restarts a level after death
 void game_restartlevel(void)
 {
 	z_hyperterm_formatreset();
@@ -33,37 +39,32 @@ void game_restartlevel(void)
 #endif
 }
 
+//loads and initializes a new level.
 void game_loadlevel(char l) {
-	z_hyperterm_formatreset();
-	paddle_reset();
-	balls_init();
-	gameboard_draw();
-	gameinfo_drawinfo();
 	blocks_loadlevel(l);
-	blocks_draw();
-	balls_spawnnew_random_upwards(30,17,(1<<3)+l);
-	powerups_reset();
-#ifndef GBA
-	DI();
-	z_timer_start(0xC0, 1);
-	EI();
-#endif
+	game_restartlevel();
 }
-
-extern void death_drawskull(void);
 
 void game_mainloop(void)
 {
-	game_init();
+	game_init(); //initialize the game
 	while(1)
 	{
+		//move right if the right button is pushed
 		if(z_button_right()) paddle_moveright();
+		//move left if the left button is pushed
 		if(z_button_left()) paddle_moveleft();
 
+		//move and collide all balls
 		balls_move_and_collide();
+
+		//draw all balls
 		balls_draw();
+
+		//draw the paddle
 		paddle_draw();
 
+		//if there are no blocks left, go to the next level
 #ifdef GBA
 		if(blocks_amount() <= 0 || KEYPRESS_SELECT)
 #else
@@ -73,13 +74,14 @@ void game_mainloop(void)
 			gameinfo_levelincrease(1);
 			game_loadlevel(gameinfo_getlevel());
 		}
+		//if there are no balls left, die!
 		else if(balls_amount() <= 0)
 		{
 			gameinfo_livesdecrease(1);
-			gameinfo_drawinfo();
+			gameinfo_drawinfo(); //redraw the scoreboard
 			if(gameinfo_getlives() <= 0) break;
-			game_printfailure();
-			game_restartlevel();
+			game_printfailure(); //notice the player that he sucks!
+			game_restartlevel(); //restar the level
 		}
 #ifdef GBA
 		IntrVBlankWait();
@@ -89,6 +91,8 @@ void game_mainloop(void)
 #endif
 	}
 }
+
+//Nice ANSI graphics generated with Photoshop and Ascgen dotNet
 
 const char youfail[10][66] = {
 "    QQQQQQQQQ:       fQQp          LQQ      iQQ            QQM  ",
@@ -103,6 +107,7 @@ const char youfail[10][66] = {
 "                         (PRESS MIDDLE)                         ",
 };
 
+//prints a failure message to the screen and awaits user input
 void game_printfailure(void)
 {
 	int i, y, d;
@@ -111,6 +116,8 @@ void game_printfailure(void)
 	z_hyperterm_setfgcolor(15);
 	z_hyperterm_setbgcolor(1);
 
+	//this loop draws the message on the screen.
+	//it looks animated because it is so horribly slow
 	for(i = 0; i < 41; i++) {
 		for(y = 0; y < 10; y++) {
 			d = y - 8 + i;
@@ -120,6 +127,9 @@ void game_printfailure(void)
 				z_hyperterm_put_on(youfail[y][31 - d], 31 - d + 3, 3 + y);
 			}
 		}
+#ifdef GBA
+		IntrVBlankWait();
+#endif
 	}
 	while(!z_button_middle());
 }

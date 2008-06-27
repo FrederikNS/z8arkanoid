@@ -1,5 +1,8 @@
 #include "levels.h"
 
+//Defines the powerup block index, 10, as a single character value
+//to avoid screwing up the neat formatting which allows us to do
+//levels in plain text without an editor.
 #define P 10
 
 /*
