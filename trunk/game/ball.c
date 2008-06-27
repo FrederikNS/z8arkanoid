@@ -12,13 +12,13 @@
 Local constants, fields and function prototypes
 */
 typedef struct{
-	signed int x;
-	signed int y;
+	signed int x; //fixed point 1.7.8
+	signed int y; //ditto.
 	signed int angle;
-	int mod;
-	int oldx;
-	int oldy;
-	char active;
+	int mod; //modulus/ballspeed in 11.5 coords.
+	int oldx; //coordinates from the last frame
+	int oldy; //--||--
+	char active; //is the ball active or not?
 } ball;
 
 ball balls[BALLS_MAX];
@@ -117,28 +117,34 @@ void ball_split(ball* b)
 	b->angle -= 10;
 }
 
+//splits all balls
 void balls_split(void)
 {
+	//this array keeps track off all balls which
+	//are to be split so that the function
+	//does not split balls which have spawned
+	//from another ball being split in the same
+	//function.
+	//Not very RAM effective, but it would remain
+	//unused anyway. Would be more proper with a
+	//bitfield, though.
+
 	char to_split[BALLS_MAX];
 	unsigned char i;
+	//generate the to_split list
 	for(i = 0; i < BALLS_MAX; i++) {
 		if(balls[i].active)
 			to_split[i] = 1;
 		else
 			to_split[i] = 0;
 	}
+	//excecute!
 	for(i = 0; i < BALLS_MAX; i++)
 		if(to_split[i])
 			ball_split(&balls[i]);
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
-
+//returns the amount of active balls in play
 char balls_amount()
 {
 	int i, amount = 0;
@@ -146,25 +152,15 @@ char balls_amount()
 	return amount;
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
-
+//scales the length of a ball by a scalar given in 8.8 fixed point
 void ball_scalevelocity(unsigned char i, int scale)
 {
 	balls[i].mod = (balls[i].mod * scale)>>8;
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
-
+//stores the coordinates of the balls
+//to use them later in the drawing function.
+//keeps balls from flashing.
 void balls_store_coords(void)
 {
 	int i;
@@ -177,46 +173,47 @@ void balls_store_coords(void)
 	}
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
-
+//removes all balls from their old position on the screen
+//and draws them all on their new ones,
+//with their new animation figures.
 void balls_draw(void)
 {
 	int i;
 	ball* b = balls;
 	z_hyperterm_setbgcolor(0);
-	if(powerups_heavyball()) z_hyperterm_setfgcolor(6);
-	else if (powerups_bombballs()) z_hyperterm_setfgcolor(1);
-	else z_hyperterm_setfgcolor(7);
+	//sets distinguishable color to signal which powerups are active.
+	if(powerups_heavyball() && powerups_bombballs())
+		z_hyperterm_setfgcolor(11);
+	else if (powerups_heavyball())
+		z_hyperterm_setfgcolor(6);
+	else if (powerups_bombballs())
+		z_hyperterm_setfgcolor(1);
+	else
+		z_hyperterm_setfgcolor(7);
 
+	//loop through all balls
 	for(i = 0; i < BALLS_MAX; i++, b++) {
 		if(b->active) {
 			if(b->x>>8 != b->oldx || b->y>>8 != b->oldy) {
-				z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
-				if(b->y&(1<<7)) z_hyperterm_put(220);
-				else z_hyperterm_put(223);
 				z_hyperterm_clearpoint(b->oldx + 3, b->oldy + 3);
 			}
+			//even if the ball is on its old position, the animation
+			//figure might have changed.
+			z_hyperterm_goto((b->x>>8) + 3, (b->y>>8) + 3);
+			if(b->y&(1<<7)) z_hyperterm_put(220);
+			else z_hyperterm_put(223);
 		}
 	}
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
-
-
+//deflects the angle of a ball. See repport for how the
+//formula was derived.
 void ball_deflect(ball* b, int angle)
 {
 	//int r = rand();
 	b->angle = 2 * angle - b->angle;
+	//Randomizes the angle a little, commented
+	//out as a gameplay choice.
 	/*if(r&1) {
 		if(r&2)
 			b->angle--;
@@ -225,12 +222,6 @@ void ball_deflect(ball* b, int angle)
 	}*/
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
 
 #define LEFT -1
 #define RIGHT 1
@@ -239,23 +230,40 @@ Note:
 
 #include <stdio.h>
 
+//moves a ball and collides it with the sorrounding game objects
+//see the repport for details.
 void ball_move_and_collide(ball* b)
 {
-	signed char xdir, ydir;
+	signed char xdir, ydir; //keeps track of the x and y direction signs.
+	//dx: distance to travel to cross into the next screen block on the horizontal axis
+	//dy:                                       --||--                  vertical axis.
+	//xv_left: distance left to travel on the horizontal axis.
+	//yv_left: --||-- for the vertical axis.
 	unsigned int dx, dy, xv_left, yv_left;
-	unsigned long xm, ym; //x and y "momentum" for lack of better in the middle of the night
 
+	//x and y "momentum" for lack of better in the middle of the night
+	//used to evaluate which axis that crosses into the next screen block next.
+	unsigned long xm, ym;
+
+	//if the ball is inside the paddle,
+	//move it on top of it and change its direction
+	//to straight up. it's a gameplay choice,
+	//keeps it exciting to the last.
 	if(paddle_collision_fixed(b->x, b->y)) {
 		b->y -= 1<<8;
 		b->angle = -64;
 	}
 
 	//Calculate the distance to travel on the x and y axis.
+	//the ball travels twice as fast on the x axis because
+	//the characters on the hyperterm are nearly twice
+	//as tall as they are wide.
 	xv_left = ABS(z_cos(b->angle)*b->mod)>>4;
 	yv_left = ABS(z_sin(b->angle)*b->mod)>>5;
 
 	//Calculate the x and y distance from the pixel to the
-	//nearest whole number and store the sign of the travelling direction
+	//nearest whole number using the fractional part of the x and y movement vectors,
+	//and store the sign of the travelling direction in separate variables.
 	if(z_cos(b->angle) > 0) {
 		xdir = RIGHT;
 		dx = 0x100 - (b->x & 0xFF);
@@ -277,8 +285,29 @@ void ball_move_and_collide(ball* b)
 	//While there is still travelling left on either the x or y axis, do:
 	while(xv_left || yv_left)
 	{
+		/*
+		The axis which crosses into the next character block the fastest is
+		the one who has the biggest  speed/distance to travel  proportion.
+		The proportion for the x axis goes as following:
+			xv_left / dx
+		and for y:
+			yv_left / dy
+		these two are compared together, the largest one is the direction
+		which crosses into a screen block first. The following
+		statement if that axis is the x axis:
+			xv_left / dx > dy_left / dy
+		ARGH! DIVISIONS!
+		Luckily, the equation can be refactored to:
+			xv_left * dy > dy_left * dx
+		which is much nice. However, it has to be stored in longs to avoid
+		overflowing the datatype.
+		xm and ym are just hacks to do this, they are only used for
+		comparrision this single time.
+
+		*/
 		xm = (long)xv_left * (long)dy;
 		ym = (long)yv_left * (long)dx;
+		//make sure nothing is wrong.
 		ASSERT(dy, "!dy");
 		ASSERT(dx, "!dx");
 		ASSERT(!(xm == 0 && ym == 0), "xm & ym = 0");
@@ -288,22 +317,39 @@ void ball_move_and_collide(ball* b)
 			//the ball crosses the x axis before the y axis
 			if(xv_left < dx)
 			{
-				//the ball has so little travelling left to do that it stays inside the current block.
+				//the ball has so little travelling left to
+				//do that it stays inside the current block.
 				//just move it and be done with it.
 				b->x += xv_left * xdir;
 				dx -= xv_left;
 				xv_left = 0;
 			}
-			else if(b->x + dx * xdir < 0 || b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 || block_hit_fixed(b->x+xdir*dx, b->y) || paddle_collision_fixed(b->x+xdir*dx, b->y))
+			else if(b->x + dx * xdir < 0 ||
+					b->x + dx * xdir >= GAMEFIELD_WIDTH<<8 ||
+				    block_hit_fixed(b->x+xdir*dx, b->y) ||
+				    paddle_collision_fixed(b->x+xdir*dx, b->y))
 			{
 				//the block collides with something
-				//move it to the edge, reverse the x-direction
-				//b->angle = 128 - b->angle;
+				//move it to the edge of the current block,
+				//and deflect it
+
+				 //deflect
 				ball_deflect(b, 64);
-				b->x += (dx-1)*xdir;
+
+				//move
+				b->x += (dx-1)*xdir; //move
+
+				//keep track of the travelling left to do.
 				xv_left -= dx-1;
-				dx = 0x100;
+
+				//reverse the travel direction.
 				xdir = -xdir;
+				//since the ball is at the very edge of the block
+				//block and pointing directly away from
+				//that edge on the horizontal axis,
+				//it can be asserted that it has to travel
+				//exactly 0x100 units to reach the next block.
+				dx = 0x100;
 			}
 			else
 			{
@@ -317,6 +363,9 @@ void ball_move_and_collide(ball* b)
 		else
 		{
 			//the ball crosses the y axis before the x axis
+			//most of the logic from the x axis code is reused here,
+			//so read that before reading this.
+			//only exception is the collision.
 			if(yv_left < dy)
 			{
 				b->y += yv_left * ydir;
@@ -325,14 +374,32 @@ void ball_move_and_collide(ball* b)
 			}
 			else if(paddle_collision_fixed(b->x, b->y+ydir*dy))
 			{
+				//the ball collided with the paddle.
+
+				//deflect it according to where it hit
+				//the paddle.
 				ball_deflect(b, paddle_getangle(b->x));
+
+				//wrap the angle around.
 				b->angle = b->angle&0xFF;
 
+				//make sure that the ball won't fly
+				//with an angle close to directly horizontal,
+				//because thos are lame for the gameplay.
 				if(b->angle > 240)
 					b->angle = 240;
 				else if(b->angle < 114)
 					b->angle = 114;
 
+				//see line 339
+				//NOTICE:
+				//The code below is an approximation,
+				//because the angle has changed to something
+				//unknown. dy, dx, yv_left, and xv_left would
+				//have to be recalculated to do things properly,
+				//and that would be too big a mouthful.
+				//But since it only runs for the remainder of
+				//the move, it is allright.
 				b->y += (dy-1)*ydir;
 				yv_left -= dy-1;
 				dy = 0x100;
@@ -354,6 +421,8 @@ void ball_move_and_collide(ball* b)
 			}
 		}
 	}
+	//if the ball has crosed the lower border,
+	//remove it.
 	if(b->y >= GAMEFIELD_HEIGHT<<8)
 	{
 		b->active = 0;
@@ -362,13 +431,7 @@ void ball_move_and_collide(ball* b)
 	}
 }
 
-/*
-Name:
-Functionality:
-Arguments:
-Note:
-*/
-
+//moves all balls and collides them with the sorrounding game objects
 void balls_move_and_collide(void)
 {
 	unsigned char i;
